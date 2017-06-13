@@ -44,10 +44,75 @@ exports.loadTop5EndTime = function() {
 }
 
 
-exports.loadBy5Hightest = function(catId) {
-   
+
+
+exports.search = function(entity) {
     var sql = mustache.render(
-        'select * from sanpham'
+        'select * from sanpham where tenSanPham like "%{{productName}}%"',
+        entity
+    );
+
+    return db.load(sql);
+}
+exports.search_loai = function(entity) {
+    var sql = mustache.render(
+        'select * from sanpham where tenSanPham like "%{{productName}}%" and loai= {{catID}}',
+        entity
+    );
+
+    return db.load(sql);
+}
+exports.sapxep_thoigian = function(entity) {
+    var sql = mustache.render(
+        'select * from sanpham where tenSanPham like "%{{productName}}%" order by thoiDiemKetThuc desc',
+        entity
+    );
+
+    return db.load(sql);
+}
+exports.sapxep_thoigian_loai = function(entity) {
+    var sql = mustache.render(
+        'select * from sanpham where tenSanPham like "%{{productName}}%" and loai= {{catID}} order by thoiDiemKetThuc desc',
+        entity
+    );
+
+    return db.load(sql);
+}
+exports.sapxep_gia = function(entity) {
+    var sql = mustache.render(
+        'select * from sanpham where tenSanPham like "%{{productName}}%" order by giaHienTai asc',
+        entity
+    );
+
+    return db.load(sql);
+}
+exports.sapxep_gia_loai = function(entity) {
+    var sql = mustache.render(
+        'select * from sanpham where tenSanPham like "%{{productName}}%" and loai= {{catID}} order by giaHienTai asc',
+        entity
+    );
+
+    return db.load(sql);
+}
+
+
+exports.sapxep_thoigian_loai_khongten= function(catId) {
+    var obj = {
+        loai: catId
+    };
+    var sql = mustache.render(
+        'select * from sanpham where loai = {{loai}} order by thoiDiemKetThuc desc',
+        obj
+    );
+    return db.load(sql);
+}
+exports.sapxep_gia_loai_khongten= function(catId) {
+    var obj = {
+        loai: catId
+    };
+    var sql = mustache.render(
+        'select * from sanpham where loai = {{loai}} order by giaHienTai asc',
+        obj
     );
     return db.load(sql);
 }

@@ -1,42 +1,31 @@
 {{#section 'title'}}
-  Danh sách sản phẩm
+	Danh sách sản phẩm
 {{/section}}
 
-{{#section 'searchbox'}}
-    <!--Seach BOX -->
 
-<div class="jumbotron text-center">
-      <form class="form-inline" method="post" action="/product/timkiemtheoloai">
-        <div class="input-group">
-         <input  type="hidden" name="catID" id="txtcatID" value="{{activeCat}}">
-          <input class="form-control" size="50" name="productName" placeholder="Gõ tên sản phẩm muốn tìm" required>
-          <div class="input-group-btn">
-            <button type="submit" class="btn btn-danger">Tìm kiếm</button>
-           
 
-          </div>
-        </div>
-      </form>
-</div>
-<!--End Seach BOX -->
-{{/section}}
-
-<h1><strong>KẾT QUẢ TÌM KIẾM<strong></h1>
 {{#if noProducts }}
-  KHÔNG CÓ SẢN PHẨM THOẢ YÊU CẦU!
+	KHÔNG CÓ SẢN PHẨM THOẢ YÊU CẦU!
 {{else}}
-  <div class="row">
-    <div class="btn-group">
+   <div class="row">
+    <div class="col-sm-5">
+      <h1><strong>KẾT QUẢ TÌM KIẾM<strong></h1>
+    </div>
+    <div class="col-sm-5">
+      <div class="btn-group">
         <button class="btn btn-primary" data-id="1">Thời gian kết thúc giảm dần </button>
         <button class="btn btn-primary" data-id="2">Giá tăng dần </button>
+      </div>
     </div>
-     <form class="form-inline" method="post" action="" id="frmSapXep">
+  </div>
+	<div class="row">
+      <form class="form-inline" method="post" action="/product/sapxep" id="frmSapXep">
+          <input  type="hidden" name="productName" id="txtproname" value="{{ten}}">
+          <input  type="hidden" name="catID" id="txtcatID" value="{{id}}">
           <input  type="hidden" name="loaibtn" id="txtloaibtn">
       </form>
-  </div>
-  <div class="row">
          {{#each products }}
-          
+        
           <div class="col-sm-4">
             <div class="panel panel-primary">
               <div class="panel-heading"><a href="ChiTietSanPham.html"><span style="color:white"><strong>{{tenSanPham}}</strong></span></a></div>
