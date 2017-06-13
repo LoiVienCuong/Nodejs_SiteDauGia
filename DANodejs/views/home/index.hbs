@@ -1,0 +1,276 @@
+{{#section 'title'}}
+Trang chủ
+{{/section}}
+{{#section 'searchbox'}}
+    <!--Seach BOX -->
+<div class="jumbotron text-center">
+      <form class="form-inline">
+        <div class="input-group">
+          <input class="form-control" size="50" placeholder="Gõ tên sản phẩm muốn tìm" required>
+          <div class="input-group-btn">
+            <button type="button" class="btn btn-danger">Tìm kiếm</button>
+          </div>
+        </div>
+      </form>
+</div>
+<!--End Seach BOX -->
+{{/section}}
+
+<div class="row">  
+          <!--header-->
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <div class="btn-group btn-group-justified">
+                 <div class="btn-group"><button type="button" class="btn btn-primary">Đang đấu giá (6)</button></div>  
+                 <div class="btn-group"><button type="button" class="btn btn-primary">Mới kết thúc (6)</button></div>
+                 <div class="btn-group"> <button type="button" class="btn btn-primary">Top Winner</button></div>
+                 <div class="btn-group"><button type="button" class="btn btn-primary">Top Người Bán</button></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+         
+        <h1><strong>TOP 5 LUOT BID<strong></h1><br>
+       <div class="row">
+         {{#each productsBid }}
+       
+          <div class="col-sm-4">
+            <div class="panel panel-primary">
+              <div class="panel-heading"><a href="ChiTietSanPham.html"><span style="color:white"><strong>{{tenSanPham}}</strong></span></a></div>
+              <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <div>Giá đấu hiện tại : {{giaHienTai}} </div>
+                      <div>Giá mua ngay : {{giaMuaNgay}} </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div>Lượt Bid : {{luotBid}}</div>
+                      <div>Thời điểm kết thúc : {{thoiDiemKetThuc}}</div>
+                    </div>
+                  </div>  
+              </div>
+              <div class="panel-footer text-center">
+                 <a href="" type="button" data-toggle="modal" data-target="#ModalBiding" class="bidBtn"> <img src="image/bid_icon.png" style="width:50px; height:50px"> </a>
+                <button  type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Giỏ hàng&nbsp;</button> 
+              </div>
+            </div>
+         </div> 
+       
+         {{/each}}
+       </div>
+        
+      <h1><strong>TOP 5 GIA CAO NHAT<strong></h1><br>
+       <div class="row">
+         {{#each productsCost }}
+        
+          <div class="col-sm-4">
+            <div class="panel panel-primary">
+              <div class="panel-heading"><a href="ChiTietSanPham.html"><span style="color:white"><strong>{{tenSanPham}}</strong></span></a></div>
+              <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <div>Giá đấu hiện tại : {{giaHienTai}} </div>
+                      <div>Giá mua ngay : {{giaMuaNgay}} </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div>Lượt Bid : {{luotBid}}</div>
+                      <div>Thời điểm kết thúc : {{thoiDiemKetThuc}}</div>
+                    </div>
+                  </div>  
+              </div>
+              <div class="panel-footer text-center">
+                 <a href="" type="button" data-toggle="modal" data-target="#ModalBiding" class="bidBtn"> <img src="image/bid_icon.png" style="width:50px; height:50px"> </a>
+                <button  type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Giỏ hàng&nbsp;</button> 
+              </div>
+            </div>
+         </div> 
+       
+         {{/each}}
+
+       </div>
+        
+
+
+       <h1><strong>TOP 5 THOI GIAN<strong></h1><br>
+       <div class="row">
+         {{#each productsCost }}
+        
+          <div class="col-sm-4">
+            <div class="panel panel-primary">
+              <div class="panel-heading"><a href="ChiTietSanPham.html"><span style="color:white"><strong>{{tenSanPham}}</strong></span></a></div>
+              <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <div>Giá đấu hiện tại : {{giaHienTai}} </div>
+                      <div>Giá mua ngay : {{giaMuaNgay}} </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div>Lượt Bid : {{luotBid}}</div>
+                      <div>Thời điểm kết thúc : {{thoiDiemKetThuc}}</div>
+                    </div>
+                  </div>  
+              </div>
+              <div class="panel-footer text-center">
+                 <a href="" type="button" data-toggle="modal" data-target="#ModalBiding" class="bidBtn"> <img src="image/bid_icon.png" style="width:50px; height:50px"> </a>
+                <button  type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Giỏ hàng&nbsp;</button> 
+              </div>
+            </div>
+         </div> 
+         
+         {{/each}}
+
+       </div>
+
+
+        <!--
+          <div class="col-sm-4"> 
+             <div class="panel panel-primary">
+                <div class="panel-heading"><a href="ChiTietSanPham.html"><span style="color:white"><strong>Áo phông caro</strong></span></a></div>
+                <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div>Giá đấu hiện tại : 40,000 </div>
+                        <div>Giá mua ngay : 50,000 </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div>Lượt Bid : 3</div>
+                        <div>Thời gian còn lại: 12:01:09</div>
+                      </div>
+                  </div>  
+                </div>
+                <div class="panel-footer text-center">
+                  <a href="" type="button" data-toggle="modal" data-target="#ModalBiding" class="bidBtn"> <img src="image/bid_icon.png" style="width:50px; height:50px"> </a>
+                  <button type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Giỏ hàng&nbsp;</button> 
+                </div>
+             </div>
+          </div>
+
+          <div class="col-sm-4"> 
+             <div class="panel panel-primary">
+                <div class="panel-heading"><a href="ChiTietSanPham.html"><span style="color:white"><strong>Mũ bảo hiểm XYZ</strong></span></a></div>
+                <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div>Giá đấu hiện tại : 40,000 </div>
+                        <div>Giá mua ngay : 50,000 </div>
+                        
+                      </div>
+                      <div class="col-sm-6">
+                        <div>Lượt Bid : 3</div>
+                        <div>Thời gian còn lại: 12:01:09</div>
+                      </div>
+                  </div>  
+                </div>
+                <div class="panel-footer text-center">
+                 <a href="" type="button" data-toggle="modal" data-target="#ModalBiding" class="bidBtn"> <img src="image/bid_icon.png" style="width:50px; height:50px"> </a>
+                  <button type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Giỏ hàng&nbsp;</button> 
+                </div>
+             </div>
+          </div><br>
+        </div>
+
+         
+       <div class="row">
+          <div class="col-sm-4">
+            <div class="panel panel-primary">
+              <div class="panel-heading"><a href="ChiTietSanPham.html"><span style="color:white"><strong>Mũ bảo hiểm XYZ</strong></span></a></div>
+              <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <div>Giá đấu hiện tại : 40,000 </div>
+                      <div>Giá mua ngay : 50,000 </div>
+                      
+                    </div>
+                    <div class="col-sm-6">
+                      <div>Lượt Bid : 3</div>
+                      <div>Thời gian còn lại: 12:01:09</div>
+                    </div>
+                </div>  
+              </div>
+              <div class="panel-footer text-center">
+               <a href="" type="button" data-toggle="modal" data-target="#ModalBiding" class="bidBtn"> <img src="image/bid_icon.png" style="width:50px; height:50px"> </a>
+                <button type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Giỏ hàng&nbsp;</button> 
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-4"> 
+             <div class="panel panel-primary">
+                <div class="panel-heading"><a href="ChiTietSanPham.html"><span style="color:white"><strong>Áo phông caro</strong></span></a></div>
+                <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div>Giá đấu hiện tại : 40,000 </div>
+                        <div>Giá mua ngay : 50,000 </div>
+                        
+                      </div>
+                      <div class="col-sm-6">
+                        <div>Lượt Bid : 3</div>
+                        <div>Thời gian còn lại: 12:01:09</div>
+                      </div>
+                  </div>  
+                </div>
+                <div class="panel-footer text-center">
+                 <a href="" type="button" data-toggle="modal" data-target="#ModalBiding" class="bidBtn"> <img src="image/bid_icon.png" style="width:50px; height:50px"> </a>
+                  <button type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Giỏ hàng&nbsp;</button> 
+                </div>
+             </div>
+          </div>
+
+          <div class="col-sm-4"> 
+             <div class="panel panel-primary">
+                <div class="panel-heading"><a href="ChiTietSanPham.html"><span style="color:white"><strong>Mũ bảo hiểm XYZ</strong></span></a></div>
+                <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div>Giá đấu hiện tại : 40,000 </div>
+                        <div>Giá mua ngay : 50,000 </div>
+                        
+                      </div>
+                      <div class="col-sm-6">
+                        <div>Lượt Bid : 3</div>
+                        <div>Thời gian còn lại: 12:01:09</div>
+                      </div>
+                  </div>  
+                </div>
+                <div class="panel-footer text-center">
+                 <a href="" type="button" data-toggle="modal" data-target="#ModalBiding" class="bidBtn"> <img src="image/bid_icon.png" style="width:50px; height:50px"> </a>
+                  <button type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Giỏ hàng&nbsp;</button> 
+                </div>
+             </div>
+          </div><br>
+       </div> <br><br>
+     -->
+        <div class="modal fade" id="ModalBiding" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="BuyLabel">Đấu giá</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form class="form-inline" id="auction-form">
+                                                        <div class="form-group">
+                                                            <label class="sr-only" for="textFieldBidAmount">Số tiền đấu giá (VND)</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-addon">VND</div>
+                                                                <input type="text" class="form-control" id="price" name="BidAmount" placeholder="Amount">
+                                                                <div class="input-group-addon">.000</div>
+                                                            </div>
+                                                        </div>
+                                                         <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                                                         <button type="submit" class="btn btn-success">Đấu giá</button>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                   
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+      
+    </div>

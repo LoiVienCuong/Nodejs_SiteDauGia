@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <title>{{{_sections.title}}}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  {{{_sections.css}}}
+   <style>
+    /* Remove the navbar's default rounded borders and increase the bottom margin */ 
+    .navbar {
+      margin-bottom: 50px;
+      border-radius: 0;
+    }
+    
+    /* Remove the jumbotron's default bottom margin */ 
+     .jumbotron {
+      margin-bottom: 0;
+    }
+    .container-fluid{
+      margin-left: 0px;
+    }
+    .jumbotron.text-center{
+      margin-bottom: 20px;
+    }
+    /* Add a gray background color and some padding to the footer */
+    footer {
+      background-color: #f2f2f2;
+      padding: 25px;
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="jumbotron">
+  <div class="container text-center">
+    <h1>Đấu Giá Trực Tuyến</h1>      
+    <p>Mission, Vission & Values</p>
+  </div>
+</div>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="trangchu.html">Trang Chủ</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        
+        <li><a href="#">Cá nhân</a></li>
+        <li><a href="#">Top Uy Tín</a></li>
+        <li><a href="#">Hướng dẫn</a></li>
+        <li><a href="#">Liên hệ</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="thongtincanhan.html"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
+        <li><a href="danhsachyeuthich.html"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!--Seach BOX -->
+{{{_sections.searchbox}}}
+<!--End Seach BOX -->
+
+
+<!--Main display products-->
+<div class="col-sm-12" style="background: white;">
+  <div class="row">
+   <!--Category -->
+    <div class="col-sm-3">
+    {{> navbar }}
+    </div>
+    <!--End category -->
+
+    <!--Main products -->
+
+    <div class="col-sm-9">
+        {{{body}}}
+    </div>
+    <!--End Main product -->
+  </div>
+</div>
+<!--End Main display products-->
+
+<script>
+$(document).ready(function(){
+
+ $("#auction-form").submit(function(){
+  
+    var flag = true;
+    var price=$("#price").val();
+      if(isNaN(price)){
+        alert("giá tiền phải là số");
+        flag = false;
+      }else{
+        var change = 50000 - price;
+        if(change < 10000) {
+          alert("độ chênh lệch giá không được nhỏ hơn 10000");
+          flag = false;
+        }
+        else if (price < 40000){
+          alert("Giá không được nhỏ hơn giá đấu của người cao nhất hiện tại")
+          flag = false;
+        }else{
+          alert("Đang xử lý...")
+        }
+      }
+        return flag;
+ });
+
+});
+</script>
+
+<footer class="container-fluid text-center">
+  <p>Online Store Copyright</p>  
+  <form class="form-inline">Get deals:
+    <input type="email" class="form-control" size="50" placeholder="Email Address">
+    <button type="button" class="btn btn-danger">Sign Up</button>
+  </form>
+</footer>
+
+</body>
+</html>
