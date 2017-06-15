@@ -44,7 +44,13 @@ exports.loadTop5EndTime = function() {
 }
 
 
-
+exports.loadBy5Hightest = function(catId) {
+   
+    var sql = mustache.render(
+        'select * from sanpham'
+    );
+    return db.load(sql);
+}
 
 exports.search = function(entity) {
     var sql = mustache.render(

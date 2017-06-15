@@ -1,13 +1,26 @@
    <!--Category -->
     
       <!--row categry-->
+      
+  
          <div class="list-group">
             <p class="list-group-item disabled"><strong>Category</strong></p>
 
            {{#each layoutVM.categories }}
-                <a href="/product/bycat/{{idLoaiSanPham}}" data-id="{{idLoaiSanPham}}" class="list-group-item activeCategory">
-                  {{tenLoaiSanPham}}
-                </a>
+
+                {{#ifCond ../activeCat '==' idLoaiSanPham}}
+
+                    <a href="/product/bycat/{{idLoaiSanPham}}" class="list-group-item active">
+                     {{tenLoaiSanPham}}
+                    </a>
+
+                {{else}}
+                    <a href="/product/bycat/{{idLoaiSanPham}}" class="list-group-item">
+                     {{tenLoaiSanPham}} {{activeCat}}
+                    </a>
+                {{/ifCond}}
+
+                
               {{/each}}
 
 
@@ -47,7 +60,7 @@
               </div>
             </div>-->
 
-            <
+            
          </div>
       <!--end category -->
       <!--row filter cost-->
@@ -59,14 +72,15 @@
               <a href="#" class="list-group-item">1tr - 10tr</a>
               <a href="#" class="list-group-item">Trên 10 tr</a>
          </div>
+          
       <!--end filter cost --> 
       <script type="text/javascript">
-     
-          $('.activeCategory').on('click', function() {
-            var id = $(this).data('id');
-            //$('#txtDelCatId').val(id);
-            //$('#frmDeleteCategory').submit();
-            $(this).addClass('active');
-          });
-    </script>
+         
+           
+            $(document).ready(function(){
+              
+            })
+      </script>
+          
+  
     <!--End category -->

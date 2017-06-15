@@ -4,11 +4,11 @@ Trang chủ
 {{#section 'searchbox'}}
     <!--Seach BOX -->
 <div class="jumbotron text-center">
-      <form class="form-inline">
+      <form class="form-inline" method="post" action="/product/timkiem">
         <div class="input-group">
-          <input class="form-control" size="50" placeholder="Gõ tên sản phẩm muốn tìm" required>
+          <input type="text" class="form-control" name="productName" size="50" placeholder="Gõ tên sản phẩm muốn tìm" >
           <div class="input-group-btn">
-            <button type="button" class="btn btn-danger">Tìm kiếm</button>
+            <button type="submit" class="btn btn-danger">Tìm kiếm</button>
           </div>
         </div>
       </form>
@@ -40,7 +40,14 @@ Trang chủ
        
           <div class="col-sm-4">
             <div class="panel panel-primary">
-              <div class="panel-heading"><a href="ChiTietSanPham.html"><span style="color:white"><strong>{{tenSanPham}}</strong></span></a></div>
+              <div class="panel-heading">
+                      <div class="row">
+                           <div class="form-group">
+                              <a href="ChiTietSanPham.html" class="col-sm-10"><span style="color:white"><strong>{{tenSanPham}}</strong></span></a>   
+                                <div id="{{idSanPham}}" class="col-sm-2" style="font-weight:bold;font-family:arial;font-style: italic;"></div>
+                           </div>
+                       </div>
+                </div>
               <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
                   <div class="row">
                     <div class="col-sm-6">
@@ -69,7 +76,14 @@ Trang chủ
         
           <div class="col-sm-4">
             <div class="panel panel-primary">
-              <div class="panel-heading"><a href="ChiTietSanPham.html"><span style="color:white"><strong>{{tenSanPham}}</strong></span></a></div>
+              <div class="panel-heading">
+                      <div class="row">
+                           <div class="form-group">
+                              <a href="ChiTietSanPham.html" class="col-sm-10"><span style="color:white"><strong>{{tenSanPham}}</strong></span></a>   
+                                <div id="{{idSanPham}}" class="col-sm-2" style="font-weight:bold;font-family:arial;font-style: italic;"></div>
+                           </div>
+                       </div>
+                </div>
               <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
                   <div class="row">
                     <div class="col-sm-6">
@@ -97,11 +111,18 @@ Trang chủ
 
        <h1><strong>TOP 5 THOI GIAN<strong></h1><br>
        <div class="row">
-         {{#each productsCost }}
+         {{#each productsEndTime }}
         
           <div class="col-sm-4">
             <div class="panel panel-primary">
-              <div class="panel-heading"><a href="ChiTietSanPham.html"><span style="color:white"><strong>{{tenSanPham}}</strong></span></a></div>
+               <div class="panel-heading">
+                      <div class="row">
+                           <div class="form-group">
+                              <a href="ChiTietSanPham.html" class="col-sm-10"><span style="color:white"><strong>{{tenSanPham}}</strong></span></a>   
+                                <div id="{{idSanPham}}" class="col-sm-2" style="font-weight:bold;font-family:arial;font-style: italic;"></div>
+                           </div>
+                       </div>
+                </div>
               <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
                   <div class="row">
                     <div class="col-sm-6">
@@ -274,3 +295,47 @@ Trang chủ
                                     </div>
       
     </div>
+
+    <script type="text/javascript">
+
+   $(document).ready(function(){
+         var proBid = JSON.parse('{{{json productsBid}}}');
+         var d = new Date();
+          var millisecondsNow=Date.parse(d);
+         for(var i=0;i<proBid.length;i++)
+         {
+                console.log(proBid[i].thoiDiemDang);
+                var millisecondsthoiDiemDang  = Date.parse(proBid[i].thoiDiemDang);
+                var t=(millisecondsNow-millisecondsthoiDiemDang)/60000;
+                 console.log(t);
+                 if(t<30)
+                 {
+                      $("#"+proBid[i].idSanPham+"").html("new");
+                }
+         }
+         var proCost = JSON.parse('{{{json productsCost}}}');
+         for(var i=0;i<proCost.length;i++)
+         {
+                console.log(proCost[i].thoiDiemDang);
+                var millisecondsthoiDiemDang  = Date.parse(proCost[i].thoiDiemDang);
+                var t=(millisecondsNow-millisecondsthoiDiemDang)/60000;
+                 console.log(t);
+                 if(t<30)
+                 {
+                      $("#"+proCost[i].idSanPham+"").html("new");
+                }
+         }
+         var proEndTime = JSON.parse('{{{json productsEndTime}}}');
+         for(var i=0;i<proEndTime.length;i++)
+         {
+                console.log(proEndTime[i].thoiDiemDang);
+                var millisecondsthoiDiemDang = Date.parse(proEndTime[i].thoiDiemDang);
+                var t=(millisecondsNow-millisecondsthoiDiemDang)/60000;
+                 console.log(t);
+                 if(t<30)
+                 {
+                      $("#"+proEndTime[i].idSanPham+"").html("new");
+                }
+         }
+      });
+  </script>
