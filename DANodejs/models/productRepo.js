@@ -160,4 +160,8 @@ exports.insertFavourite = function(proId, userId){
         obj
     );
     return db.insert(sql);
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/master
