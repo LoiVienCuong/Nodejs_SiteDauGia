@@ -12,9 +12,8 @@ var express = require('express'),
    productController = require('./controllers/productController'),
    userController = require('./controllers/userController'),
    helper = require('./fn/helper');
-  
 
-
+   
 var app = express();
 app.use(cookieParser('my secret here'));
 
