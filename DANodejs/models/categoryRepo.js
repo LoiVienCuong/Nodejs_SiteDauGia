@@ -6,6 +6,16 @@ exports.loadAll = function() {
     var sql = 'select * from loai';
     return db.load(sql);
 }
+exports.loadById = function(catId) {
+     var obj = {
+        catID: catId
+    };
+    var sql = mustache.render(
+        'select * from loai where idLoaiSanPham = {{catID}}',
+        obj
+    );
+    return db.load(sql);
+}
 
 exports.loadDetail = function(id) {
 	var d = q.defer();

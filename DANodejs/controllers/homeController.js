@@ -1,10 +1,12 @@
 var express = require('express'),
    productRepo = require('../models/productRepo');
-     
+    
 var r = express.Router();
 
-r.get('/', function(req, res) {
 
+var isCookie;
+
+r.get('/', function(req, res) {
     /*productRepo.loadTop5Bid()
         .then(function(pRows) {
             var vm = {
@@ -25,8 +27,8 @@ r.get('/', function(req, res) {
                 layoutVM: res.locals.layoutVM,
                 productsBid: bid,
                 productsCost : cost,
-                productsEndTime : endtime,
-
+                productsEndTime : endtime
+               
                 //noProducts: bid.length === 0
            		 };
             res.render('home/index', vm);

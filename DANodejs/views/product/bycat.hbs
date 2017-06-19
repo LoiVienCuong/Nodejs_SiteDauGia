@@ -2,15 +2,56 @@
 	Danh sách sản phẩm
 {{/section}}
 
+{{#section 'searchbox'}}
+    <!--Seach BOX -->
+
+<div class="jumbotron text-center">
+      <form class="form-inline">
+        <div class="input-group">
+         <input  type="hidden" name="catID" id="txtcatID" value="{{activeCat}}">
+          <input type="text" class="form-control" name="productName" id="txtname" size="50" placeholder="Gõ tên sản phẩm muốn tìm" required >
+          <div class="input-group-btn">
+          <a href="" class="btn btn-danger" id="btnSearch">Tìm kiếm</a>
+           
+
+          </div>
+        </div>
+      </form>
+</div>
+<!--End Seach BOX -->
+{{/section}}
+
 {{#if noProducts }}
 	KHÔNG CÓ SẢN PHẨM THOẢ YÊU CẦU!
 {{else}}
+  <div class="row">
+        <div class="form-group">
+          <label class="control-label col-sm-5"><h1><strong>KẾT QUẢ TÌM KIẾM<strong></h1></label>
+          <div class="col-sm-7 text-right" style="padding-top:23px;">
+              <div class="btn-group">
+                <button class="btn btn-primary" data-id="1">Thời gian kết thúc giảm dần </button>
+                <button class="btn btn-primary" data-id="2">Giá tăng dần </button>
+              </div>
+          </div>
+        </div>
+  </div>
+  <div style="border: #EEEEEE solid 2px; margin-bottom: 15px;"></div>
 	<div class="row">
+      <form class="form-inline" method="post" action="" id="frmSapXep">
+          <input  type="hidden" name="loaibtn" id="txtloaibtn">
+      </form>
          {{#each products }}
-        
+          
           <div class="col-sm-4">
             <div class="panel panel-primary">
-              <div class="panel-heading"><a href="ChiTietSanPham.html"><span style="color:white"><strong>{{tenSanPham}}</strong></span></a></div>
+               <div class="panel-heading">
+                      <div class="row">
+                           <div class="form-group">
+                              <a href="../chitietsanpham/{{idSanPham}}" class="col-sm-10"><span style="color:white"><strong>{{tenSanPham}}</strong></span></a>   
+                                <div id="{{idSanPham}}" class="col-sm-2" style="font-weight:bold;font-family:arial;font-style: italic;"></div>
+                           </div>
+                       </div>
+                </div>
               <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
                   <div class="row">
                     <div class="col-sm-6">
@@ -19,13 +60,19 @@
                     </div>
                     <div class="col-sm-6">
                       <div>Lượt Bid : {{luotBid}}</div>
-                      <div>Thời điểm kết thúc : {{thoiDiemKetThuc}}</div>
+                      <div>Thời điểm kết thúc : {{time_format thoiDiemKetThuc}}</div>
                     </div>
                   </div>  
               </div>
               <div class="panel-footer text-center">
                  <a href="" type="button" data-toggle="modal" data-target="#ModalBiding" class="bidBtn"> <img src="/image/bid_icon.png" style="width:50px; height:50px"> </a>
-                <button  type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Giỏ hàng&nbsp;</button> 
+                 {{#if ../layoutVM.isCookie}}
+
+                  <a href="/product/favourite/{{idSanPham}}" id="{{idSanPham}}favor" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Giỏ hàng&nbsp;</a> 
+                  {{else}}
+                  <a href="/user/login" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a> 
+                  {{/if}}
+
               </div>
             </div>
          </div> 
@@ -63,3 +110,59 @@
                                         </div>
                                     </div>
 {{/if}}
+<script type="text/javascript">
+        $("#txtname").change(function(){
+          var ten= $("#txtname").val();
+          var id=$("#txtcatID").val();
+          $("#btnSearch").attr("href", "/product/timkiemtheoloai/?id="+id+"&ten="+ten);
+
+    });
+     $(document).ready(function(){
+         var pro = JSON.parse('{{{json products}}}');
+         var proFavor = JSON.parse('{{{json layoutVM.productsFavourite}}}');
+         
+         var d = new Date();
+          var millisecondsNow=Date.parse(d);
+         for(var i=0;i<pro.length;i++)
+         {
+
+             for(var j=0;j<proFavor.length;j++)
+              {
+
+                if(proFavor[j].idSanPham == pro[i].idSanPham){
+                   $("#"+pro[i].idSanPham+"favor").html("Đã yêu thích");
+                   $("#"+pro[i].idSanPham+"favor").removeAttr("href");
+                  
+                }
+              }
+                console.log(pro[i].thoiDiemDang);
+                var millisecondsthoiDiemDang  = Date.parse(pro[i].thoiDiemDang);
+                var t=(millisecondsNow-millisecondsthoiDiemDang)/60000;
+                 console.log(t);
+                 if(t<30)
+                 {
+                      $("#"+pro[i].idSanPham+"").html("new");
+                }
+         }
+
+
+         
+         
+
+                /*console.log(pro[i].thoiDiemDang);
+                var millisecondsthoiDiemDang  = Date.parse(pro[i].thoiDiemDang);
+                var t=(millisecondsNow-millisecondsthoiDiemDang)/60000;
+                 console.log(t);
+                 if(t<30)
+                 {
+                      $("#"+pro[i].idSanPham+"").html("new");
+                }*/
+
+       
+      });
+    $('button').on('click', function() {
+      var id = $(this).data('id');
+      $('#txtloaibtn').val(id);
+      $('#frmSapXep').submit();
+    });
+  </script>

@@ -1,0 +1,257 @@
+{{#section 'title'}}
+    Chi Tiết Sản Phẩm
+{{/section}}
+
+{{#section 'css'}}
+    
+    <style>
+    /* Remove the navbar's default rounded borders and increase the bottom margin */
+        
+        .panelheader {
+            padding-left: 10px;
+            font-family: arial;
+            font-size: 150%;
+            line-height: 36px;
+            color: white;
+        }
+        
+        .imglist {
+            line-height: 100px;
+            background-color: gray;
+            padding: 10px 10px 10px 10px;
+        }
+        
+        .detail {
+            font-size: 15px;
+            line-height: 30px;
+        }
+        
+        .imgbig {
+            line-height: 500px;
+            width: 750px;
+            height: 500px;
+            align-items: center;
+        }
+        
+        .imgsmall {
+            width: 100px;
+            height: 75px;
+        }
+        
+        .imgbtn {
+            width: 50px;
+            height: 50px;
+        }
+        
+        .panelheader.small {
+            font-size: 120%;
+            line-height: 24px;
+        }
+        
+        /* Add a gray background color and some padding to the footer */
+        
+        .small_headline {}
+        
+        footer {
+            background-color: #f2f2f2;
+            padding: 25px;
+        }
+    </style>
+{{/section}}
+
+    <!--{{#with category}}<h1>{{tenLoaiSanPham}}</h1>{{/with}}-->
+
+            {{#each products }}
+            <div class="row">
+               
+                    <div class="col-sm-12">
+                        <div class="panel panel-default ">
+                            <div class="panel-heading panelheader">Thông tin sản phẩm</div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-sm-7">
+                                        <img src="/image/{{urlImage}}/3.jpg" class="img-responsive" style="width:100% " alt="Image">
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <div class="panel panel-info ">
+                                            <div class="panel-heading panelheader small">Thông tin đấu giá</div>
+                                            <div class="panel-body">
+                                                <div>Giá hiện tại:{{number_format giaHienTai}} VND</div>
+                                                <div>Giá mua ngay: {{number_format giaMuaNgay}} VND</div>
+                                                <div>Bắt đầu: <strong id="thoiDiemDang">{{time_format thoiDiemDang}}</strong></div>
+                                                <div>Kết thúc: <strong id="thoiDiemKetThuc">{{time_format thoiDiemKetThuc}}</strong></div>
+                                                <!--<div> <span class="glyphicon glyphicon-time" aria-hidden="true"></span>Thời gian còn lại: 140:24:55</div>-->
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="panel panel-info ">
+                                            <div class="panel-heading panelheader small">Thông tin sơ lược về sản phẩm</div>
+                                            <div class="panel-body">
+                                                <div> Tên sản phẩm:{{tenSanPham}}</div>
+
+                                                <div> Loại : {{../category}} </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-info ">
+                                            <div class="panel-heading panelheader small">Thông tin người tham gia</div>
+                                            <div class="panel-body">
+                                                <div>
+                                                 Người đăng sản phẩm: <a href="">{{../seller.0.hoTen}}</a>&nbsp;
+                                                 GP : <a href="">{{../seller.0.diemDanhGiaCong}}</a>&nbsp;
+                                                 BP : <a href="">{{../seller.0.diemDanhGiaTru}}</a>
+                                                 </div>
+                                                <div> Người đang đấu giá cao nhất : <a href="">{{../bestbuyer.0.hoTen}}</a>&nbsp;
+                                                 GP : <a href="">{{../bestbuyer.0.diemDanhGiaCong}}</a>&nbsp;
+                                                 BP : <a href="">{{../bestbuyer.0.diemDanhGiaTru}}</a>
+                                                 </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--end info product-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end Thông tin sơ lược sản phẩm -->
+                    <div class="col-sm-12">
+                        <div class="panel panel-info ">
+                            <div class="panel-heading panelheader small">Thông tin chi tiết</div>
+                            <div class="panel-body">
+                                <div class="col-sm-12 ">
+                                    <a href=""><img src="/image/{{urlImage}}/1.jpg" class="imgbig"></a>
+                                </div>
+                                <div class="col-sm-12 imglist " name="Image_list">
+                                    <div>
+                                        <a href="" type="button" data-toggle="modal" data-target="#myModal1"> <img src="/image/{{urlImage}}/1.jpg" class=" imgsmall proImg" alt="Image"></a>
+                                        <a href="" type="button" data-toggle="modal" data-target="#myModal2"> <img src="/image/{{urlImage}}/2.jpg" class=" imgsmall proImg" alt="Image"></a>
+                                    </div>
+                                    <!-- Modal 1-->
+                                    <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <img src="/image/{{urlImage}}/1.jpg" alt="Image" width="100%" height="100%">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Modal 2-->
+                                    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <img src="/image/{{urlImage}}/2.jpg" alt="Image" width="100%" height="100%">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal fade" id="ModalBiding" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="BuyLabel">Đấu giá</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form class="form-inline">
+                                                        <div class="form-group">
+                                                            <label class="sr-only" for="textFieldBidAmount">Số tiền đấu giá (VND)</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-addon">VND</div>
+                                                                <input type="text" class="form-control" id="textFieldBidAmount" name="BidAmount" placeholder="Amount">
+                                                                <div class="input-group-addon">.000</div>
+                                                            </div>
+                                                        </div>
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                                                        <button type="submit" class="btn btn-success">Đấu giá</button>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--Dialog Đánh giá uy tín -->
+                                    
+                                    <!-- Modal buy now -->
+                                    <div class="modal fade" id="ModalBuy" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="BuyLabel">Mua ngay</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form class="form-inline">
+                                                        <div class="form-group">
+                                                            <label class="sr-only" for="textFieldBidAmount">Số tiền đấu giá (VND)</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-addon">VND</div>
+                                                                <input type="text" class="form-control" id="textFieldBuyPrice" name="BuyPrice" placeholder="Amount" disabled>
+                                                                <div class="input-group-addon">.000</div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                                                    <button type="submit" class="btn btn-success">Mua ngay</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Modal end -->
+                                    <div class="panel panel-default">
+                                        <div class="panel-body detail">
+                                            Bán iPhone 7 128G Trắng - Fullbox - Tình Trạng : 99% trước sau, 4 góc và các cạnh cũng không 1 chút cấn móp, trầy xước lun đó nha, ngoại hình khỏi chê, nguyên Zin 100%, nghe gọi rõ ràng, Pin lâu, 100% Quốc Tế, Bao Restore hay Reset dòng 2 thoải mái. - Phụ kiện : Hộp + Cáp + Sạc + Tai Nghe Zin theo máy - Giá cho ACE : 13.900.000 Bảo hành Apple 10/2017 Để ACE yên tâm mình bao test 7 ngày đêm, nếu có lỗi gì mình sẽ đổi lại máy khác hoặc xin hoàn tiền lại nhé. Mình bán ở nhà có Wifi test máy vô tư. Mình mô tả chính xác về máy để không làm mất thời gian của ACE, đảm bảo chất lượng, nên ACE hãy yên tâm khi đến xem máy nha. Liên hệ : Trâm 0949.496.490
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+               
+            </div>
+            {{/each}} 
+       
+    
+      
+    <script>
+    // jQuery
+    $(document).ready(function(){
+
+        
+         
+    });
+
+
+   
+
+    $(".proImg").hover(
+        function(event) {
+            // The mouse has entered the element, can reference the element via 'this'
+            var imgsrc = $(this).attr('src');
+            $(".imgbig").attr('src', imgsrc);
+        },
+        function(event) {
+            // The mouse has left the element, can reference the element via 'this'
+        }
+    );
+    </script>
+    

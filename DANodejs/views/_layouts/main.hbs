@@ -25,6 +25,9 @@
     .jumbotron.text-center{
       margin-bottom: 20px;
     }
+    li {
+      cursor: pointer; cursor: hand;
+    }
     /* Add a gray background color and some padding to the footer */
     footer {
       background-color: #f2f2f2;
@@ -50,7 +53,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>                        
       </button>
-      <a class="navbar-brand" href="trangchu.html">Trang Chủ</a>
+      <a class="navbar-brand" href="/">Trang Chủ</a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
@@ -61,8 +64,16 @@
         <li><a href="#">Liên hệ</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="thongtincanhan.html"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
-        <li><a href="danhsachyeuthich.html"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>
+        {{#if layoutVM.isCookie}}
+          <li><a href=""><span class="glyphicon glyphicon-user"></span>{{layoutVM.hoTen}}</a></li>
+           <li id="logout"><a href="/user/logout"><span class="glyphicon glyphicon-user"></span>Log out</a></li>
+            <li><a href="/user/danhsachyeuthich"><span class="glyphicon glyphicon-shopping-cart"></span>Cart</a></li>
+        {{else}}
+           <li id="login"><a href="/user/login"><span class="glyphicon glyphicon-user"></span>Login</a></li>
+            <li><a href="/user/login"><span class="glyphicon glyphicon-shopping-cart"></span>Cart</a></li>
+        {{/if}}
+        
+       
       </ul>
     </div>
   </div>
@@ -92,7 +103,23 @@
 <!--End Main display products-->
 
 <script>
-$(document).ready(function(){
+jQuery(document).ready(function(){
+
+var test = false;
+ jQuery(window).on('hashchange', function(e){
+ 
+    
+ }).trigger('hashchange');
+
+
+ /*$("#login").click(function(){
+    window.location.pathname = "/user/login";
+ });
+
+ $("#logout").click(function(){
+    window.location.pathname = "/user/logout";
+ });*/
+
 
  $("#auction-form").submit(function(){
   
