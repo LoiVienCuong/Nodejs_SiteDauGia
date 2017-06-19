@@ -4,18 +4,26 @@ Trang chủ
 {{#section 'searchbox'}}
     <!--Seach BOX -->
 <div class="jumbotron text-center">
-      <form class="form-inline" method="post" action="/product/timkiem">
+      <!--<form class="form-inline" method="post" action="/product/timkiem">
         <div class="input-group">
           <input type="text" class="form-control" name="productName" size="50" placeholder="Gõ tên sản phẩm muốn tìm" >
           <div class="input-group-btn">
             <button type="submit" class="btn btn-danger">Tìm kiếm</button>
           </div>
         </div>
-      </form>
+
+      </form>-->
+    <form class="form-inline">
+      <div class="input-group">
+          <input type="text" class="form-control" name="productName" id="txtname" size="50" placeholder="Gõ tên sản phẩm muốn tìm" >
+          <div class="input-group-btn">
+            <a href="" class="btn btn-danger" id="btnSearch">Tìm kiếm</a>
+          </div>
+        </div>
+     </form>
 </div>
 <!--End Seach BOX -->
 {{/section}}
-
 <div class="row">  
           <!--header-->
         <div class="row">
@@ -43,7 +51,7 @@ Trang chủ
               <div class="panel-heading">
                       <div class="row">
                            <div class="form-group">
-                              <a href="ChiTietSanPham.html" class="col-sm-10"><span style="color:white"><strong>{{tenSanPham}}</strong></span></a>   
+                              <a href="product/chitietsanpham/{{idSanPham}}" class="col-sm-10"><span style="color:white"><strong>{{tenSanPham}}</strong></span></a>   
                                 <div id="{{idSanPham}}" class="col-sm-2" style="font-weight:bold;font-family:arial;font-style: italic;"></div>
                            </div>
                        </div>
@@ -56,13 +64,18 @@ Trang chủ
                     </div>
                     <div class="col-sm-6">
                       <div>Lượt Bid : {{luotBid}}</div>
-                      <div>Thời điểm kết thúc : {{thoiDiemKetThuc}}</div>
+                      <div>Thời điểm kết thúc : {{time_format thoiDiemKetThuc}}</div>
                     </div>
                   </div>  
               </div>
               <div class="panel-footer text-center">
                  <a href="" type="button" data-toggle="modal" data-target="#ModalBiding" class="bidBtn"> <img src="image/bid_icon.png" style="width:50px; height:50px"> </a>
-                <button  type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Giỏ hàng&nbsp;</button> 
+               {{#if ../layoutVM.isCookie}}
+
+                  <a href="/product/favourite/{{idSanPham}}" id="{{idSanPham}}favor" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Giỏ hàng&nbsp;</a> 
+                  {{else}}
+                  <a href="/user/login" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a> 
+                  {{/if}}
               </div>
             </div>
          </div> 
@@ -92,13 +105,18 @@ Trang chủ
                     </div>
                     <div class="col-sm-6">
                       <div>Lượt Bid : {{luotBid}}</div>
-                      <div>Thời điểm kết thúc : {{thoiDiemKetThuc}}</div>
+                      <div>Thời điểm kết thúc : {{time_format thoiDiemKetThuc}}</div>
                     </div>
                   </div>  
               </div>
               <div class="panel-footer text-center">
                  <a href="" type="button" data-toggle="modal" data-target="#ModalBiding" class="bidBtn"> <img src="image/bid_icon.png" style="width:50px; height:50px"> </a>
-                <button  type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Giỏ hàng&nbsp;</button> 
+                {{#if ../layoutVM.isCookie}}
+
+                  <a href="/product/favourite/{{idSanPham}}" id="{{idSanPham}}favor" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Giỏ hàng&nbsp;</a> 
+                  {{else}}
+                  <a href="/user/login" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a> 
+                  {{/if}}
               </div>
             </div>
          </div> 
@@ -131,13 +149,18 @@ Trang chủ
                     </div>
                     <div class="col-sm-6">
                       <div>Lượt Bid : {{luotBid}}</div>
-                      <div>Thời điểm kết thúc : {{thoiDiemKetThuc}}</div>
+                      <div>Thời điểm kết thúc : {{time_format thoiDiemKetThuc}}</div>
                     </div>
                   </div>  
               </div>
               <div class="panel-footer text-center">
                  <a href="" type="button" data-toggle="modal" data-target="#ModalBiding" class="bidBtn"> <img src="image/bid_icon.png" style="width:50px; height:50px"> </a>
-                <button  type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Giỏ hàng&nbsp;</button> 
+               {{#if ../layoutVM.isCookie}}
+
+                  <a href="/product/favourite/{{idSanPham}}" id="{{idSanPham}}favor" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Giỏ hàng&nbsp;</a> 
+                  {{else}}
+                  <a href="/user/login" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a> 
+                  {{/if}}
               </div>
             </div>
          </div> 
@@ -147,126 +170,8 @@ Trang chủ
        </div>
 
 
-        <!--
-          <div class="col-sm-4"> 
-             <div class="panel panel-primary">
-                <div class="panel-heading"><a href="ChiTietSanPham.html"><span style="color:white"><strong>Áo phông caro</strong></span></a></div>
-                <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-                    <div class="row">
-                      <div class="col-sm-6">
-                        <div>Giá đấu hiện tại : 40,000 </div>
-                        <div>Giá mua ngay : 50,000 </div>
-                      </div>
-                      <div class="col-sm-6">
-                        <div>Lượt Bid : 3</div>
-                        <div>Thời gian còn lại: 12:01:09</div>
-                      </div>
-                  </div>  
-                </div>
-                <div class="panel-footer text-center">
-                  <a href="" type="button" data-toggle="modal" data-target="#ModalBiding" class="bidBtn"> <img src="image/bid_icon.png" style="width:50px; height:50px"> </a>
-                  <button type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Giỏ hàng&nbsp;</button> 
-                </div>
-             </div>
-          </div>
-
-          <div class="col-sm-4"> 
-             <div class="panel panel-primary">
-                <div class="panel-heading"><a href="ChiTietSanPham.html"><span style="color:white"><strong>Mũ bảo hiểm XYZ</strong></span></a></div>
-                <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-                    <div class="row">
-                      <div class="col-sm-6">
-                        <div>Giá đấu hiện tại : 40,000 </div>
-                        <div>Giá mua ngay : 50,000 </div>
-                        
-                      </div>
-                      <div class="col-sm-6">
-                        <div>Lượt Bid : 3</div>
-                        <div>Thời gian còn lại: 12:01:09</div>
-                      </div>
-                  </div>  
-                </div>
-                <div class="panel-footer text-center">
-                 <a href="" type="button" data-toggle="modal" data-target="#ModalBiding" class="bidBtn"> <img src="image/bid_icon.png" style="width:50px; height:50px"> </a>
-                  <button type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Giỏ hàng&nbsp;</button> 
-                </div>
-             </div>
-          </div><br>
-        </div>
-
-         
-       <div class="row">
-          <div class="col-sm-4">
-            <div class="panel panel-primary">
-              <div class="panel-heading"><a href="ChiTietSanPham.html"><span style="color:white"><strong>Mũ bảo hiểm XYZ</strong></span></a></div>
-              <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-                  <div class="row">
-                    <div class="col-sm-6">
-                      <div>Giá đấu hiện tại : 40,000 </div>
-                      <div>Giá mua ngay : 50,000 </div>
-                      
-                    </div>
-                    <div class="col-sm-6">
-                      <div>Lượt Bid : 3</div>
-                      <div>Thời gian còn lại: 12:01:09</div>
-                    </div>
-                </div>  
-              </div>
-              <div class="panel-footer text-center">
-               <a href="" type="button" data-toggle="modal" data-target="#ModalBiding" class="bidBtn"> <img src="image/bid_icon.png" style="width:50px; height:50px"> </a>
-                <button type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Giỏ hàng&nbsp;</button> 
-              </div>
-            </div>
-          </div>
-
-          <div class="col-sm-4"> 
-             <div class="panel panel-primary">
-                <div class="panel-heading"><a href="ChiTietSanPham.html"><span style="color:white"><strong>Áo phông caro</strong></span></a></div>
-                <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-                    <div class="row">
-                      <div class="col-sm-6">
-                        <div>Giá đấu hiện tại : 40,000 </div>
-                        <div>Giá mua ngay : 50,000 </div>
-                        
-                      </div>
-                      <div class="col-sm-6">
-                        <div>Lượt Bid : 3</div>
-                        <div>Thời gian còn lại: 12:01:09</div>
-                      </div>
-                  </div>  
-                </div>
-                <div class="panel-footer text-center">
-                 <a href="" type="button" data-toggle="modal" data-target="#ModalBiding" class="bidBtn"> <img src="image/bid_icon.png" style="width:50px; height:50px"> </a>
-                  <button type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Giỏ hàng&nbsp;</button> 
-                </div>
-             </div>
-          </div>
-
-          <div class="col-sm-4"> 
-             <div class="panel panel-primary">
-                <div class="panel-heading"><a href="ChiTietSanPham.html"><span style="color:white"><strong>Mũ bảo hiểm XYZ</strong></span></a></div>
-                <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-                    <div class="row">
-                      <div class="col-sm-6">
-                        <div>Giá đấu hiện tại : 40,000 </div>
-                        <div>Giá mua ngay : 50,000 </div>
-                        
-                      </div>
-                      <div class="col-sm-6">
-                        <div>Lượt Bid : 3</div>
-                        <div>Thời gian còn lại: 12:01:09</div>
-                      </div>
-                  </div>  
-                </div>
-                <div class="panel-footer text-center">
-                 <a href="" type="button" data-toggle="modal" data-target="#ModalBiding" class="bidBtn"> <img src="image/bid_icon.png" style="width:50px; height:50px"> </a>
-                  <button type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Giỏ hàng&nbsp;</button> 
-                </div>
-             </div>
-          </div><br>
-       </div> <br><br>
-     -->
-        <div class="modal fade" id="ModalBiding" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      
+    <div class="modal fade" id="ModalBiding" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -297,17 +202,30 @@ Trang chủ
     </div>
 
     <script type="text/javascript">
+    $("#txtname").change(function(){
+          var ten= $("#txtname").val();
+          $("#btnSearch").attr("href", "/product/timkiem/?ten="+ten);
 
+    });
    $(document).ready(function(){
          var proBid = JSON.parse('{{{json productsBid}}}');
+         var proFavor = JSON.parse('{{{json layoutVM.productsFavourite}}}');
          var d = new Date();
           var millisecondsNow=Date.parse(d);
          for(var i=0;i<proBid.length;i++)
          {
-                console.log(proBid[i].thoiDiemDang);
+                  for(var j=0;j<proFavor.length;j++)
+                  {
+
+                    if(proFavor[j].idSanPham == proBid[i].idSanPham){
+                       $("#"+proBid[i].idSanPham+"favor").html("Đã yêu thích");
+                       $("#"+proBid[i].idSanPham+"favor").removeAttr("href");
+                      
+                    }
+                  }
                 var millisecondsthoiDiemDang  = Date.parse(proBid[i].thoiDiemDang);
                 var t=(millisecondsNow-millisecondsthoiDiemDang)/60000;
-                 console.log(t);
+                 
                  if(t<30)
                  {
                       $("#"+proBid[i].idSanPham+"").html("new");
@@ -316,10 +234,19 @@ Trang chủ
          var proCost = JSON.parse('{{{json productsCost}}}');
          for(var i=0;i<proCost.length;i++)
          {
-                console.log(proCost[i].thoiDiemDang);
+               
+                  for(var j=0;j<proFavor.length;j++)
+                  {
+
+                    if(proFavor[j].idSanPham == proCost[i].idSanPham){
+                       $("#"+proCost[i].idSanPham+"favor").html("Đã yêu thích");
+                       $("#"+proCost[i].idSanPham+"favor").removeAttr("href");
+                      
+                    }
+                  }
                 var millisecondsthoiDiemDang  = Date.parse(proCost[i].thoiDiemDang);
                 var t=(millisecondsNow-millisecondsthoiDiemDang)/60000;
-                 console.log(t);
+                
                  if(t<30)
                  {
                       $("#"+proCost[i].idSanPham+"").html("new");
@@ -328,10 +255,18 @@ Trang chủ
          var proEndTime = JSON.parse('{{{json productsEndTime}}}');
          for(var i=0;i<proEndTime.length;i++)
          {
-                console.log(proEndTime[i].thoiDiemDang);
+                 for(var j=0;j<proFavor.length;j++)
+                  {
+
+                    if(proFavor[j].idSanPham == proEndTime[i].idSanPham){
+                       $("#"+proEndTime[i].idSanPham+"favor").html("Đã yêu thích");
+                       $("#"+proEndTime[i].idSanPham+"favor").removeAttr("href");
+                      
+                    }
+                  }
                 var millisecondsthoiDiemDang = Date.parse(proEndTime[i].thoiDiemDang);
                 var t=(millisecondsNow-millisecondsthoiDiemDang)/60000;
-                 console.log(t);
+                
                  if(t<30)
                  {
                       $("#"+proEndTime[i].idSanPham+"").html("new");
