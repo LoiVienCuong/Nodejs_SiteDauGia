@@ -1,0 +1,129 @@
+ 
+{{#section 'title'}}
+  Sửa Thông Tin Cá Nhân
+{{/section}}
+
+
+ <div class="row col-sm-12 header-info container-fluid">
+    </div>
+        <div class="col-sm-12">
+        <form class="form-horizontal" id="editForm" method="post" action="">
+            <div class="row col-sm-8">
+     {{#with user }}
+              <div class="form-group">
+                <label class="control-label col-sm-3" >ID:</label>
+                <div class="col-sm-9"> 
+                  <input class="form-control" name="userId" value={{idNguoiDung}} readonly ></input>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label col-sm-3">Họ Tên:</label>
+                <div class="col-sm-9">
+                  <input class="form-control" value="{{hoTen}}" id="hoTen" name="hoTen">
+                  <span id="hoten_error" style="color: red"></span>
+                </div>
+              </div>
+             
+              <div class="form-group">
+                <label class="control-label col-sm-3"  for="email">E-mail:</label>
+                <div class="col-sm-9"> 
+                  <input class="form-control" value="{{email}}" id="email" name="email">
+                  <span id="email_error" style="color: red"></span>
+                </div>
+              </div>
+  {{/with}}
+              <div class="form-group">
+                <label class="control-label col-sm-3" for="pwd">Mật Khẩu:</label>
+                <div class="col-sm-9"> 
+                  <input type="password" class="form-control" id="passWord" name="passWord"></input>
+                   <span id="password_old_error" style="color: red"></span>
+                </div>
+              </div>
+               {{#if PassWrong}} <!--login wrong info-->
+                <div><span style="color: red;">Password was wrong</span></div>
+                {{/if}}
+                 <span id="error" style="color: red"></span>
+
+              <div class="form-group"> 
+                <div class="col-sm-offset-3 col-sm-9">
+                  <button type="submit" class="btn btn-primary">Cập nhật</button>
+                </div>
+              </div>
+
+            </div>
+
+
+            <br>
+
+        </form>
+    </div> 
+  
+</body>
+
+
+    <script type="text/javascript">
+
+
+     $(document).ready(function(){
+     
+  
+        $('#editForm').submit(function(){
+            var reg_mail = /^[A-Za-z0-9]+([_\.\-]?[A-Za-z0-9])*@[A-Za-z0-9]+([\.\-]?[A-Za-z0-9]+)*(\.[A-Za-z]+)+$/;
+             var password    = $.trim($('#passWord').val());
+            var email       = $.trim($('#email').val());
+            var hoten       = $.trim($('#hoTen').val());
+             var user = JSON.parse('{{{json user}}}');
+            //hoten
+            if (hoten == ''){
+                $('#hoten_error').text('Tên không được bỏ trống');
+             
+                return false;
+            }
+            else{0
+                $('#hoten_error').text('');
+            }
+            
+             // Password_old
+            if (password.length <= 0){
+                $('#password_old_error').text('Bạn phải nhập mật khẩu');
+               
+                return false;
+            }
+            else{
+                $('#password_old_error').text('');
+            }
+     
+0
+            if(reg_mail.test(email)==false)
+              {
+                $('#email_error').text('Email không được để trống và phải đúng định dạng');
+                 return false;
+              }
+              else{
+                  $('#email_error').text('');
+                  }
+
+
+              if(email==user.email&&hoten==user.hoTen)
+                  {
+                      $('#error').text('Bạn chưa thay đổi thông tin nào');
+                       return false;
+                }
+              else{
+                      $('#error').text('');
+                  }
+
+            return true;
+     
+            
+     
+        });
+    
+    });
+
+
+    
+    </script>
+
+</html>

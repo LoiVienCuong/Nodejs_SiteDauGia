@@ -1,0 +1,90 @@
+{{#section 'title'}}
+  Sản Phẩm Đấu Giá Thắng
+{{/section}}
+
+{{#if noProducts }}
+    KHÔNG CÓ SẢN PHẨM
+{{else}}
+{{#each products }}
+<div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <a href="/product/chitietsanpham/{{idSanPham}}"><span style="color:white"><strong>{{tenSanPham}}</strong></span></a>
+                </div>
+                <div class="panel-body">
+                    <div class="col-sm-2">
+                        <img src="/image/{{urlImage}}/1.jpg" class="img-responsive" alt="Image">
+                    </div>
+                    <div class="col-sm-2">
+                        <div>Giá mua ngay</div>
+                        <div name="hightestBidder"> <b> {{number_format giaMuaNgay}}</b> </div>
+                        <div>Giá thắng</div>
+                        <div name="hightestBidder"> <b> {{number_format giaThang}}</b> </div>
+                    </div>
+                        {{#if nhanxet}}
+                            <form class="form-horizontal">
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-4">
+                                        <label class="control-label" >Đã Nhận Xét Người Bán</label>
+                                    </div>
+                                    
+                            </form>
+              
+                        {{else}}
+                                 <form class="form-horizontal" id="cmtForm" method="post" action="">
+                                    <div class="col-sm-2">
+                                             <input type="hidden" name="idNguoiDung" value={{idNguoiDung}} ></input>
+                                             <input type="hidden" name="idNguoiBan" value={{idNguoiBan}} ></input>
+                                             <input type="hidden" name="idSanPham" value={{idSanPham}} ></input>
+                                              <input type="hidden" id="date" name="date" ></input>
+                                        <div class="form-group">
+                                            <label class="control-label" >Chấm điểm</label>
+                                            
+                                                <div class="radio">
+                                                  <label>
+                                                    <input type="radio" name="chamdiem" id="diemcong" value=+1 checked>
+                                                   +1
+                                                  </label>
+                                                </div>
+                                                <div class="radio">
+                                                  <label>
+                                                    <input type="radio" name="chamdiem" id="diemtru" value=-1>
+                                                   -1
+                                                  </label>
+                                                </div>
+                                           </div>
+                                    </div>
+                                     <div class="col-sm-4">
+                                        
+                                        <label class="control-label" >Nhận xét người bán</label>
+                                        <textarea class="form-control" rows="2" name="nhanxet"></textarea>
+                                    </div>
+                                    <div class="col-sm-2">
+                                          
+                                          <div class="btn-group" style="padding-top:35px;">
+                                            <button class="btn btn-primary" >Nhận Xét </button>
+                                          </div>
+                                    </div>
+                            </form>
+                    {{/if}} 
+                </div>
+            </div>
+        </div>
+</div>
+ {{/each}}
+ {{/if}}
+
+
+    <script type="text/javascript">
+        $('button').on('click', function() {
+                var d = new Date();
+                var date=d.toDateString();
+                date=date.slice(4);
+              $('#date').val(date);
+              $('#cmtForm').submit();
+            });
+
+
+    
+    </script>

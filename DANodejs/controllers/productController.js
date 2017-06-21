@@ -1,7 +1,8 @@
 var express = require('express'),
     productRepo = require('../models/productRepo'),
     categoryRepo = require('../models/categoryRepo'),
-    userRepo = require('../models/userRepo');
+    userRepo = require('../models/userRepo'),
+     q = require('q');
 
 var activeCategoty;
 var activePro;
@@ -210,17 +211,83 @@ r.get('/favourite/:id', function(req, res){
           var proId = req.params.id;
            
             if (!proId) {
-
+                console.log("none proid");
                 res.redirect('back');
             }
            
            
             productRepo.insertFavourite(proId,userId)
                 .then(function() {
+                     console.log("proid");
                    res.redirect('back'); 
                 });
         }
+        else {
+            res.redirect('/user/login');
+        }
 
 });
+
+r.get('/delete/:id', function(req, res){
+    var userId = req.cookies.userLogin;
+     if(userId){
+          var proId = req.params.id;
+           
+            if (!proId) {
+                
+                res.redirect('back');
+            }
+           
+           
+            productRepo.deleteFavouriteByProId(proId)
+            .then(function() {
+                   res.redirect('back'); 
+            }).fail(function (error) {
+                    console.log(error);
+            });     
+      }
+      else {
+            res.redirect('/user/login');
+      }
+
+});
+
+r.post('/daugia', function(req, res) {
+    //update bang product, danh sach dau gia
+    //lay cac thong tin : id nguoi dau gia, giadau, idSanpham
+    var idUser = req.cookies.userLogin;
+    var idSanPham = req.body.idSanPham;
+    var giaDau = req.body.giaDau;
+    var giaMuaNgay = req.body.giaMuaNgay;
+    var luotBid = parseInt(req.body.luotBid);
+    console.log(idUser + " " + idSanPham + " " + giaDau + " " + luotBid);
+    /*productRepo.updateProductByGiaHienTaiVaNguoiGiaCaoNhat(idSanPham,idUser,giaDau).then(function(){
+
+
+    }).fail(function(error){console.log(error)});*/
+    q.all([
+        productRepo.updateProductByGiaHienTaiVaNguoiGiaCaoNhat(idSanPham,idUser,giaDau,luotBid+1), //update sanpham tabel
+       
+    ]).spread(function(cRows, cRows2) {
+        console.log(cRows);
+        if(giaMuaNgay==giaDau) {
+            productRepo.updateEndAuction(idSanPham).fail(function(error){console.log(error)});
+        }
+       
+            //insert
+        productRepo.insertDanhSachDauGia(idSanPham, idUser, giaDau).then(function(){
+                res.redirect('back');
+        });
+       
+    }).fail(function(error){
+       console.log(error);
+    });
+
+});
+    //neu idUsser va idSanPham da có thi dung câu lệnh update
+    //neu chưa có thì insert
+
+    //neu giadau bang gia mua ngay thi nguoi da thang
+      
 
 module.exports = r;

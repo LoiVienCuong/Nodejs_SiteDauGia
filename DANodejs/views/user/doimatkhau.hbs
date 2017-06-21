@@ -1,0 +1,119 @@
+{{#section 'title'}}
+    Đổi Mật Khẩu
+{{/section}}
+
+ <div class="row col-sm-12 header-info container-fluid">
+    </div>
+        <div class="col-sm-12">
+        <form class="form-horizontal" id="resetPassForm" method="post" action="">
+         
+            <div class="row col-sm-8">
+             {{#with user }}
+               <div class="form-group">
+                <label class="control-label col-sm-3" >ID:</label>
+                <div class="col-sm-9"> 
+                  <input class="form-control" name="userId" value={{idNguoiDung}} readonly ></input>
+                </div>
+              </div>
+               {{/with}}
+              <div class="form-group">
+                <label class="control-label col-sm-3" for="pwd">Mật Khẩu Cũ:</label>
+                <div class="col-sm-9"> 
+                  <input type="password" class="form-control" id="passWord_old" name="passWord_old"></input>
+                   <span id="password_old_error" style="color: red"></span>
+                </div>
+              </div>
+               {{#if PassWrong}} <!--login wrong info-->
+                <div><span style="color: red;">Password was wrong</span></div>
+                {{/if}}
+              <div class="form-group">
+                <label class="control-label col-sm-3" for="pwd">Mật Khẩu Mới:</label>
+                <div class="col-sm-9"> 
+                  <input type="password" class="form-control" id="passWord" name="passWord"></input>
+                  <span id="password_error" style="color: red"></span>
+                  <span id="error" style="color: red"></span>
+                </div>
+              </div>
+               <div class="form-group">
+                <label class="control-label col-sm-3" for="pwd">Nhập lại:</label>
+                <div class="col-sm-9"> 
+                  <input type="password" class="form-control" id="repassWord" name="repassWord"></input>
+                    <span id="re_password_error" style="color: red"></span>
+                </div>
+              </div>
+             <div class="form-group"> 
+                <div class="col-sm-offset-3 col-sm-9">
+                  <button type="submit" class="btn btn-primary">Cập nhật</button>
+                </div>
+              </div>
+
+            </div>
+
+
+            <br>
+
+        </form>
+    </div> 
+  
+</body>
+
+    <script type="text/javascript">
+
+
+     $(document).ready(function(){
+     
+  
+        $('#resetPassForm').submit(function(){
+            var reg_mail = /^[A-Za-z0-9]+([_\.\-]?[A-Za-z0-9])*@[A-Za-z0-9]+([\.\-]?[A-Za-z0-9]+)*(\.[A-Za-z]+)+$/;
+            var password_old    = $.trim($('#passWord_old').val());
+             var password    = $.trim($('#passWord').val());
+            var re_password = $.trim($('#repassWord').val());
+           
+             // Password_old
+            if (password_old.length <= 0){
+                $('#password_old_error').text('Bạn phải nhập mật khẩu');
+               
+                return false;
+            }
+            else{
+                $('#password_old_error').text('');
+            }
+     
+            if (password == password_old){
+                $('#error').text('Mật khẩu mới không được giống mật khẩu cũ');
+              
+                return false;
+            }
+            else{
+                $('#error').text('');
+            }
+
+            // Password
+            if (password.length <= 0){
+                $('#password_error').text('Bạn phải nhập mật khẩu');
+               
+                return false;
+            }
+            else{
+                $('#password_error').text('');
+            }
+            
+            // Re password
+            if (password != re_password){
+                $('#re_password_error').text('Mật khẩu nhập lại không đúng');
+              
+                return false;
+            }
+            else{
+                $('#re_password_error').text('');
+            }
+            return true;
+
+     
+        });
+    
+    });
+
+
+    
+    </script>

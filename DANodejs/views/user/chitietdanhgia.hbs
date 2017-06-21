@@ -1,0 +1,50 @@
+
+{{#section 'title'}}
+   Chi Tiết Đánh Giá
+{{/section}}
+{{#with user}}
+	
+		<div class="group-control">
+			<div class="col-sm-6">
+				<h4 class="control-label" style="font-weight: bold;font-family: arial;font-style: italic;" >Điểm Đánh Giá Cộng: {{diemDanhGiaCong}}</h4>
+			</div>
+			<div class="col-sm-6">
+				<h4 class="control-label" style="font-weight: bold;font-family: arial;font-style: italic;">Điểm Đánh Giá Trừ: {{diemDanhGiaTru}}</h4>
+			</div>
+			  
+		</div>
+	
+{{/with}}
+
+{{#if noComments }}
+	KHÔNG CÓ NHẬN XÉT
+{{else}}
+<h3 style="font-weight: bold;font-family: arial;padding-top:50px;padding-left:15px;">Chi Tiết Đánh Giá </h3>
+<div class="col-md-12">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>Tên Sản Phẩm</th>
+						<th>ID Người Đánh Giá</th>
+						<th>Điểm</th>
+						<th>Nhận Xét</th>
+						<th>Ngày Đánh Giá</th>
+					</tr>
+				</thead>
+				<tbody>
+					{{#each comments }}
+					<tr>
+						<td><a href="/product/chitietsanpham/{{idSanPham}}"><span style="color:blue"><strong>{{tenSanPham}}</strong></span></a>
+						</td>
+						<td>{{idNguoiDanhGia}}</td>
+						<td>{{congHayTru}}</td>
+						<td>{{nhanXet}}</td>
+						<td>{{thoiDiemDanhGia}}</td>
+					</tr>
+					{{/each}}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{{/if}}
+

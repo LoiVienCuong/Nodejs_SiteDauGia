@@ -14,6 +14,7 @@ var r = express.Router();
 
 var status = 0; // 0 have not login, 2 : logined, 1 : password or userId is wrong
 
+var flag=false;
 r.get('/login', function(req, res) {
 	 errorRecaptcha = false;
   if(req.cookies.userLogin){
@@ -38,7 +39,7 @@ r.post('/login', function(req, res) {
         userRepo.loadUserByIdAndPassWord(req.body)
             .then(function(pRows) {
             	if(pRows.length === 1){
-            		var minute = 60 * 1000 * 5;
+            		var minute =  60*1000 * 30;
             		res.clearCookie('userLogin');
   					res.cookie('userLogin', pRows[0].idNguoiDung, { maxAge: minute });
   					status = 2;
@@ -88,7 +89,7 @@ r.post('/register', function(req, res) {
         if(!error){
         	errorRecaptcha = false;
             //success code
-            console.log("success");
+            
               userRepo.addNewUser(req.body)
 		      .then(function(data){
 			      	 var vm = {
@@ -97,7 +98,7 @@ r.post('/register', function(req, res) {
 			        res.render('user/registerSuccess', vm);
 			    })
 		      .catch(function(err) {
-			        console.log(err);
+			        
 			        res.end('insert fail');
 		      	});
 
@@ -116,17 +117,253 @@ r.post('/register', function(req, res) {
 
 r.get('/danhsachyeuthich',function(req,res){
      var userId = req.cookies.userLogin;
-                userRepo.loadListFavourite(userId)
-                    .then(function(pRows) {
-                       var vm = {
-                            layoutVM: res.locals.layoutVM,
-                            products: pRows,
-                            noProducts: pRows.length === 0
-                        };
-                      res.render('user/danhsachyeuthich', vm);
-                  });
+      if(userId){
+          userRepo.loadListFavourite(userId)
+              .then(function(pRows) {
+                 var vm = {
+                      layoutVM: res.locals.layoutVM,
+                      products: pRows,
+                      noProducts: pRows.length === 0
+                  };
+                res.render('user/danhsachyeuthich', vm);
+            });
+      }else{
+        res.redirect('login');
+      }
 });
 
+r.get('/dangban',function(req,res){
+     var userId = req.cookies.userLogin;
 
+      if(userId){
+          userRepo.askForPostProduct(userId)
+              .then(function(pRows) {
+                 res.redirect('dangban/phanhoi');
+            }).fail(function(error){console.log(error)});
+      }else{
+        res.redirect('login');
+      }
+});
+r.get('/dangban/phanhoi',function(req,res){
+
+  var vm = {
+    layout : false,
+  };
+  res.render("user/phanhoidangban", vm);
+});
+
+r.get('/thongtincanhan',function(req,res){
+                var userId = req.cookies.userLogin;
+                if(!userId){
+                     res.redirect('login');
+                  }else{
+                      userRepo.loadAccount(userId)
+                          .then(function(pRows) {
+                             var vm = {
+                                  layoutVM: res.locals.layoutVM,
+                                  user: pRows[0],
+                              };
+                            res.render('user/thongtincanhan', vm);
+                        });
+                  }
+});
+
+r.get('/suathongtincanhan',function(req,res){
+                var userId = req.cookies.userLogin;
+                if(!userId){
+                     res.redirect('login');
+                  }else{
+                      userRepo.loadAccount(userId)
+                          .then(function(pRows) {
+                          
+                             var vm = {
+                                  layoutVM: res.locals.layoutVM,
+                                  user: pRows[0],
+                                  PassWrong: flag,
+                              };
+                            res.render('user/suathongtincanhan', vm);
+                        });
+                  }
+});
+
+r.post('/suathongtincanhan',function(req,res){
+                var userId = req.cookies.userLogin;
+                if(!userId){
+                     res.redirect('login');
+                  }else{
+                      userRepo.editUser(req.body)
+                          .then(function(changedRows) {
+                            if(changedRows>0)
+                            {
+                            flag=false;
+                             res.redirect('thongtincanhan');
+                           }
+                          else  {
+                            flag=true;
+                            res.redirect('back');
+                          }
+                        }).catch(function(err) {
+                            res.end('edit fail');
+                          });
+                  }
+});
+
+r.get('/sanphamdangdaugia',function(req,res){
+                var userId = req.cookies.userLogin;
+                if(!userId){
+                     res.redirect('login');
+                  }else{
+                      userRepo.loadListBiding(userId)
+                          .then(function(pRows) {
+                           
+                             var vm = {
+                                  layoutVM: res.locals.layoutVM,
+                                  products: pRows,
+                                  noProducts: pRows.length === 0
+                              };
+                            res.render('user/sanphamdangdaugia', vm);
+                        });
+                  }
+});
+
+r.get('/sanphamdathang',function(req,res){
+                var userId = req.cookies.userLogin;
+                if(!userId){
+                     res.redirect('login');
+                  }else{
+                      userRepo.loadListWin(userId)
+                          .then(function(pRows) {
+                            
+                             var vm = {
+                                  layoutVM: res.locals.layoutVM,
+                                  products: pRows,
+                                  noProducts: pRows.length === 0
+                              };
+                            res.render('user/sanphamdathang', vm);
+                        });
+                  }
+});
+r.post('/sanphamdathang',function(req,res){
+               var userId = req.cookies.userLogin;
+                if(!userId){
+                     res.redirect('login');
+                  }else{
+                      userRepo.addComment(req.body)
+                          .then(function(data) {
+                           
+                             
+                            if(data>=0)
+                            {
+                                    userRepo.isComment(userId,req.body.idSanPham)
+                                       .then(function(changedRows){
+                                        if(changedRows>0)
+                                        {
+                                              if(req.body.chamdiem==+1)
+                                              {
+
+                                                   userRepo.increaseScore(req.body.idNguoiBan)
+                                                   .then(function(changedRows){
+                                                    if(changedRows>0)
+                                                        res.redirect('sanphamdathang');
+                                                    else
+                                                         res.redirect('back');
+                                                }).catch(function(err) {
+                                                    res.end('update fail');
+                                                });
+                                              }
+                                              else
+                                              {
+                                                    userRepo.decreaseScore(req.body.idNguoiBan)
+                                                   .then(function(changedRows){
+                                                    if(changedRows>0)
+                                                        res.redirect('sanphamdathang');
+                                                    else
+                                                         res.redirect('back');
+                                                }).catch(function(err) {
+                                                    res.end('update fail');
+                                              });
+                                            }
+                                        }
+                                            
+                                        else
+                                        {
+                                             res.redirect('back');
+                                        }
+                                    }).catch(function(err) {
+                                        res.end('update fail');
+                                    });
+                                  
+                              }
+                          else{
+                            res.redirect('back');
+                          }
+                        }).catch(function(err) {
+                            res.end('insert fail');
+                          });
+                  }
+});
+r.get('/doimatkhau',function(req,res){
+                var userId = req.cookies.userLogin;
+                if(!userId){
+                     res.redirect('login');
+                  }else{
+                      userRepo.loadAccount(userId)
+                          .then(function(pRows) {
+                            
+                             var vm = {
+                                  layoutVM: res.locals.layoutVM,
+                                  user: pRows[0],
+                                  PassWrong: flag,
+                              };
+                            res.render('user/doimatkhau', vm);
+                        });
+                  }
+});
+
+r.post('/doimatkhau',function(req,res){
+                var userId = req.cookies.userLogin;
+                if(!userId){
+                     res.redirect('login');
+                  }else{
+                      userRepo.resetPass(req.body)
+                          .then(function(changedRows) {
+                           
+                            if(changedRows>0)
+                            {
+                            flag=false;
+                             res.redirect('logout');
+                           }
+                          else  {
+                            flag=true;
+                            res.redirect('back');
+                          }
+                        }).catch(function(err) {
+                            res.end('edit fail');
+                          });
+                  }
+});
+
+r.get('/chitietdanhgia',function(req,res){
+                var userId = req.cookies.userLogin;
+                if(!userId){
+                     res.redirect('login');
+                  }else{
+                       userRepo.loadScore(userId)
+                          .then(function(user) {
+                                  userRepo.loadComment(userId)
+                                      .then(function(pRows) {
+                                        
+                                         var vm = {
+                                              layoutVM: res.locals.layoutVM,
+                                              user:user[0],
+                                              comments: pRows,
+                                              noComments: pRows.length === 0
+                                          };
+                                        res.render('user/chitietdanhgia', vm);
+                                    });
+                             });
+                  }
+});
+0
 
 module.exports = r;

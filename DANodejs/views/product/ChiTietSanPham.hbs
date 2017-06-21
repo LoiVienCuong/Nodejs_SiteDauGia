@@ -61,6 +61,11 @@
 
     <!--{{#with category}}<h1>{{tenLoaiSanPham}}</h1>{{/with}}-->
 
+
+
+            <input id="plusPoint" value="{{layoutVM.diemCong}}" type="hidden"/>
+            <input id="minusPoint" value="{{layoutVM.diemTru}}" type="hidden"/>
+           
             {{#each products }}
             <div class="row">
                
@@ -77,9 +82,14 @@
                                             <div class="panel-heading panelheader small">Thông tin đấu giá</div>
                                             <div class="panel-body">
                                                 <div>Giá hiện tại:{{number_format giaHienTai}} VND</div>
+                                                <input type="hidden" id="giaHienTai" value="{{giaHienTai}}"/>
                                                 <div>Giá mua ngay: {{number_format giaMuaNgay}} VND</div>
+                                                <input type="hidden" id="giaMuaNgay" value="{{giaMuaNgay}}"/>
+
                                                 <div>Bắt đầu: <strong id="thoiDiemDang">{{time_format thoiDiemDang}}</strong></div>
                                                 <div>Kết thúc: <strong id="thoiDiemKetThuc">{{time_format thoiDiemKetThuc}}</strong></div>
+                                                <div>Buoc Gia : <strong>{{number_format buocGia}}</strong></div>
+                                                <input type="hidden" id="buocGia" value="{{buocGia}}"/>
                                                 <!--<div> <span class="glyphicon glyphicon-time" aria-hidden="true"></span>Thời gian còn lại: 140:24:55</div>-->
                                             </div>
                                         </div>
@@ -97,13 +107,31 @@
                                             <div class="panel-body">
                                                 <div>
                                                  Người đăng sản phẩm: <a href="">{{../seller.0.hoTen}}</a>&nbsp;
-                                                 GP : <a href="">{{../seller.0.diemDanhGiaCong}}</a>&nbsp;
-                                                 BP : <a href="">{{../seller.0.diemDanhGiaTru}}</a>
+                                                 GP : <a  href="">{{../seller.0.diemDanhGiaCong}}</a>&nbsp;
+                                                 BP : <a  href="">{{../seller.0.diemDanhGiaTru}}</a>
                                                  </div>
                                                 <div> Người đang đấu giá cao nhất : <a href="">{{../bestbuyer.0.hoTen}}</a>&nbsp;
-                                                 GP : <a href="">{{../bestbuyer.0.diemDanhGiaCong}}</a>&nbsp;
-                                                 BP : <a href="">{{../bestbuyer.0.diemDanhGiaTru}}</a>
+                                                 GP : <a  href="">{{../bestbuyer.0.diemDanhGiaCong}}</a>&nbsp;
+                                                 BP : <a  href="">{{../bestbuyer.0.diemDanhGiaTru}}</a>
                                                  </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-info ">
+                                            <div class="panel-heading panelheader small">Action</div>
+                                            <div class="panel-body">
+                                                <div>
+                                                  {{#if ../layoutVM.isCookie}}
+                                                  <a href="/product/favourite/{{idSanPham}}" id="{{idSanPham}}favor" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yeu Thich&nbsp;</a> 
+                                                  <a href="" id="showbid" type="button" data-toggle="modal" data-target="#ModalBiding" class="bidBtn"> <img src="/image/bid_icon.png" style="width:50px; height:50px"> </a>
+                                                  <a href="" type="button"  data-toggle="modal" data-target="#ModalHistory" > <img src="/image/history_icon.png" style="width:50px; height:50px"> </a>
+
+                                                  {{else}}
+                                                  <a href="/user/login" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a> 
+                                                   <a href="/user/login" type="button" > <img src="/image/bid_icon.png" style="width:50px; height:50px"> </a>
+                                                  {{/if}}
+
+                                                 </div>
+                                                 <input  type="hidden" name="proID" id="txtproID" value="{{idSanPham}}">
                                             </div>
                                         </div>
                                     </div>
@@ -166,16 +194,22 @@
                                                     <h4 class="modal-title" id="BuyLabel">Đấu giá</h4>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form class="form-inline">
+                                                    <form id="acutionForm" class="form-inline" method="POST" action="/product/daugia">
                                                         <div class="form-group">
                                                             <label class="sr-only" for="textFieldBidAmount">Số tiền đấu giá (VND)</label>
                                                             <div class="input-group">
                                                                 <div class="input-group-addon">VND</div>
-                                                                <input type="text" class="form-control" id="textFieldBidAmount" name="BidAmount" placeholder="Amount">
+                                                                <input type="text" class="form-control" id="textFieldBidAmount" placeholder="Amount" >
+                                                                <input type="hidden" class="form-control" id="unformatCost" name="giaDau"/>
+                                                                <input type="hidden" class="form-control" name="idSanPham" value="{{idSanPham}}" />
+                                                                 <input type="hidden" class="form-control" name="luotBid" value="{{luotBid}}" />
+                                                                <input type="hidden" class="form-control" name="giaMuaNgay" value="{{giaMuaNgay}}" />
                                                                 <div class="input-group-addon">.000</div>
                                                             </div>
                                                         </div>
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                                                        <button type="button" class="btn btn-default" id="plus"><span class="glyphicon glyphicon-plus-sign"></span></button>
+                                                        <button type="button" class="btn btn-default" id="minus"><span class="glyphicon glyphicon-minus-sign"></span></button>
+                                                        <button type="button" class="btn btn-default" id="closeAuction" data-dismiss="modal">Đóng</button>
                                                         <button type="submit" class="btn btn-success">Đấu giá</button>
                                                     </form>
                                                 </div>
@@ -189,28 +223,38 @@
                                     <!--Dialog Đánh giá uy tín -->
                                     
                                     <!-- Modal buy now -->
-                                    <div class="modal fade" id="ModalBuy" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                    <div class="modal fade" id="ModalHistory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                    <h4 class="modal-title" id="BuyLabel">Mua ngay</h4>
+                                                    <h4 class="modal-title">Lich Su Ra Gia</h4>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form class="form-inline">
-                                                        <div class="form-group">
-                                                            <label class="sr-only" for="textFieldBidAmount">Số tiền đấu giá (VND)</label>
-                                                            <div class="input-group">
-                                                                <div class="input-group-addon">VND</div>
-                                                                <input type="text" class="form-control" id="textFieldBuyPrice" name="BuyPrice" placeholder="Amount" disabled>
-                                                                <div class="input-group-addon">.000</div>
-                                                            </div>
-                                                        </div>
-                                                    </form>
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Time</th>
+                                                            <th>Auctioneer</th>
+                                                            <th>Amount</th>
+                                                            
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr>
+                                                            <td class="filterable-cell">1/6/2017 10:43</td>
+                                                            <td class="filterable-cell">Escort</td>
+                                                            <td class="filterable-cell">50000</td>
+                                                           
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+
+
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                                                    <button type="submit" class="btn btn-success">Mua ngay</button>
+                                                   
                                                 </div>
                                             </div>
                                         </div>
@@ -234,14 +278,66 @@
       
     <script>
     // jQuery
+    var giaHienTai = parseInt($('#giaHienTai').val());
+    var giaMuaNgay = parseInt($('#giaMuaNgay').val());
+    var buocGia = parseInt($('#buocGia').val());
+    var multi = 1;
     $(document).ready(function(){
-
-        
+       
+       
+        var proId = $('#txtproID').val();
+   
+        var proFavor = JSON.parse('{{{json layoutVM.productsFavourite}}}');
+        for(var i = 0; i < proFavor.length; i++){
+                if(proFavor[i].idSanPham == proId){
+                    
+                     $("#"+proId+"favor").html("Đã yêu thích");
+                     $("#"+proId+"favor").removeAttr("href");
+                }
+        }
+        bidable();
          
     });
 
+    $('#plus').click(function(){
+        multi++;
+        var result = giaHienTai + buocGia*(multi);
+        if(result == giaMuaNgay){
+            result = giaMuaNgay;
+         }
+         if(result > giaMuaNgay){
+            result = giaMuaNgay;
+            multi--;
+         }
+         $('#textFieldBidAmount').val(format(result));
+         $('#unformatCost').val(result);
 
-   
+    });
+    $('#minus').click(function(){
+        
+        multi--;
+        var result = giaHienTai + buocGia*multi;
+        if(result == giaHienTai){
+            result = giaHienTai + buocGia*(multi+1);
+            multi++;
+         }
+         $('#textFieldBidAmount').val(format(result));
+        $('#unformatCost').val(result);
+
+    });
+    $("#showbid").click(function(){
+
+        
+        var result = giaHienTai + buocGia*multi;
+    
+        $('#textFieldBidAmount').val(format(result));
+        $('#unformatCost').val(result);
+                   
+    });
+
+    $("#closeAuction").click(function(){
+        multi = 1;
+    });
 
     $(".proImg").hover(
         function(event) {
@@ -253,5 +349,58 @@
             // The mouse has left the element, can reference the element via 'this'
         }
     );
+    function format(num){
+        var n = num.toString(), p = n.indexOf('.');
+        return n.replace(/\d(?=(?:\d{3})+(?:\.|$))/g, function($0, i){
+            return p<0 || i<p ? ($0+',') : $0;
+        });
+    }
+     function bidable() {
+            if('{{products.0.tinhTrang}}' == 1){
+                $("#showbid").removeAttr("href");
+                $("#showbid").removeAttr("data-toggle");
+                $("#showbid").removeAttr("data-target");
+                $("#showbid").html("Dã kết thúc đấu giá");
+                $("#showbid").removeAttr("id");
+                return;
+            }
+                 
+          
+            var diemCong = $('#plusPoint').val();
+            var diemTru = $('#minusPoint').val();
+            diemCong = parseInt(diemCong);
+            diemTru = parseInt(diemTru);
+            if(diemCong!=0 && diemTru!=0)
+            {
+                if((diemCong/(diemTru + diemCong))>= 0.8) {
+                   
+                }
+                else{
+                    $("#showbid").removeAttr("href");
+                    $("#showbid").removeAttr("data-toggle");
+                    $("#showbid").removeAttr("data-target");
+                    $("#showbid").html("Khong the BID");
+                    $("#showbid").removeAttr("id");
+                }
+            }else{
+                
+            }
+            
+     }
+            // The mouse has entered the element, can reference the element via 't ,
+       
+    $("#acutionForm").submit(function(){
+        if(confirm("Bạn có chắc chắn muốn đấu giá sản phẩm này")){
+            var result = giaHienTai + buocGia*multi;
+            if(result==giaMuaNgay){
+
+            }
+            return true;
+        }
+        else{
+            return false;
+        }
+        
+    });
     </script>
     

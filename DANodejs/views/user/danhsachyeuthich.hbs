@@ -1,5 +1,5 @@
 {{#section 'title'}}
-	Danh sách sản phẩm
+	Danh sách sản phẩm yêu thích
 {{/section}}
 
 
@@ -33,7 +33,7 @@
                   <div class="panel-heading">
                       <div class="row">
                            <div class="form-group">
-                              <a href="chitietsanpham/{{idSanPham}}" class="col-sm-10"><span style="color:white"><strong>{{tenSanPham}}</strong></span></a>   
+                              <a href="/product/chitietsanpham/{{idSanPham}}" class="col-sm-10"><span style="color:white"><strong>{{tenSanPham}}</strong></span></a>   
                                 <div id="{{idSanPham}}" class="col-sm-2" style="font-weight:bold;font-family:arial;font-style: italic;"></div>
                            </div>
                        </div>
@@ -41,8 +41,8 @@
               <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
                   <div class="row">
                     <div class="col-sm-6">
-                      <div>Giá đấu hiện tại : {{giaHienTai}} </div>
-                      <div>Giá mua ngay : {{giaMuaNgay}} </div>
+                      <div>Giá đấu hiện tại : {{number_format giaHienTai}} </div>
+                      <div>Giá mua ngay : {{number_format giaMuaNgay}} </div>
                     </div>
                     <div class="col-sm-6">
                       <div>Lượt Bid : {{luotBid}}</div>

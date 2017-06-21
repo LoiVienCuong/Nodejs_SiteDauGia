@@ -1,7 +1,7 @@
 var mustache = require('mustache'),
     q = require('q'),
     db = require('../fn/db');
-
+    helper = require('../fn/helper');
 exports.loadAllByCat = function(catId) {
     var obj = {
         loai: catId
@@ -141,7 +141,7 @@ exports.loadProductById = function(proId){
 }
 
 exports.loadFavourite = function(userId){
-      var obj = {
+    var obj = {
         userId: userId
     };
     var sql = mustache.render(
@@ -150,8 +150,9 @@ exports.loadFavourite = function(userId){
     );
     return db.load(sql);
 }
+
 exports.insertFavourite = function(proId, userId){
-       var obj = {
+    var obj = {
         userId: userId,
         proId : proId
     };
@@ -160,8 +161,69 @@ exports.insertFavourite = function(proId, userId){
         obj
     );
     return db.insert(sql);
-<<<<<<< HEAD
 }
-=======
+
+exports.deleteFavouriteByProId = function(proId) {
+    var obj = {
+        proId : proId
+    };
+    var sql = mustache.render(
+        'delete from danhsachyeuthich where idSanPham = {{proId}}',
+        obj
+    );
+    return db.delete(sql);
 }
->>>>>>> origin/master
+exports.updateProductByGiaHienTaiVaNguoiGiaCaoNhat = function(idSanPham, idNguoiDung, giaDau,luotBid){
+     var obj = {
+        idSanPham : idSanPham,
+        idNguoiDung : idNguoiDung,
+        giaDau : giaDau,
+        luotBid : luotBid
+    };
+    var sql = mustache.render(
+        'update sanpham set idNguoiGiaCaoNhat = {{idNguoiDung}}, giaHienTai = {{giaDau}}, luotBid = {{luotBid}} WHERE idSanPham = {{idSanPham}}',
+        obj 
+    );
+    return db.update(sql);
+}
+
+exports.loadDanhSachDauGiaBySanPhamVaNguoiDauGia = function(idSanPham, idNguoiDung){
+ var obj = {
+        idSanPham : idSanPham,
+        idNguoiDung : idNguoiDung,
+        
+    };
+    var sql = mustache.render(
+        'select * from danhsachdaugia where idSanPham = {{idSanPham}} and idNguoiDung = {{idNguoiDung}}',
+        obj 
+    );
+    return db.load(sql);
+}
+
+exports.insertDanhSachDauGia = function(idSanPham, idNguoiDung, giaDau){
+    var date = helper.getDateFormated(new Date());
+    var obj = {
+        idSanPham : idSanPham,
+        idNguoiDung : idNguoiDung,
+        giaDau : giaDau,
+        thoiDiemDauGia : date
+    };
+    var sql = mustache.render(
+        'insert into danhsachdaugia values({{idSanPham}}, {{idNguoiDung}}, {{giaDau}}, "{{thoiDiemDauGia}}")',
+        obj
+    );
+    return db.insert(sql);
+}
+
+
+exports.updateEndAuction = function(idSanPham){
+    var obj = {
+        idSanPham : idSanPham
+    };
+     var sql = mustache.render(
+        'update sanpham set tinhTrang = 1 where idSanPham = {{idSanPham}}',
+        obj 
+    );
+
+    return db.update(sql);
+}

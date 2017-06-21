@@ -3,7 +3,7 @@ var mysql = require('mysql'),
 
 var _HOST = '127.0.0.1',
     _USER = 'root',
-    _PWD = 'microsoft96',
+    _PWD = '',
     _DB = 'qldg';
 
 exports.load = function(sql) {
@@ -107,6 +107,14 @@ exports.delete = function(sql) {
     });
 
     connection.end();
+
+    return d.promise;
+}
+exports.donothing = function(sql) {
+    
+    var d = q.defer();
+
+   
 
     return d.promise;
 }

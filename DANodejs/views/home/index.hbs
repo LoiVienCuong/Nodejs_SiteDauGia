@@ -59,8 +59,8 @@ Trang chủ
               <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
                   <div class="row">
                     <div class="col-sm-6">
-                      <div>Giá đấu hiện tại : {{giaHienTai}} </div>
-                      <div>Giá mua ngay : {{giaMuaNgay}} </div>
+                      <div>Giá đấu hiện tại : {{number_format giaHienTai}} VNĐ</div>
+                      <div>Giá mua ngay : {{number_format giaMuaNgay}} VNĐ</div>
                     </div>
                     <div class="col-sm-6">
                       <div>Lượt Bid : {{luotBid}}</div>
@@ -92,7 +92,7 @@ Trang chủ
               <div class="panel-heading">
                       <div class="row">
                            <div class="form-group">
-                              <a href="ChiTietSanPham.html" class="col-sm-10"><span style="color:white"><strong>{{tenSanPham}}</strong></span></a>   
+                              <a href="product/chitietsanpham/{{idSanPham}}" class="col-sm-10"><span style="color:white"><strong>{{tenSanPham}}</strong></span></a>   
                                 <div id="{{idSanPham}}" class="col-sm-2" style="font-weight:bold;font-family:arial;font-style: italic;"></div>
                            </div>
                        </div>
@@ -100,8 +100,8 @@ Trang chủ
               <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
                   <div class="row">
                     <div class="col-sm-6">
-                      <div>Giá đấu hiện tại : {{giaHienTai}} </div>
-                      <div>Giá mua ngay : {{giaMuaNgay}} </div>
+                      <div>Giá đấu hiện tại : {{number_format giaHienTai}} VNĐ</div>
+                      <div>Giá mua ngay : {{number_format giaMuaNgay}} VNĐ</div>
                     </div>
                     <div class="col-sm-6">
                       <div>Lượt Bid : {{luotBid}}</div>
@@ -136,7 +136,7 @@ Trang chủ
                <div class="panel-heading">
                       <div class="row">
                            <div class="form-group">
-                              <a href="ChiTietSanPham.html" class="col-sm-10"><span style="color:white"><strong>{{tenSanPham}}</strong></span></a>   
+                              <a href="product/chitietsanpham/{{idSanPham}}" class="col-sm-10"><span style="color:white"><strong>{{tenSanPham}}</strong></span></a>   
                                 <div id="{{idSanPham}}" class="col-sm-2" style="font-weight:bold;font-family:arial;font-style: italic;"></div>
                            </div>
                        </div>
@@ -144,8 +144,8 @@ Trang chủ
               <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
                   <div class="row">
                     <div class="col-sm-6">
-                      <div>Giá đấu hiện tại : {{giaHienTai}} </div>
-                      <div>Giá mua ngay : {{giaMuaNgay}} </div>
+                      <div>Giá đấu hiện tại : {{number_format giaHienTai}} VNĐ </div>
+                      <div>Giá mua ngay : {{number_format giaMuaNgay}} VNĐ </div>
                     </div>
                     <div class="col-sm-6">
                       <div>Lượt Bid : {{luotBid}}</div>
@@ -157,7 +157,7 @@ Trang chủ
                  <a href="" type="button" data-toggle="modal" data-target="#ModalBiding" class="bidBtn"> <img src="image/bid_icon.png" style="width:50px; height:50px"> </a>
                {{#if ../layoutVM.isCookie}}
 
-                  <a href="/product/favourite/{{idSanPham}}" id="{{idSanPham}}favor" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Giỏ hàng&nbsp;</a> 
+                  <a href="/product/favourite/{{idSanPham}}" id="{{idSanPham}}favor" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a> 
                   {{else}}
                   <a href="/user/login" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a> 
                   {{/if}}

@@ -57,15 +57,18 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        
-        <li><a href="#">Cá nhân</a></li>
+        {{#if layoutVM.isCookie}}
+        <li><a href="/user/dangban?id={{layoutVM.userId}}">Xin Bán</a></li>
+        {{else}}
+        <li><a href="/user/login">Xin Bán</a></li>
+        {{/if}}
         <li><a href="#">Top Uy Tín</a></li>
         <li><a href="#">Hướng dẫn</a></li>
         <li><a href="#">Liên hệ</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {{#if layoutVM.isCookie}}
-          <li><a href=""><span class="glyphicon glyphicon-user"></span>{{layoutVM.hoTen}}</a></li>
+          <li><a href="/user/thongtincanhan"><span class="glyphicon glyphicon-user"></span>{{layoutVM.hoTen}}</a></li>
            <li id="logout"><a href="/user/logout"><span class="glyphicon glyphicon-user"></span>Log out</a></li>
             <li><a href="/user/danhsachyeuthich"><span class="glyphicon glyphicon-shopping-cart"></span>Cart</a></li>
         {{else}}
