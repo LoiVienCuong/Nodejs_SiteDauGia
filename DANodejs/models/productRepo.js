@@ -227,3 +227,75 @@ exports.updateEndAuction = function(idSanPham){
 
     return db.update(sql);
 }
+
+
+///by Lê Anh Khôi
+exports.loadProductWithMaxId = function(){
+    var sql = 'select * from sanpham order by idSanPham DESC LIMIT 1';
+    return db.load(sql);
+}
+exports.insertNewProduct= function(idSanPham, tenSanPham, idLoaiSanPham, giaHienTai, giaMuaNgay,idNguoiBan, buocGia, thoiDiemDang, thoiDiemKetThuc, moTa,tuDongGiaHan, urlImage1, urlImage2, urlImage3){
+    var obj = {
+        idSanPham : idSanPham,
+        tenSanPham: tenSanPham,
+        idLoaiSanPham : idLoaiSanPham,
+        giaHienTai : giaHienTai,
+        giaMuaNgay : giaMuaNgay,
+        idNguoiBan : idNguoiBan,
+        buocGia : buocGia,
+        thoiDiemDang : thoiDiemDang,
+        thoiDiemKetThuc : thoiDiemKetThuc,
+        moTa : moTa,
+        tuDongGiaHan : tuDongGiaHan,
+        urlImage1 : urlImage1,
+        urlImage2 : urlImage2,
+        urlImage3 : urlImage3
+    };
+
+    var sql = mustache.render(
+              'insert into sanpham(idSanPham, tenSanPham, loai, giaHienTai, giaMuaNgay, idNguoiBan, buocGia, thoiDiemDang, thoiDiemKetThuc, moTa, luotBid, tinhTrang, tuDongGiaHan, urlImage1, urlImage2, urlImage3)' 
+              + ' values ({{idSanPham}},"{{tenSanPham}}", {{idLoaiSanPham}}, {{giaHienTai}}, {{giaMuaNgay}}, {{idNguoiBan}}, {{buocGia}}, "{{thoiDiemDang}}", "{{thoiDiemKetThuc}}", "{{moTa}}",0 ,0 ,{{tuDongGiaHan}}, "{{urlImage1}}","{{urlImage2}}","{{urlImage3}}")',
+        obj
+    );
+    return db.insert(sql);
+}
+
+exports.getDetailFromProduct = function(idSanPham){
+     var obj = {
+        idSanPham : idSanPham
+     };
+
+     var sql = mustache.render(
+        'select moTa from sanpham where idSanPham = {{idSanPham}}',
+        obj
+     );
+    return db.load(sql);
+}
+
+exports.updateDetailToProduct  =function(idSanPham, moTa){
+    var obj = {
+        moTa : moTa,
+        idSanPham : idSanPham
+    }; 
+    var sql = mustache.render(
+        'update sanpham set moTa = "{{moTa}}" where idSanPham = {{idSanPham}}',
+        obj
+        );
+
+    return db.update(sql);
+}
+
+exports.updateHighestUserAndHighestCost = function(idSanPham,idNguoiGiaCaoNhat, giaHienTai){
+    
+    var obj = {
+       idSanPham : idSanPham,
+       idNguoiGiaCaoNhat : idNguoiGiaCaoNhat,
+       giaHienTai : giaHienTai
+    }; 
+    var sql = mustache.render(
+        'update sanpham set idNguoiGiaCaoNhat = {{idNguoiGiaCaoNhat}}, giaHienTai = {{giaHienTai}}  where idSanPham = {{idSanPham}}',
+        obj
+        );
+
+    return db.update(sql);
+}

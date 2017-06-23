@@ -2,6 +2,7 @@ var express = require('express'),
     productRepo = require('../models/productRepo'),
     categoryRepo = require('../models/categoryRepo'),
     userRepo = require('../models/userRepo'),
+    danhsachdaugiaRepo = require('../models/danhsachdaugiaRepo'),
     md5 = require('md5'),
     recaptcha = require('express-recaptcha');
 
@@ -132,24 +133,49 @@ r.get('/danhsachyeuthich',function(req,res){
       }
 });
 
-r.get('/dangban',function(req,res){
+r.get('/xindangban',function(req,res){
      var userId = req.cookies.userLogin;
 
       if(userId){
-          userRepo.askForPostProduct(userId)
-              .then(function(pRows) {
-                 res.redirect('dangban/phanhoi');
-            }).fail(function(error){console.log(error)});
+
+        //neu da có yêu cầu trong database thì update 
+        userRepo.loadPostListById(userId)
+        .then(function(result){
+            if(result.length==1){ //update 
+               userRepo.updateAskForPostProduct(userId)
+                .then(function(pRows) {
+
+                  res.redirect('xindangban/phanhoi');
+
+                }).fail(function(error){
+                      console.log(error)
+                });
+            }
+            else{
+              //insert
+              userRepo.insertAskForPostProduct(userId)
+                .then(function(pRows) {
+
+                  res.redirect('dangban/phanhoi');
+
+                }).fail(function(error){
+                      console.log(error)
+                });
+            }
+           
+        });
+        //ngươc lại thì insert
+          
       }else{
         res.redirect('login');
       }
 });
-r.get('/dangban/phanhoi',function(req,res){
+r.get('/xindangban/phanhoi',function(req,res){
 
   var vm = {
     layout : false,
   };
-  res.render("user/phanhoidangban", vm);
+  res.render("user/phanhoiyeucauxindangban", vm);
 });
 
 r.get('/thongtincanhan',function(req,res){
@@ -364,6 +390,57 @@ r.get('/chitietdanhgia',function(req,res){
                              });
                   }
 });
-0
+
+
+r.get('/dangsanpham',function(req,res){
+   var userId = req.cookies.userLogin;
+
+      if(userId){
+        
+        var vm = {
+            layoutVM: res.locals.layoutVM,
+            idNguoiDung : userId
+          };
+        res.render('product/formdangsanpham', vm);
+      }
+      else{
+        res.redirect('/user/login');
+      }
+});
+r.post('/ban', function(req,res){
+    var userId = req.cookies.userLogin;
+    if(userId){
+      var idSanPham = req.body.idSanPham;
+      var idNguoiBiCam = req.body.idNguoiBiCam;
+      var idNguoiGiuGiaCaoThuHai = req.body.idNguoiGiuGiaCaoThuHai;
+      var giaDauNguoiGiuGiaCaoThuHai = req.body.giaDauNguoiGiuGiaCaoThuHai;
+      console.log("Nguoi bi cam : " + idNguoiBiCam + "\n"
+                + "Nguoi giu gia cao thu 2 : " + idNguoiGiuGiaCaoThuHai + "\n"
+                + "Gia Dau Nguoi giu gia cao thu 2: " + giaDauNguoiGiuGiaCaoThuHai + "\n");
+      //update sanpham
+      //update daugiasanpham
+      if(idNguoiGiuGiaCaoThuHai == 'null'){
+        console.log("chi can update bang daugiasanpham");
+         danhsachdaugiaRepo.updateBannedUser(idSanPham, idNguoiBiCam, true).fail(function(error){
+          console.log(error);
+        })
+
+      }else{
+        console.log("phai update bang daugiasanpham va bang sanpham " + idNguoiGiuGiaCaoThuHai + giaDauNguoiGiuGiaCaoThuHai);
+       productRepo.updateHighestUserAndHighestCost(idSanPham, idNguoiGiuGiaCaoThuHai, giaDauNguoiGiuGiaCaoThuHai).fail(function(error){
+          console.log(error);
+        })
+        danhsachdaugiaRepo.updateBannedUser(idSanPham, idNguoiBiCam, true).fail(function(error){
+          console.log(error);
+        })
+
+      }
+      res.redirect('back');
+    }else{
+      res.redirect('/user/login');
+    }
+
+
+});
 
 module.exports = r;

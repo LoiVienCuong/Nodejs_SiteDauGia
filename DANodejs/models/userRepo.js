@@ -54,7 +54,33 @@ exports.loadListFavourite = function(userId){
     return db.load(sql);
 }
 
-exports.askForPostProduct = function(userId){
+exports.updateAskForPostProduct = function(userId){
+   
+   
+    var origin = new Date();
+
+    var ngayDang = helper.convertNumber(origin.getDate());
+    var thangDang = helper.convertNumber(origin.getMonth() + 1);
+    var namDang = origin.getFullYear();
+    var gioDang = helper.convertNumber(origin.getHours());
+    var phutDang = helper.convertNumber(origin.getMinutes());
+    var giayDang = helper.convertNumber(origin.getSeconds());
+    var date = namDang + "-" + thangDang + "-" + ngayDang + " " + gioDang + ":" + phutDang + ":" + giayDang  ;
+     console.log(date);
+    var obj = {
+        userId: userId,
+        thoiDiemXinDuocBan : date
+    };
+    var sql = mustache.render(
+        'update danhsachxinduocban set thoiDiemXinDuocBan = "{{thoiDiemXinDuocBan}}" where idNguoiDung = {{userId}}',
+        obj
+    );
+    
+    return db.update(sql);
+    
+}
+
+exports.insertAskForPostProduct = function(userId){
    
    
     var origin = new Date();
@@ -80,8 +106,19 @@ exports.askForPostProduct = function(userId){
     
 }
 
+exports.loadPostListById = function(userId){
+    var obj = {
+        userId: userId
+    };
+    var sql = mustache.render(
+        'select * from danhsachxinduocban where idNguoiDung = {{userId}}',
+        obj
+    );
+    return db.load(sql);
+}
+
 exports.loadAccount = function(userId){
-     var obj = {
+    var obj = {
         userId: userId
     };
     var sql = mustache.render(
@@ -116,7 +153,7 @@ exports.resetPass = function(entity){
 
 }
 exports.loadListBiding = function(userId){
-     var obj = {
+    var obj = {
         userId: userId
     };
     var sql = mustache.render(
@@ -126,7 +163,7 @@ exports.loadListBiding = function(userId){
     return db.load(sql);
 }
 exports.loadListWin = function(userId){
-     var obj = {
+    var obj = {
         userId: userId
     };
     var sql = mustache.render(
@@ -145,7 +182,7 @@ exports.addComment = function(entity){
 
 }
 exports.increaseScore = function(idNguoiBan){
-     var obj = {
+    var obj = {
         idNguoiBan: idNguoiBan
     };
     var sql = mustache.render(
@@ -156,7 +193,7 @@ exports.increaseScore = function(idNguoiBan){
 
 }
 exports.decreaseScore = function(idNguoiBan){
-     var obj = {
+    var obj = {
         idNguoiBan: idNguoiBan
     };
     var sql = mustache.render(
@@ -166,7 +203,7 @@ exports.decreaseScore = function(idNguoiBan){
     return db.update(sql);
 }
 exports.isComment = function(userId,idSanPham){
-     var obj = {
+    var obj = {
         userId: userId,
         idSanPham: idSanPham
     };
@@ -178,7 +215,7 @@ exports.isComment = function(userId,idSanPham){
 
 }
 exports.loadComment = function(userId){
-     var obj = {
+    var obj = {
         userId: userId
     };
     var sql = mustache.render(
@@ -189,7 +226,7 @@ exports.loadComment = function(userId){
 }
 
 exports.loadScore = function(userId){
-     var obj = {
+    var obj = {
         userId: userId
     };
     var sql = mustache.render(
