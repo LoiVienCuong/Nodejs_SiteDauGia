@@ -40,7 +40,7 @@ r.post('/login', function(req, res) {
         userRepo.loadUserByIdAndPassWord(req.body)
             .then(function(pRows) {
             	if(pRows.length === 1){
-            		var minute =  60*1000 * 30;
+            		var minute =  60*1000 * 300;
             		res.clearCookie('userLogin');
   					res.cookie('userLogin', pRows[0].idNguoiDung, { maxAge: minute });
   					status = 2;
@@ -280,7 +280,7 @@ r.post('/sanphamdathang',function(req,res){
                              
                             if(data>=0)
                             {
-                                    userRepo.isComment(userId,req.body.idSanPham)
+                                    userRepo.isCommentSeller(userId,req.body.idSanPham)
                                        .then(function(changedRows){
                                         if(changedRows>0)
                                         {
@@ -328,6 +328,102 @@ r.post('/sanphamdathang',function(req,res){
                           });
                   }
 });
+
+r.get('/sanphamdaban',function(req,res){
+                var userId = req.cookies.userLogin;
+                if(!userId){
+                     res.redirect('login');
+                  }else{
+                      userRepo.loadListSelled(userId)
+                          .then(function(pRows) {
+                            
+                             var vm = {
+                                  layoutVM: res.locals.layoutVM,
+                                  products: pRows,
+                                  noProducts: pRows.length === 0
+                              };
+                            res.render('user/sanphamdaban', vm);
+                        });
+                  }
+});
+
+r.post('/sanphamdaban',function(req,res){
+               var userId = req.cookies.userLogin;
+                if(!userId){
+                     res.redirect('login');
+                  }else{
+                      userRepo.addCommentSeller(req.body)
+                          .then(function(data) {
+                           
+                             
+                            if(data>=0)
+                            {
+                                    userRepo.isCommentBider(req.body.idSanPham)
+                                       .then(function(changedRows){
+                                        if(changedRows>0)
+                                        {
+                                              if(req.body.chamdiem==+1)
+                                              {
+
+                                                   userRepo.increaseScore(req.body.idNguoiDung)
+                                                   .then(function(changedRows){
+                                                    if(changedRows>0)
+                                                        res.redirect('sanphamdaban');
+                                                    else
+                                                         res.redirect('back');
+                                                }).catch(function(err) {
+                                                    res.end('update fail');
+                                                });
+                                              }
+                                              else
+                                              {
+                                                    userRepo.decreaseScore(req.body.idNguoiDung)
+                                                   .then(function(changedRows){
+                                                    if(changedRows>0)
+                                                        res.redirect('sanphamdaban');
+                                                    else
+                                                         res.redirect('back');
+                                                }).catch(function(err) {
+                                                    res.end('update fail');
+                                              });
+                                            }
+                                        }
+                                            
+                                        else
+                                        {
+                                             res.redirect('back');
+                                        }
+                                    }).catch(function(err) {
+                                        res.end('update fail');
+                                    });
+                                  
+                              }
+                          else{
+                            res.redirect('back');
+                          }
+                        }).catch(function(err) {
+                            res.end('insert fail');
+                          });
+                  }
+});
+r.get('/sanphamdangdang',function(req,res){
+                var userId = req.cookies.userLogin;
+                if(!userId){
+                     res.redirect('login');
+                  }else{
+                      userRepo.loadSelling(userId)
+                          .then(function(pRows) {
+                           
+                             var vm = {
+                                  layoutVM: res.locals.layoutVM,
+                                  products: pRows,
+                                  noProducts: pRows.length === 0
+                              };
+                            res.render('user/sanphamdangdang', vm);
+                        });
+                  }
+});
+
 r.get('/doimatkhau',function(req,res){
                 var userId = req.cookies.userLogin;
                 if(!userId){
@@ -392,6 +488,8 @@ r.get('/chitietdanhgia',function(req,res){
 });
 
 
+
+///by Lê Anh Khôi
 r.get('/dangsanpham',function(req,res){
    var userId = req.cookies.userLogin;
 
@@ -442,5 +540,4 @@ r.post('/ban', function(req,res){
 
 
 });
-
 module.exports = r;

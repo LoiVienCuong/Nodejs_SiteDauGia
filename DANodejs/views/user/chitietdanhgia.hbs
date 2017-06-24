@@ -25,10 +25,10 @@
 				<thead>
 					<tr>
 						<th>Tên Sản Phẩm</th>
-						<th>ID Người Đánh Giá</th>
+						<th>Người Đánh Giá</th>
 						<th>Điểm</th>
 						<th>Nhận Xét</th>
-						<th>Ngày Đánh Giá</th>
+						<th>Thời Điểm Đánh Giá</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -36,10 +36,10 @@
 					<tr>
 						<td><a href="/product/chitietsanpham/{{idSanPham}}"><span style="color:blue"><strong>{{tenSanPham}}</strong></span></a>
 						</td>
-						<td>{{idNguoiDanhGia}}</td>
+						<td>{{hoTen}}</td>
 						<td>{{congHayTru}}</td>
 						<td>{{nhanXet}}</td>
-						<td>{{thoiDiemDanhGia}}</td>
+						<td>{{time_format thoiDiemDanhGia}}</td>
 					</tr>
 					{{/each}}
 				</tbody>

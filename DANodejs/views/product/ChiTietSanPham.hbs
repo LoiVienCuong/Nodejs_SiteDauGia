@@ -17,7 +17,10 @@
         
         .imglist {
             line-height: 100px;
-            background-color: gray;
+            border: blue 1px;
+            background-color: white;
+            margin: 10px;
+            margin-bottom: 0px;
             padding: 10px 10px 10px 10px;
         }
         
@@ -75,7 +78,7 @@
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-sm-7">
-                                        <img src="/image/{{urlImage}}/3.jpg" class="img-responsive" style="width:100% " alt="Image">
+                                        <img src="{{urlImage_format urlImage1}}" class="img-responsive" style="width:100% " alt="Image">
                                     </div>
                                     <div class="col-sm-5">
                                         <div class="panel panel-info ">
@@ -109,11 +112,16 @@
                                                  Người đăng sản phẩm: <a href="">{{../seller.0.hoTen}}</a>&nbsp;
                                                  GP : <a  href="">{{../seller.0.diemDanhGiaCong}}</a>&nbsp;
                                                  BP : <a  href="">{{../seller.0.diemDanhGiaTru}}</a>
-                                                 </div>
+                                                </div>
+                                                {{#if ../noBuyer}}
+                                                <div> Người đang đấu giá cao nhất : Sản phẩm chưa có người đấu giá
+                                                </div>
+                                                {{else}}
                                                 <div> Người đang đấu giá cao nhất : <a href="">{{../bestbuyer.0.hoTen}}</a>&nbsp;
                                                  GP : <a  href="">{{../bestbuyer.0.diemDanhGiaCong}}</a>&nbsp;
                                                  BP : <a  href="">{{../bestbuyer.0.diemDanhGiaTru}}</a>
-                                                 </div>
+                                                </div>
+                                                {{/if}}
                                             </div>
                                         </div>
                                         <div class="panel panel-info ">
@@ -123,7 +131,11 @@
                                                   {{#if ../layoutVM.isCookie}}
                                                   <a href="/product/favourite/{{idSanPham}}" id="{{idSanPham}}favor" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yeu Thich&nbsp;</a> 
                                                   <a href="" id="showbid" type="button" data-toggle="modal" data-target="#ModalBiding" class="bidBtn"> <img src="/image/bid_icon.png" style="width:50px; height:50px"> </a>
-                                                  <a href="" type="button"  data-toggle="modal" data-target="#ModalHistory" > <img src="/image/history_icon.png" style="width:50px; height:50px"> </a>
+                                                  {{#if ../noHistory}}
+                                                  <a type="button">Không có lịch sử</a>
+                                                  {{else}}
+                                                  <a href="" type="button"  data-toggle="modal" data-target="#ModalHistory" > <img  src="/image/history_icon.png" style="width:50px; height:50px"> </a>
+                                                  {{/if}}
 
                                                   {{else}}
                                                   <a href="/user/login" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a> 
@@ -146,12 +158,12 @@
                             <div class="panel-heading panelheader small">Thông tin chi tiết</div>
                             <div class="panel-body">
                                 <div class="col-sm-12 ">
-                                    <a href=""><img src="/image/{{urlImage}}/1.jpg" class="imgbig"></a>
+                                    <a href=""><img src="{{urlImage_format urlImage2}}" class="imgbig"></a>
                                 </div>
                                 <div class="col-sm-12 imglist " name="Image_list">
                                     <div>
-                                        <a href="" type="button" data-toggle="modal" data-target="#myModal1"> <img src="/image/{{urlImage}}/1.jpg" class=" imgsmall proImg" alt="Image"></a>
-                                        <a href="" type="button" data-toggle="modal" data-target="#myModal2"> <img src="/image/{{urlImage}}/2.jpg" class=" imgsmall proImg" alt="Image"></a>
+                                        <a href="" type="button" data-toggle="modal" data-target="#myModal1"> <img src="{{urlImage_format urlImage2}}" class=" imgsmall proImg" alt="Image"></a>
+                                        <a href="" type="button" data-toggle="modal" data-target="#myModal2"> <img src="{{urlImage_format urlImage3}}" class=" imgsmall proImg" alt="Image"></a>
                                     </div>
                                     <!-- Modal 1-->
                                     <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -162,7 +174,7 @@
                                                     <h4 class="modal-title" id="myModalLabel">Modal title</h4>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <img src="/image/{{urlImage}}/1.jpg" alt="Image" width="100%" height="100%">
+                                                    <img src="{{urlImage_format urlImage2}}" alt="Image" width="100%" height="100%">
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -178,7 +190,7 @@
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <img src="/image/{{urlImage}}/2.jpg" alt="Image" width="100%" height="100%">
+                                                    <img src="{{urlImage_format urlImage3}}" alt="Image" width="100%" height="100%">
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -204,9 +216,14 @@
                                                                 <input type="hidden" class="form-control" name="idSanPham" value="{{idSanPham}}" />
                                                                  <input type="hidden" class="form-control" name="luotBid" value="{{luotBid}}" />
                                                                 <input type="hidden" class="form-control" name="giaMuaNgay" value="{{giaMuaNgay}}" />
+                                                                 <input type="hidden" class="form-control" name="giaHienTai" value="{{giaHienTai}}" />
+                                                              <input type="hidden" class="form-control" name="buocGia" value="{{buocGia}}" />
                                                                 <div class="input-group-addon">.000</div>
                                                             </div>
                                                         </div>
+                                                        <div class="form-control">
+                                                         <div class="checkbox"><label><input type="checkbox" value="1" name="AutoBID">Auto</label></div>
+                                                         </div>
                                                         <button type="button" class="btn btn-default" id="plus"><span class="glyphicon glyphicon-plus-sign"></span></button>
                                                         <button type="button" class="btn btn-default" id="minus"><span class="glyphicon glyphicon-minus-sign"></span></button>
                                                         <button type="button" class="btn btn-default" id="closeAuction" data-dismiss="modal">Đóng</button>
@@ -222,7 +239,7 @@
 
                                     <!--Dialog Đánh giá uy tín -->
                                     
-                                    <!-- Modal buy now -->
+                                    <!-- Modal history now -->
                                     <div class="modal fade" id="ModalHistory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
@@ -237,23 +254,39 @@
                                                             <th>Time</th>
                                                             <th>Auctioneer</th>
                                                             <th>Amount</th>
+                                                            <th>Ban</th>
                                                             
                                                         </tr>
                                                         </thead>
                                                         <tbody>
+                                                        {{#each ../historyData}}
                                                         <tr>
-                                                            <td class="filterable-cell">1/6/2017 10:43</td>
-                                                            <td class="filterable-cell">Escort</td>
-                                                            <td class="filterable-cell">50000</td>
-                                                           
+                                                            <td class="filterable-cell">{{time_format thoiDiemDauGia}}</td>
+                                                            <td class="filterable-cell">{{hoTen}}</td>
+                                                            <td class="filterable-cell">{{giaDau}}</td>
+                                                            {{#ifCond ../../layoutVM.userId '==' ../idNguoiBan}}
+                                                            <td class="filterable-cell {{idNguoiDung}}_banned" ><button id="{{idNguoiDung}}_history" class="btn btn-default btn_ban">Cấm</button></td>
+                                                            {{else}}
+                                                            <td class="filterable-cell {{idNguoiDung}}_banned" ><button class="btn btn-default reject_ban">X</button></td>
+                                                            {{/ifCond}}
                                                         </tr>
+                                                        {{/each}}
                                                         </tbody>
                                                     </table>
+                                                    <div style="display:block">
+                                                        <form action="/user/ban" method="POST" id="banForm">
+                                                            <input type="hidden" id="idNguoiBiCam" name="idNguoiBiCam"> 
+                                                            <input type="hidden" id="idNguoiGiuGiaCaoThuHai" name="idNguoiGiuGiaCaoThuHai" value="null">
+                                                            <input type="hidden" id="giaDauNguoiGiuGiaCaoThuHai" name="giaDauNguoiGiuGiaCaoThuHai" value="null">
+                                                            <input type="hidden" name="idSanPham" value="{{idSanPham}}">
+                                                        </form>
+
+                                                    </div>
 
 
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                                                    <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Đóng</button>
                                                    
                                                 </div>
                                             </div>
@@ -261,10 +294,21 @@
                                     </div>
                                     <!-- Modal end -->
                                     <div class="panel panel-default">
-                                        <div class="panel-body detail">
-                                            Bán iPhone 7 128G Trắng - Fullbox - Tình Trạng : 99% trước sau, 4 góc và các cạnh cũng không 1 chút cấn móp, trầy xước lun đó nha, ngoại hình khỏi chê, nguyên Zin 100%, nghe gọi rõ ràng, Pin lâu, 100% Quốc Tế, Bao Restore hay Reset dòng 2 thoải mái. - Phụ kiện : Hộp + Cáp + Sạc + Tai Nghe Zin theo máy - Giá cho ACE : 13.900.000 Bảo hành Apple 10/2017 Để ACE yên tâm mình bao test 7 ngày đêm, nếu có lỗi gì mình sẽ đổi lại máy khác hoặc xin hoàn tiền lại nhé. Mình bán ở nhà có Wifi test máy vô tư. Mình mô tả chính xác về máy để không làm mất thời gian của ACE, đảm bảo chất lượng, nên ACE hãy yên tâm khi đến xem máy nha. Liên hệ : Trâm 0949.496.490
+                                        <div class="panel-body detail" id="moTa">
+                                            {{moTa}}
                                         </div>
                                     </div>
+                                    {{#ifCond ../layoutVM.userId '==' idNguoiBan}}
+                                    <h2>Thêm mô tả cho sản phẩm bạn đã đăng</h2>
+                                    <form method="POST" action="/product/themmota" id="addDetailForm">
+                                        <input  type="hidden" name="idSanPham" id="txtproID" value="{{idSanPham}}">
+                                        <textarea type="text" class="form-control" id="addDetail" name="addDetail"></textarea>
+                                        <span style="color:red;" id="error_addDetail"><strong></strong></span>
+                                        <button type="submit" id="addDetail" class="btn btn-default">Thêm mô tả</button>
+                                    </form>
+                                    {{else}}
+                                    {{/ifCond}}
+                                    
                                 </div>
                             </div>
                         </div>
@@ -275,7 +319,7 @@
             {{/each}} 
        
     
-      
+    <script src='https://cloud.tinymce.com/stable/tinymce.min.js'></script>       
     <script>
     // jQuery
     var giaHienTai = parseInt($('#giaHienTai').val());
@@ -296,7 +340,26 @@
                 }
         }
         bidable();
-         
+        
+        //var text =  $('#moTa').html($('#moTa').text()).text();
+        var parser = new DOMParser;
+        var dom = parser.parseFromString(
+            '<!doctype html><body>' + $('#moTa').text(),
+            'text/html');
+        var decodedString = dom.body.textContent;
+        $('#moTa').html($('#moTa').html($('#moTa').text()).text()); 
+       
+        initAddDetail();
+
+        updateUserBanned();
+
+        $("#cannotBid").click(function(){
+            alert('Bạn nhận qua nhiều điểm đánh giá thấp');
+        });
+        
+        $("#isBanned").click(function(){
+            alert('Bạn đã bị cấm đấu giá sản phẩm này');
+        });
     });
 
     $('#plus').click(function(){
@@ -355,7 +418,7 @@
             return p<0 || i<p ? ($0+',') : $0;
         });
     }
-     function bidable() {
+    function bidable() {
             if('{{products.0.tinhTrang}}' == 1){
                 $("#showbid").removeAttr("href");
                 $("#showbid").removeAttr("data-toggle");
@@ -379,16 +442,25 @@
                     $("#showbid").removeAttr("href");
                     $("#showbid").removeAttr("data-toggle");
                     $("#showbid").removeAttr("data-target");
-                    $("#showbid").html("Khong the BID");
+                    $("#showbid").html('<img id="cannotBid" src="/image/not_bid_icon.png" style="width:50px; height:50px;">');
                     $("#showbid").removeAttr("id");
                 }
             }else{
                 
+            }   
+
+            //danh sach trong lịch sử
+            var listHistory = JSON.parse('{{{json historyData}}}');
+            for(var i = 0; i < listHistory.length;i++){
+                if('{{layoutVM.userId}}' == listHistory[i].idNguoiDung){
+                    $("#showbid").html('<img id="isBanned" src="/image/not_bid_icon.png" style="width:50px; height:50px;">');
+                    break;
+                }
             }
-            
-     }
+
+    }
             // The mouse has entered the element, can reference the element via 't ,
-       
+  
     $("#acutionForm").submit(function(){
         if(confirm("Bạn có chắc chắn muốn đấu giá sản phẩm này")){
             var result = giaHienTai + buocGia*multi;
@@ -402,5 +474,107 @@
         }
         
     });
+
+
+    $('#addDetailForm').submit(function(){
+         tinyMCE.triggerSave();
+         if($('#addDetail').val()==""){
+            $('#error_addDetail').text("Không có thông tin gì để thêm mới");
+            return false;
+         }
+         else{
+             $('#error_addDetail').text("");
+             return true;
+         }
+    });
+
+    function initAddDetail(){
+        tinymce.init({
+         selector: '#addDetail',
+         theme: 'modern',
+         
+          plugins: [
+            'advlist autolink link lists charmap print preview hr anchor pagebreak spellchecker',
+            'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime nonbreaking',
+            'save table contextmenu directionality emoticons template paste textcolor'
+          ],
+          //content_css: 'css/content.css',
+          toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons'
+        });
+    }
+
+    $('.btn_ban').click(function(){
+
+
+        //danh sach trong lịch sử
+        var listHistory = JSON.parse('{{{json historyData}}}');
+
+        //do dai
+        var length = listHistory.length;    
+
+        //nguoi thu 2 khac nguoi co gia dau cao nhat (khac id,)
+        var id2stBuyer = -1; 
+
+        //gia cua nguoi thu 2 cao nhat ma khac nguoi thu nhat (khac id)
+        var cost2stBuyer = -1; //gia cua nguoi thu 2
+
+        //nguoi cao giá thứ 2 va khac voi nguoi cao gia thu 1
+        for(var i = length-2; i>=0 ; i--){
+            //neu id cua nguoi nao ma khac id cua nguoi dau tien theo thu tu giam dan danh sach lịch sử thi lay
+            if(listHistory[i].idNguoiDung != listHistory[length-1].idNguoiDung){
+                id2stBuyer = listHistory[i].idNguoiDung;
+                cost2stBuyer = listHistory[i].giaDau;
+                break;
+            }
+        }
+        //alert(id2stBuyer + " " + cost2stBuyer);
+        //alert(id2stBuyer + " " + cost2stBuyer);
+        
+        //id nguoi giu gia cao nhat
+        var idBestBuyer = JSON.parse('{{{json bestbuyer}}}')[0].idNguoiDung;
+
+        //id nguoi bi cam
+        var idNguoiBiCam = parseInt($(this).attr("id").split("_")[0]);
+       
+        //neu nguoi bi cam là nguoi giu gia cao nhat
+        if(idBestBuyer==idNguoiBiCam) {
+            //neu nguoi bi cam là bestbuyer thi
+            //lay gia cua thang cao thu 2 trong danh sach lich su
+            alert("ban da cam nguoi giu gia cao nhat" + cost2stBuyer);
+            //database ==> cap nhat thong tin san pham voi nguoi giu gia cao nhat là nguoi thứ 2
+            
+
+            $('#idNguoiBiCam').val(idNguoiBiCam);
+            $('#idNguoiGiuGiaCaoThuHai').val(id2stBuyer);
+            $('#giaDauNguoiGiuGiaCaoThuHai').val(cost2stBuyer);
+            //danhsachdaugia -> update tinh trang bang 1 doi voi id nguoi bi cam va id san pham
+
+        }else{
+            //databse==> danhsachdaugia -> update biCam = 1 doi vơi idnguoi bi cam và id san pham
+            $('#idNguoiBiCam').val(idNguoiBiCam);
+        }
+
+        $('#banForm').submit();
+        //alert(idNguoiBiCam + bestbuyer[0]hoTen);
+        //alert(idBestBuyer.localeCompare(idNguoiBiCam));
+    });
+
+    function updateUserBanned(){
+        //danh sach trong lịch sử
+        var listHistory = JSON.parse('{{{json historyData}}}');
+
+        for(var i = 0; i < listHistory.length; i++){
+            if(listHistory[i].biCam){
+                $('.' + listHistory[i].idNguoiDung + '_banned' ).html("<span style='color:orange;'><i><strong>Banned<strong><i></span>");
+            }
+        }
+    }
+
+    $('.reject_ban').click(function(){
+        alert("Bạn Không phải người bán nên không thể kích người khác!");
+    });
+
+
+
     </script>
     

@@ -209,7 +209,7 @@ exports.insertDanhSachDauGia = function(idSanPham, idNguoiDung, giaDau){
         thoiDiemDauGia : date
     };
     var sql = mustache.render(
-        'insert into danhsachdaugia values({{idSanPham}}, {{idNguoiDung}}, {{giaDau}}, "{{thoiDiemDauGia}}")',
+        'insert into danhsachdaugia values({{idSanPham}}, {{idNguoiDung}}, {{giaDau}}, "{{thoiDiemDauGia}}", 0)',
         obj
     );
     return db.insert(sql);
@@ -227,7 +227,61 @@ exports.updateEndAuction = function(idSanPham){
 
     return db.update(sql);
 }
+//dau gia tu dong
 
+exports.loadDauGiaTudong = function(idSanPham){
+    var obj = {
+        idSanPham : idSanPham
+    };
+     var sql = mustache.render(
+        'select * from daugiatudong where idSanPham = {{idSanPham}}',
+        obj 
+    );
+
+    return db.load(sql);
+}
+
+exports.insertDauGiaTuDong = function(idSanPham, idNguoiDung, giaDau){
+    var date = helper.getDateFormated(new Date());
+    var obj = {
+        idSanPham : idSanPham,
+        idNguoiDung : idNguoiDung,
+        giaDau : giaDau,
+        thoiDiemDauGia : date
+    };
+    var sql = mustache.render(
+        'insert into daugiatudong values({{idSanPham}}, {{idNguoiDung}}, {{giaDau}}, "{{thoiDiemDauGia}}")',
+        obj
+    );
+    return db.insert(sql);
+}
+
+exports.updateDauGiaTudong = function(idSanPham, idNguoiDung, giaDau){
+    var date = helper.getDateFormated(new Date());
+    var obj = {
+        idSanPham : idSanPham,
+        idNguoiDung : idNguoiDung,
+        giaDau : giaDau,
+        thoiDiemDauGia : date
+    };
+    var sql = mustache.render(
+        'update daugiatudong set idNguoiDung={{idNguoiDung}}, giaMax={{giaDau}}, thoiDiemDauGia="{{thoiDiemDauGia}}" where idSanPham={{idSanPham}}',
+        obj
+    );
+    return db.update(sql);
+}
+
+exports.deleteDauGiaTudong = function(idSanPham){
+    var obj = {
+        idSanPham : idSanPham
+    };
+     var sql = mustache.render(
+        'delete from daugiatudong where idSanPham = {{idSanPham}}',
+        obj 
+    );
+
+    return db.delete(sql);
+}
 
 ///by Lê Anh Khôi
 exports.loadProductWithMaxId = function(){

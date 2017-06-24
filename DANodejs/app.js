@@ -71,6 +71,10 @@ app.engine('hbs', handlebars({
              var phutDang = helper.convertNumber(origin.getMinutes());
              var giayDang = helper.convertNumber(origin.getSeconds());
              return gioDang + ":" + phutDang + ":" + giayDang + " " + ngayDang + "/" + thangDang + "/" + namDang;
+        },
+
+        urlImage_format: function(str) {
+            return str.split("#").join("/");
         }
        
 
@@ -93,6 +97,7 @@ app.use(handleLayout);
 app.use('/', homeController);
 app.use('/product', productController);
 app.use('/user', userController);
+
 app.use(handle404);
 
 app.listen(3000);

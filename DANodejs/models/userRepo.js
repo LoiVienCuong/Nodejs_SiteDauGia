@@ -153,27 +153,28 @@ exports.resetPass = function(entity){
 
 }
 exports.loadListBiding = function(userId){
-    var obj = {
+     var obj = {
         userId: userId
     };
     var sql = mustache.render(
-        'select s.idSanPham, s.tenSanPham,s.giaHienTai,s.giaMuaNgay,s.urlImage,s.luotBid,s.thoiDiemKetThuc,n.hoTen,d.giaDau from sanpham s,nguoidung n,danhsachdaugia d where d.idNguoiDung={{userId}} and d.giaDau=(SELECT MAX(d1.giaDau) from danhsachdaugia d1 WHERE d1.idSanPham=d.idSanPham) and s.tinhTrang=0 and s.idSanPham =d.idSanPham and s.idNguoiGiaCaoNhat=n.idNguoiDung',
+        'select s.idSanPham, s.tenSanPham,s.giaHienTai,s.giaMuaNgay,s.urlImage,s.luotBid,s.thoiDiemKetThuc,n.hoTen,d.giaDau from sanpham s,nguoidung n,danhsachdaugia d where d.idNguoiDung={{userId}} and d.giaDau=(SELECT MAX(d1.giaDau) from danhsachdaugia d1 WHERE d1.idSanPham=d.idSanPham and d1.idNguoiDung=d.idNguoiDung) and s.tinhTrang=0 and s.idSanPham =d.idSanPham and s.idNguoiGiaCaoNhat=n.idNguoiDung',
         obj
     );
     return db.load(sql);
 }
 exports.loadListWin = function(userId){
-    var obj = {
+     var obj = {
         userId: userId
     };
     var sql = mustache.render(
-        'select s.idSanPham,s.tenSanPham,s.idNguoiBan,s.giaMuaNgay,s.urlImage,d.giaThang,d.idNguoiDung,d.nhanxet from sanpham s,danhsachdaugiathang d where d.idNguoiDung={{userId}} and s.idSanPham =d.idSanPham',
+        'select s.idSanPham,s.tenSanPham,s.idNguoiBan,s.giaMuaNgay,s.urlImage,d.giaThang,d.idNguoiDung,d.nhanXetNguoiBan from sanpham s,danhsachdaugiathang d where d.idNguoiDung={{userId}} and s.idSanPham =d.idSanPham',
         obj
     );
     return db.load(sql);
 }
 exports.addComment = function(entity){
-    console.log(entity.date);
+    var d = helper.getDateFormated(new Date());
+    entity.date=d;
     var sql = mustache.render(
         'insert into chitietdanhgia values({{idSanPham}},{{idNguoiDung}},{{idNguoiBan}},{{chamdiem}},"{{nhanxet}}","{{date}}")',
         entity
@@ -181,52 +182,52 @@ exports.addComment = function(entity){
     return db.insert(sql);
 
 }
-exports.increaseScore = function(idNguoiBan){
-    var obj = {
-        idNguoiBan: idNguoiBan
+exports.increaseScore = function(id){
+     var obj = {
+        id: id
     };
     var sql = mustache.render(
-        'update nguoidung set diemDanhGiaCong=diemDanhGiaCong+1 where idNguoiDung={{idNguoiBan}}',
+        'update nguoidung set diemDanhGiaCong=diemDanhGiaCong+1 where idNguoiDung={{id}}',
         obj
     );
     return db.update(sql);
 
 }
-exports.decreaseScore = function(idNguoiBan){
-    var obj = {
-        idNguoiBan: idNguoiBan
+exports.decreaseScore = function(id){
+     var obj = {
+        id: id
     };
     var sql = mustache.render(
-        'update nguoidung set diemDanhGiaTru=diemDanhGiaTru+1 where idNguoiDung={{idNguoiBan}}',
+        'update nguoidung set diemDanhGiaTru=diemDanhGiaTru+1 where idNguoiDung={{id}}',
         obj
     );
     return db.update(sql);
 }
-exports.isComment = function(userId,idSanPham){
-    var obj = {
+exports.isCommentSeller = function(userId,idSanPham){
+     var obj = {
         userId: userId,
         idSanPham: idSanPham
     };
     var sql = mustache.render(
-        'update danhsachdaugiathang set nhanxet=1 where idNguoiDung={{userId}} and idSanPham={{idSanPham}}',
+        'update danhsachdaugiathang set nhanXetNguoiBan=1 where idNguoiDung={{userId}} and idSanPham={{idSanPham}}',
         obj
     );
     return db.update(sql);
 
 }
 exports.loadComment = function(userId){
-    var obj = {
+     var obj = {
         userId: userId
     };
     var sql = mustache.render(
-        'select s.idSanPham, s.tenSanPham, c.idNguoiDanhGia, c.congHayTru, c.nhanXet, c.thoiDiemDanhGia from sanpham s,chitietdanhgia c where c.idNguoiDuocDanhGia={{userId}} and s.idSanPham=c.idSanPham',
+        'select s.idSanPham, s.tenSanPham, c.idNguoiDanhGia, n.hoTen, c.congHayTru, c.nhanXet, c.thoiDiemDanhGia from sanpham s,chitietdanhgia c,nguoidung n where c.idNguoiDuocDanhGia={{userId}} and c.idNguoiDanhGia=n.idNguoiDung and s.idSanPham=c.idSanPham',
         obj
     );
     return db.load(sql);
 }
 
 exports.loadScore = function(userId){
-    var obj = {
+     var obj = {
         userId: userId
     };
     var sql = mustache.render(
@@ -234,4 +235,50 @@ exports.loadScore = function(userId){
         obj
     );
     return db.load(sql);
+}
+
+exports.loadSelling = function(userId){
+     var obj = {
+        userId: userId
+    };
+    var sql = mustache.render(
+        'select  s.idSanPham, s.tenSanPham,s.giaHienTai,s.giaMuaNgay,s.urlImage,s.luotBid,s.thoiDiemKetThuc from sanpham s where s.idNguoiBan={{userId}} and s.tinhTrang=0 and s.thoiDiemKetThuc>CURRENT_TIMESTAMP()',
+        obj
+    );
+    return db.load(sql);
+}
+
+
+exports.loadListSelled = function(userId){
+     var obj = {
+        userId: userId
+    };
+    var sql = mustache.render(
+        'select s.idSanPham,s.tenSanPham,s.idNguoiBan,s.giaMuaNgay,s.urlImage,d.giaThang,d.idNguoiDung,d.nhanXetNguoiMua from sanpham s,danhsachdaugiathang d where s.idSanPham =d.idSanPham and s.idNguoiBan={{userId}}',
+        obj
+    );
+    return db.load(sql);
+}
+
+exports.addCommentSeller = function(entity){
+    var d = helper.getDateFormated(new Date());
+    entity.date=d;
+    var sql = mustache.render(
+        'insert into chitietdanhgia values({{idSanPham}},{{idNguoiBan}},{{idNguoiDung}},{{chamdiem}},"{{nhanxet}}","{{date}}")',
+        entity
+    );
+    return db.insert(sql);
+
+}
+
+exports.isCommentBider = function(idSanPham){
+    var obj = {
+        idSanPham: idSanPham
+    };
+    var sql = mustache.render(
+        'update danhsachdaugiathang set nhanXetNguoiMua=1 where idSanPham={{idSanPham}}',
+        obj
+    );
+    return db.update(sql);
+
 }

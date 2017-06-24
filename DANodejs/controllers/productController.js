@@ -1,7 +1,14 @@
 var express = require('express'),
+    formidable = require('formidable'),
+    fs = require('fs'),
+    path = require('path'),
+    
     productRepo = require('../models/productRepo'),
     categoryRepo = require('../models/categoryRepo'),
     userRepo = require('../models/userRepo'),
+    danhsachdaugiaRepo = require('../models/danhsachdaugiaRepo'),
+    danhsachdaugiathangRepo = require('../models/danhsachdaugiathangRepo'),
+    helper = require('../fn/helper'),
      q = require('q');
 
 var activeCategoty;
@@ -63,6 +70,8 @@ r.post('/bycat/:id', function(req, res) {
         }
        
 });
+
+//da sua 21/06/2017
 r.get('/chitietsanpham/:id', function(req, res) {
       
         var proId = req.params.id;
@@ -125,7 +134,6 @@ r.get('/chitietsanpham/:id', function(req, res) {
 
 
 });
-
 
 
 r.get('/timkiem', function(req, res) {
@@ -269,45 +277,152 @@ r.get('/delete/:id', function(req, res){
 
 });
 
+
 r.post('/daugia', function(req, res) {
     //update bang product, danh sach dau gia
     //lay cac thong tin : id nguoi dau gia, giadau, idSanpham
     var idUser = req.cookies.userLogin;
     var idSanPham = req.body.idSanPham;
-    var giaDau = req.body.giaDau;
+    var giaDau = parseInt(req.body.giaDau);
     var giaMuaNgay = req.body.giaMuaNgay;
+    var giaHienTai = parseInt(req.body.giaHienTai);
     var luotBid = parseInt(req.body.luotBid);
-    console.log(idUser + " " + idSanPham + " " + giaDau + " " + luotBid);
-    /*productRepo.updateProductByGiaHienTaiVaNguoiGiaCaoNhat(idSanPham,idUser,giaDau).then(function(){
+    var isAutoBID=req.body.AutoBID;
+    var buocGia=parseInt(req.body.buocGia);
+    tong=giaHienTai+buocGia;
+    console.log(idUser + " " + idSanPham + " " + giaDau + " " + luotBid+ " "+ isAutoBID + " "+giaHienTai+" "+buocGia+ " "+ tong);
+    if(isAutoBID==1)
+    {
 
+            q.all([
+                productRepo.loadDauGiaTudong(idSanPham).fail(function(error){console.log(error)}),
+            ]).spread(function(cRows) {
+                console.log(cRows);
+                console.log("auto");
+                if(giaMuaNgay==giaDau) {
+                    productRepo.insertDanhSachDauGia(idSanPham, idUser,giaDau);
+                    productRepo.updateEndAuction(idSanPham).fail(function(error){console.log(error)});
 
-    }).fail(function(error){console.log(error)});*/
-    q.all([
-        productRepo.updateProductByGiaHienTaiVaNguoiGiaCaoNhat(idSanPham,idUser,giaDau,luotBid+1), //update sanpham tabel
-       
-    ]).spread(function(cRows, cRows2) {
-        console.log(cRows);
-        if(giaMuaNgay==giaDau) {
+                }
+                 else
+                 {       
+                         if(cRows.length>0)
+                         {
+                                var giaMax= parseInt(cRows[0].giaMax);
+                                console.log(giaMax);
+                                if(giaMax<giaDau)
+                                {
+                                        productRepo.updateDauGiaTudong(idSanPham, idUser, giaDau);
+                                        productRepo.insertDanhSachDauGia(idSanPham, idUser,giaMax+buocGia);
+                                        productRepo.updateProductByGiaHienTaiVaNguoiGiaCaoNhat(idSanPham,idUser,giaMax+buocGia,luotBid+1).then(function(){
+                                                res.redirect('back');
+                                         });; //update sanpham tabel
 
-            //update in sanpham table , set tinhTrang = 1
-            productRepo.updateEndAuction(idSanPham).fail(function(error){console.log(error)});
+                                }
+                                else if(giaMax>giaDau)
+                                {
+                                         productRepo.insertDanhSachDauGia(idSanPham, idUser,giaDau);
+                                        productRepo.insertDanhSachDauGia(idSanPham, cRows[0].idNguoiDung, giaDau+buocGia);
 
-            //insert danh sach dau gia thang
-            danhsachdaugiathangRepo.insertNewWinAuction(idSanPham, idUser, giaDau).fail(function(error){console.log(error)});
-        }
-       
-            //insert danhsachdaugia, store history auction
-        danhsachdaugiaRepo.insertDanhSachDauGia(idSanPham, idUser, giaDau).then(function(){
-                res.redirect('back');
-        });
-       
-    }).fail(function(error){
-       console.log(error);
-    });
+                                        productRepo.updateProductByGiaHienTaiVaNguoiGiaCaoNhat(idSanPham,cRows[0].idNguoiDung,giaDau+buocGia,luotBid+2).then(function(){
+                                            res.redirect('back');
+                                     }); //update sanpham tabel
+
+                                }
+                                else
+                                {
+                                    productRepo.insertDanhSachDauGia(idSanPham, idUser,giaDau);
+                                    productRepo.insertDanhSachDauGia(idSanPham, cRows[0].idNguoiDung,giaDau);
+                                    productRepo.updateProductByGiaHienTaiVaNguoiGiaCaoNhat(idSanPham,cRows[0].idNguoiDung,giaDau,luotBid+2).then(function(){
+                                            res.redirect('back');
+                                     }); //update sanpham tabel
+
+                                }
+
+                         }
+                         else
+                         {
+                            productRepo.insertDauGiaTuDong(idSanPham, idUser, giaDau);
+                            productRepo.insertDanhSachDauGia(idSanPham, idUser,giaHienTai+buocGia);
+                            productRepo.updateProductByGiaHienTaiVaNguoiGiaCaoNhat(idSanPham,idUser,giaHienTai+buocGia,luotBid+1).then(function(){
+                                                res.redirect('back');
+                                         });; //update sanpham tabel
+
+                        }
+                     
+               }
+            }).fail(function(error){
+               console.log(error);
+            });
+    }
+    else
+    {
+
+              q.all([
+                productRepo.loadDauGiaTudong(idSanPham).fail(function(error){console.log(error)}),
+            ]).spread(function(cRows) {
+                console.log(cRows);
+                console.log("notauto");
+                if(giaMuaNgay==giaDau) {
+                    productRepo.insertDanhSachDauGia(idSanPham, idUser,giaDau);
+                    productRepo.updateEndAuction(idSanPham).fail(function(error){console.log(error)});
+
+                }
+                 else
+                 {       
+                         if(cRows.length>0)
+                         {
+                                var giaMax= parseInt(cRows[0].giaMax);
+                                console.log(giaMax);
+                                if(giaMax<giaDau)
+                                {
+                                         productRepo.deleteDauGiaTudong(idSanPham);
+                                        productRepo.insertDanhSachDauGia(idSanPham, idUser,giaDau);
+                                        productRepo.updateProductByGiaHienTaiVaNguoiGiaCaoNhat(idSanPham,idUser,giaDau,luotBid+1).then(function(){
+                                                res.redirect('back');
+                                         });; //update sanpham tabel
+
+                                }
+                                else if(giaMax>giaDau)
+                                {
+                                         productRepo.insertDanhSachDauGia(idSanPham, idUser,giaDau);
+                                        productRepo.insertDanhSachDauGia(idSanPham, cRows[0].idNguoiDung, giaDau+buocGia);
+
+                                        productRepo.updateProductByGiaHienTaiVaNguoiGiaCaoNhat(idSanPham,cRows[0].idNguoiDung,giaDau+buocGia,luotBid+2).then(function(){
+                                            res.redirect('back');
+                                     }); //update sanpham tabel
+
+                                }
+                                else
+                                {
+                                    productRepo.insertDanhSachDauGia(idSanPham, idUser,giaDau);
+                                    productRepo.insertDanhSachDauGia(idSanPham, cRows[0].idNguoiDung,giaDau);
+                                    productRepo.updateProductByGiaHienTaiVaNguoiGiaCaoNhat(idSanPham,cRows[0].idNguoiDung,giaDau,luotBid+2).then(function(){
+                                            res.redirect('back');
+                                     }); //update sanpham tabel
+
+                                }
+
+                         }
+                         else
+                         {
+                            productRepo.insertDanhSachDauGia(idSanPham, idUser,giaDau);
+                            productRepo.updateProductByGiaHienTaiVaNguoiGiaCaoNhat(idSanPham,idUser,giaDau,luotBid+1).then(function(){
+                                                res.redirect('back');
+                                         });; //update sanpham tabel
+
+                        }
+                     
+               }
+            }).fail(function(error){
+               console.log(error);
+            });
+    }
 
 });
 
-//by Lê Anh Khôi 22/06/2017
+
+///by Lê Anh Khôi 22/06/2017
 r.post('/dangsanpham',function(req,res){
           var isWait = true;
           var userId = req.cookies.userLogin;
@@ -464,10 +579,4 @@ r.post('/themmota',function(req, res){
 
 
 });
-    //neu idUsser va idSanPham da có thi dung câu lệnh update
-    //neu chưa có thì insert
-
-    //neu giadau bang gia mua ngay thi nguoi da thang
-      
-
 module.exports = r;

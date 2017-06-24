@@ -1,5 +1,5 @@
 {{#section 'title'}}
-  Sản Phẩm Đấu Giá Thắng
+  Sản Phẩm Đã Bán
 {{/section}}
 
 {{#if noProducts }}
@@ -22,11 +22,11 @@
                         <div>Giá thắng</div>
                         <div name="hightestBidder"> <b> {{number_format giaThang}}</b> </div>
                     </div>
-                        {{#if nhanXetNguoiBan}}
+                        {{#if nhanXetNguoiMua}}
                             <form class="form-horizontal">
                                     <div class="col-sm-2"></div>
                                     <div class="col-sm-4">
-                                        <label class="control-label" >Đã Nhận Xét Người Bán</label>
+                                        <label class="control-label" >Đã Nhận Xét Người Mua</label>
                                     </div>
                                     
                             </form>
@@ -63,7 +63,7 @@
                                     <div class="col-sm-2">
                                           
                                           <div class="btn-group" style="padding-top:35px;">
-                                            <button class="btn btn-primary" type="submit" >Nhận Xét </button>
+                                            <button class="btn btn-primary" type="submit">Nhận Xét </button>
                                           </div>
                                     </div>
                             </form>
