@@ -37,28 +37,50 @@ exports.loadDetail = function(id) {
     return d.promise;
 }
 
-exports.insert = function(entity) {
+exports.insert = function(tenLoaiSanPham) {
+    var entity = {
+        tenLoaiSanPham: tenLoaiSanPham
+    }
     var sql = mustache.render(
-        'insert into categories(CatName) values("{{catName}}")',
+        'insert into loai(tenLoaiSanPham) values("{{tenLoaiSanPham}}")',
         entity
     );
 
     return db.insert(sql);
 }
 
-exports.update = function(entity) {
+exports.update = function(idLoaiSanPham,tenLoaiSanPham) {
+    var obj =
+    {
+        catId: idLoaiSanPham,
+        catName: tenLoaiSanPham
+
+    };
     var sql = mustache.render(
-        'update categories set CatName = "{{catName}}" where CatID = {{catId}}',
-        entity
+        'update loai set tenLoaiSanPham = "{{catName}}" where idLoaiSanPham = {{catId}}',
+        obj
     );
 
     return db.update(sql);
 }
 
+
 exports.delete = function(entity) {
     var sql = mustache.render(
         'delete from categories where CatID = {{catId}}',
         entity
+    );
+
+    return db.delete(sql);
+}
+
+exports.delete = function(idLoaiSanPham) {
+     var obj = {
+        idLoaiSanPham: idLoaiSanPham
+    };
+    var sql = mustache.render(
+        'delete from loai where idLoaiSanPham = {{idLoaiSanPham}}',
+        obj
     );
 
     return db.delete(sql);
