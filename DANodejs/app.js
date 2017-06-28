@@ -8,6 +8,7 @@ var express = require('express'),
     wnumb = require('wnumb'),
     handle404 = require('./middle-wares/handle-404'),
     homeController = require('./controllers/homeController'),
+     manageController = require('./controllers/manageController'),
    handleLayout = require('./middle-wares/handleLayout'),
    productController = require('./controllers/productController'),
    userController = require('./controllers/userController'),
@@ -97,6 +98,7 @@ app.use(handleLayout);
 app.use('/', homeController);
 app.use('/product', productController);
 app.use('/user', userController);
+app.use('/manage',manageController);
 
 app.use(handle404);
 
