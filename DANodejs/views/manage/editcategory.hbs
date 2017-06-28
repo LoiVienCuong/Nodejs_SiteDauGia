@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Quản lý danh sách danh mục</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="/js/jquery-3.1.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <style>
+    /* Remove the navbar's default rounded borders and increase the bottom margin */
+    
+    .navbar {
+        margin-bottom: 50px;
+        border-radius: 0;
+    }
+    /* Remove the jumbotron's default bottom margin */
+    
+    .jumbotron {
+        margin-bottom: 0;
+    }
+    /* Add a gray background color and some padding to the footer */
+    
+    footer {
+        background-color: #f2f2f2;
+        padding: 25px;
+    }
+    </style>
+</head>
+
+    <body>
+       
+          <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    
+                </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav">
+                         <li><a href="/manage">Danh sách danh mục</a></li>
+                        <li><a href="/manage/selllist">Danh sách xin bán</a></li>
+                        <li><a href="/manage/usermanage">Danh sách người dùng</a></li>
+                    </ul>
+                </div>
+            </div>
+          </nav>
+
+          <div class="row">
+                <div class="container-fluid">
+     
+                        <form class="form-inline" method="post" id= "formeditcategory" action = "/manage/edit" >
+                        {{#each category}}
+                         <div>
+                              <div class="form-group">
+                                    <label for="CatNameTextbox">Mã danh mục</label>
+                                    <input type="text" class="form-control" id="CatNameTextbox" name="idLoaiSanPham" placeholder="Tên danh mục" value="{{idLoaiSanPham}}" disabled="">
+                              </div>
+                        
+                               
+                        </div>
+                        <div>
+                              <div class="form-group">
+                                    <label for="catNameTextbox">Tên danh mục</label>
+                                    <input type="text" class="form-control" id="catNameTextbox" name="tenLoaiSanPham" placeholder="Tên danh mục" value="{{tenLoaiSanPham}}">
+                                    <span id="catName_error" style="color: red"></span>
+                              </div>
+                               
+                        </div>
+                        <br/>
+                        <div>
+                             <button type="submit" class="btn btn-success">Xác nhận</button>
+                         </div>
+                         {{/each}}
+                        </form>
+                  
+                </div>
+         </div>
+
+    <footer class="container-fluid text-center">
+            <p>Online Store Copyright</p>
+     </footer>
+
+     <script type="text/javascript">
+       $('#registerForm').submit(function(){
+            var catName = $('#catNameTextbox').val();
+            if(catName == "")
+            {
+                $('#catName_error').text("Tên không được bỏ trống");
+                return false;
+            }
+            else
+                return true;
+
+
+       });
+     </script>
+</body>

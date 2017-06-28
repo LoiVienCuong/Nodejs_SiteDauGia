@@ -1,0 +1,80 @@
+{{#section 'title'}}
+  Danh sach User
+{{/section}}
+
+    <body>
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                   
+                </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav">
+                         <li><a href="/manage">Danh sách danh mục</a></li>
+                        <li><a href="/manage/selllist">Danh sách xin bán</a></li>
+                        <li><a href="/manage/usermanage">Danh sách người dùng</a></li>
+                    </ul>
+                </div>
+                </div>
+                </nav>
+                <div class="panel panel-default">
+  <!-- Default panel contents -->
+
+
+  <!-- Table -->
+  <div class="row">
+  <div class="container-fluid">
+  {{!-- <div class="col-lg-offset-1 col-lg-11"> --}}
+    <div class="panel-heading"><h4>Danh sách danh mục</h4></div>
+  <table class="table table-striped">
+     <tr class="success">
+  		  <th class = "text-center">ID</th>
+        <th class = "text-center">Họ tên</th>
+        <th class = "text-center">Địa chỉ</th>
+        <th class = "text-center">Email</th>
+        <th class = "text-center">Điểm đánh giá cộng</th>
+        <th class = "text-center">Điểm đánh giá trừ</th>
+        <th class = "text-center">thời điểm kết thúc rao bán</th>
+        <th class = "text-center">Vị Trí</th>
+        <th class = "text-center" > &nbsp </th>
+     </tr>
+  {{#each users}}
+  <tr>
+  	 
+  			<td class = "text-center ">{{idNguoiDung}}</td>
+   			<td class = "text-center ">{{hoTen}}</td>
+        <td class = "text-center ">{{diaChi}}</td>
+        <td class = "text-center ">{{email}}</td>
+        <td class = "text-center ">{{diemDanhGiaCong}}</td>
+        <td class = "text-center ">{{diemDanhGiaTru}}</td>
+        <td class = "text-center ">{{time_format thoiDiemKetThucRaoBan}}</td>
+        <td class = "text-center ">{{viTri}}</td>
+   			<td class = "text-center ">
+   			  <a class="btn btn-warning" href="/manage/usermanage/resetpass/{{idNguoiDung}}" role="button">
+   					<span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+   				</a>
+
+   				<a class="btn btn-danger" href="/manage/usermanage/remove/{{idNguoiDung}}" role="button"> 
+   				   <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+   				</a>
+   			
+  			 </td>
+  </tr>
+ {{/each}}  
+   </table>
+
+  
+  
+   				
+  </div> 
+    </div>
+  </div>
+    <footer class="container-fluid text-center">
+            <p>Online Store Copyright</p>
+     </footer>
+</body>
