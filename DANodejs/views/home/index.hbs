@@ -59,9 +59,9 @@ Trang chủ
                 
                {{#if ../layoutVM.isCookie}}
 
-                  <a href="/product/favourite/{{idSanPham}}" id="{{idSanPham}}favor" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu thích&nbsp;</a> 
+                  <a href="/product/favourite/{{idSanPham}}" id="{{idSanPham}}favor" type="button" class="btn btn-danger btn-lg cart"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span></a>
                   {{else}}
-                  <a href="/user/login" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a> 
+                  <a href="/user/login" type="button" class="btn btn-danger btn-lg cart"><span class="glyphicon glyphicon-heart" aria-hidden="true"></a> 
                   {{/if}}
               </div>
             </div>
@@ -70,7 +70,10 @@ Trang chủ
          {{/each}}
        </div>
         
-       <div><h1 style="width:400px;background-color:#F8F8F8;border: 1px solid #F8F8F8;border-radius:25px;margin-top:40px;margin-bottom:-20px;color: #333333"><strong><i>TOP 5 GIÁ CAO NHẤT</i><strong></h1></div><br><br>
+       <div><h1 style="width:400px;background-color:#F8F8F8;border: 1px solid #F8F8F8;border-radius:25px;margin-top:40px;margin-bottom:-20px;color: #333333"><strong><i>TOP 5 GIÁ CAO NHẤT</i><strong></h1>
+       </div>
+       <br>
+       <br>
        <div class="row">
          {{#each productsCost }}
         
@@ -106,9 +109,9 @@ Trang chủ
                 
                 {{#if ../layoutVM.isCookie}}
 
-                  <a href="/product/favourite/{{idSanPham}}" id="{{idSanPham}}favor" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a> 
+                  <a href="/product/favourite/{{idSanPham}}" id="{{idSanPham}}favor" type="button" class="btn btn-danger btn-lg cart"><span class="glyphicon glyphicon-heart" aria-hidden="true"></a> 
                   {{else}}
-                  <a href="/user/login" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a> 
+                  <a href="/user/login" type="button" class="btn btn-danger btn-lg cart"><span class="glyphicon glyphicon-heart" aria-hidden="true"></a> 
                   {{/if}}
               </div>
             </div>
@@ -156,9 +159,9 @@ Trang chủ
                  
                {{#if ../layoutVM.isCookie}}
 
-                  <a href="/product/favourite/{{idSanPham}}" id="{{idSanPham}}favor" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a> 
+                  <a href="/product/favourite/{{idSanPham}}" id="{{idSanPham}}favor" type="button" class="btn btn-danger btn-lg cart"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span></a> 
                   {{else}}
-                  <a href="/user/login" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a> 
+                  <a href="/user/login" type="button" class="btn btn-danger btn-lg cart"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>;</a> 
                   {{/if}}
               </div>
             </div>
@@ -306,8 +309,10 @@ Trang chủ
                 var endTime = new Date(pro1[i].thoiDiemKetThuc);  
                  
                 var distance = Date.parse(endTime) - Date.parse(now); 
-                if(distance<=0)  $('.' + pro1[i].idSanPham + 'extra').text("Đã kết thúc");
+                if((distance<=0) || (pro1[i].tinhTrang == 1))  $('.' + pro1[i].idSanPham + 'extra').text("Đã kết thúc");
                 else $('.' + pro1[i].idSanPham + 'extra').text(formatExtraTime(distance));
+
+                
                 //console.log(formatExtraTime(distance));
             }
             for(var i = 0 ; i < pro2.length; i++){
@@ -315,7 +320,7 @@ Trang chủ
                 var endTime = new Date(pro2[i].thoiDiemKetThuc);  
                  
                 var distance = Date.parse(endTime) - Date.parse(now); 
-                if(distance<=0)  $('.' + pro2[i].idSanPham + 'extra').text("Đã kết thúc");
+                if(distance<=0 || pro2[i].tinhTrang == 1)  $('.' + pro2[i].idSanPham + 'extra').text("Đã kết thúc");
                 else $('.' + pro2[i].idSanPham + 'extra').text(formatExtraTime(distance));
                 //console.log(formatExtraTime(distance));
             }
@@ -324,7 +329,7 @@ Trang chủ
                 var endTime = new Date(pro3[i].thoiDiemKetThuc);  
                  
                 var distance = Date.parse(endTime) - Date.parse(now); 
-                if(distance<=0)  $('.' + pro3[i].idSanPham + 'extra').text("Đã kết thúc");
+                if(distance<=0 || pro3[i].tinhTrang == 1)  $('.' + pro3[i].idSanPham + 'extra').text("Đã kết thúc");
                 else $('.' + pro3[i].idSanPham + 'extra').text(formatExtraTime(distance));
                 //console.log(formatExtraTime(distance));
             }
@@ -335,4 +340,18 @@ Trang chủ
           }, 1000);
          //setTimeExtra(pro);
     }
+
+
+    $(".panel").hover(
+        function(event) {
+            // The mouse has entered the element, can reference the element via 'this'
+           
+                  $(this).addClass(' magictime puffIn');
+        },
+        function(event) {
+          
+         
+            // The mouse has left the element, can reference the element via 'this'
+        }
+    );
   </script>
