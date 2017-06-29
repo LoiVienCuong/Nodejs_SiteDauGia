@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Tìm kiếm</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="/js/jquery-3.1.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/clientHelper.js"></script>
+    <style>
+    /* Remove the navbar's default rounded borders and increase the bottom margin */
+    
+    .navbar {
+        margin-bottom: 50px;
+        border-radius: 0;
+    }
+    /* Remove the jumbotron's default bottom margin */
+    .container{
+      width: 100%;
+    }
+    .jumbotron {
+        margin-bottom: 0;
+    }
+    /* Add a gray background color and some padding to the footer */
+    
+    footer {
+        background-color: #f2f2f2;
+        padding: 25px;
+    }
+    </style>
+</head>
+
+    <body>
+         <div class="container" style="border: 0px solid red;">
+          <div class="col-sm-3 text-left" style="margin-left: -40px;border: 0px solid red;"><img src="/image/title.jpg"></div>
+         
+          <div class="col-sm-9 text-center" style="margin-top: 35px;font:2em 'Open Sans', sans-serif;"><img src="/image/fonttitle.jpg"></div>
+        </div>
+
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">Trang Chủ</a>
+                </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav">
+                      
+                    </ul>
+                  
+                </div>
+            </div>
+        </nav>
+        <div>
+
+       <div class="row text-center col-sm-12" style="margin-left:100px;">
+          <div class="form-group">
+            <div class="col-sm-4"> <label class="text-left" style="margin-left:-330px;">Tên Sản Phẩm</label>
+                  <input type="text"  style="margin-bottom:30px;" class="form-control" name="productName" id="tenSanPham" size="50" placeholder="Gõ tên sản phẩm muốn tìm" ></div>
+
+            <div class="col-sm-4"> <label class="text-left" style="margin-left:-290px;">Tên Loại Sản Phẩm</label>
+                  <input type="hidden" class="form-control" id="idLoaiSanPham" name="idLoaiSanPham">
+                  <select class="form-control" style="margin-bottom:30px;" name="loai" id="loai">
+                    <option>Tất cả</option>
+                   {{#each categories}}
+                    <option>{{tenLoaiSanPham}}</option>
+                   {{/each}}
+                  </select></div> 
+            <div class="col-sm-4 text-left" style="margin-top:22px;">
+                    <button class="btn btn-success" id="btnSearch"><span>Tìm kiếm</span></button>
+            </div>
+           </div>
+        </div></br>
+
+        
+        
+        <div class="col-sm-12" style="height:100px;background-color:#F8F8F8;border: 1px solid #F8F8A3;border-radius:25px;">
+            <div class="form-group">
+              <label class="control-label col-sm-5"><h1><strong>KẾT QUẢ TÌM KIẾM<strong></h1></label>
+              <div class="col-sm-7 text-right" style="padding-top:23px;">
+                   <div class="btn-group">
+                    <button class="btn btn-default" id="thoigiangiam">Thời gian kết thúc giảm dần </button>
+                <button class="btn btn-default" id="giatang">Giá tăng dần </button>
+                  </div>
+              </div>
+            </div>
+        </div>
+
+       
+
+        <div class="row" id="removeBeforLoad" style="margin-top:200px;">
+            <div id="-1" style="display:block;"></div>
+        </div>
+
+        <div class="row"><button class="btn btn-primary" id="loadMore"><h2><strong><i>Load More<i><strong></h2></button></div>
+
+      
+
+    </body>
+
+    <script type="text/javascript">
+
+    var pros; //danh sach các sản phẩm trả về từ server
+
+    var currentShowNumber = 0; //so san pham hien tai duoc load
+     var isFavor;
+    var proFavor ; //danh sach yeu thich cua nguoi dung
+     if({{userId}})
+      {
+        
+         proFavor = JSON.parse('{{{json listFavourite}}}');
+      }
+    $(document).ready(function(){
+       $('#loadMore').hide();
+       $('#removeBeforLoad').html('<div id="-1" style="display:block;"></div>');
+        //alert(getDateFormated(new Date()) + " " + formatCost(50000000));
+    
+    });
+
+    $('#btnSearch').click(function(){ //khi nhan search
+        currentShowNumber = 0;
+        //remove các sản phẩm đã load trước đó
+        $('#removeBeforLoad').html('<div id="-1" style="display:block;"></div>');
+       
+        //lấy id loại
+        var loai = $('#loai').prop('selectedIndex'); //1,2,3,...
+
+        //tham số để gửi yêu cầu tới server
+        var j={"tenSanPham": $('#tenSanPham').val(),
+               "idLoaiSanPham" : loai };
+              
+        //run ajax
+        $.ajax({
+            url: 'timkiem/result', //request tới timkiem/result
+            type: 'POST', // added, //phương thức post
+            data: j, //message gửi tới server
+            //dataType: 'jsonp' - removed
+            //jsonpCallback: 'callback' - removed
+            success: function (products) { //hàm trả về khi thành công, và lấy kết quả trả về
+                pros = JSON.parse(products); //parse sản phẩm trả về từ server
+                if(pros.length == 0) { $("<p>Không có sản phẩm cần tìm</p>").insertAfter("#-1");} //nếu không có sản phẩm nào
+                else //thực hiện tính toán để hiện lên màn hình
+                {
+                    handleProducts(pros.length);
+                    updatePros();
+                    setTimeExtra(pros);
+                }
+                
+            },
+            error: function (xhr, status, error) {
+                alert(error + " " + status);
+            }
+        });
+
+    });
+
+    function handleProducts(number) {
+       var length = currentShowNumber +  number;
+       if(number > 4){ //neu số lượng sản phẩm chuẩn bị load > 4
+           if(currentShowNumber==0)
+           insertAfter(-1, pros[currentShowNumber++]); //load sản phẩm 1
+           else
+           insertAfter(pros[currentShowNumber-1].idSanPham, pros[currentShowNumber++]); //load sản phẩm 1
+
+           insertAfter(pros[currentShowNumber-1].idSanPham, pros[currentShowNumber++]); //san pham 2
+           insertAfter(pros[currentShowNumber-1].idSanPham, pros[currentShowNumber++]); //san pham 3
+           insertAfter(pros[currentShowNumber-1].idSanPham, pros[currentShowNumber++]); //san pham 4
+           $('#loadMore').show();
+       } else { //neu nhỏ hơn 4
+            for(var i = currentShowNumber; i < length; i++){  //cho load hết phần còn lại và xóa nút LOAD MORE
+                if(i==0){
+                    insertAfter(-1, pros[0]); //san pham 1
+                    currentShowNumber++;
+                }
+                else{
+                    insertAfter(pros[i-1].idSanPham, pros[i]); 
+                    currentShowNumber++;
+                }
+            }
+            $('#loadMore').hide();
+       }
+       
+    }
+
+    function insertAfter(idSanPham, pro){
+        var html = '<div class="col-sm-3" id="' + pro.idSanPham + '">' 
+                            +'<div class="panel panel-default">' 
+                                    +'<div class="panel-heading">'
+                                         +'<div class="row">'
+                                               +'<div class="form-group">'
+                                                 +'<a href="/product/chitietsanpham/'+ pro.idSanPham +'" class="col-sm-10"><span style="color:#333333"><strong>' + pro.tenSanPham +'</strong></span></a>'
+                                                 +'<div id="' + pro.idSanPham + '_new' +'" class="col-sm-2" style="font-weight:bold;font-family:arial;font-style: italic;"></div>'
+                                               +'</div>'
+                                         +'</div>'
+                                    +'</div>'
+                                    +'<div class="panel-body"><img src="' + urlImage_format(pro.urlImage1) + '" class="img-responsive" style="width:100%;height:200px;" alt="Image">'
+                                      +'<div class="row">'
+                                        + '<div class="col-sm-5">'
+                                          +'<div><span >Giá hiện tại: </span></div>'
+                                          +'<div><span >Mua ngay: </span></div>'
+                                          +'<div><span >Lượt Bid : </span></div>'
+                                          +'<div> Còn lại : </div>'
+                                        +'</div>'
+                                        +'<div class="col-sm-7">'
+                                          + '<div><span style="color:blue;"><i>'+ formatCost(pro.giaHienTai)+' VND</i></div>'
+                                          + '<div><span style="color:#02EE03;"><i>'+ formatCost(pro.giaMuaNgay)+' VND</i></div>'
+                                          + '<div><span style="color:red;"><i>'+pro.luotBid+'</i></div>'
+                                          + '<div><i id="'+ pro.idSanPham +'extra"></i></div>'
+                                        +'</div>'
+                                      +'</div>'  
+                                    +'</div>'
+                                    +'<div class="panel-footer text-center">'
+                                       
+                                         +'{{#ifCond userId "!=" -1}}'
+
+                                         +'<a href="/product/favourite/' + pro.idSanPham + '" id="' + pro.idSanPham + 'favor' + '" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a>' 
+                                         +'{{else}}'
+                                         +' <a href="/user/login" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a>' 
+                                         +'{{/ifCond}}'
+                                    +'</div>'
+                            +'</div>'
+                    +'</div>' ;        
+        if(idSanPham==-1){
+            $(html).insertAfter("#-1");
+        }else{
+            $(html).insertAfter('#' + idSanPham);
+        }
+
+    }
+    
+
+    $('#loadMore').click(function(){ //neu nhan nut load more thì tính số lượng sản phẩm còn lại và goi lại hàm handleProduct
+        var extraNumber = pros.length - currentShowNumber;
+        handleProducts(extraNumber) ;
+        updatePros();
+    });
+
+     function updatePros(){
+             var d = new Date();
+              var millisecondsNow=Date.parse(d);
+             for(var i=0;i < currentShowNumber;i++)
+             {
+                    
+                   for(var j=0;j<proFavor.length;j++)
+                    {
+
+                      if(proFavor[j].idSanPham == pros[i].idSanPham){
+                         $("#"+pros[i].idSanPham+"favor").html("Đã yêu thích");
+                         $("#"+pros[i].idSanPham+"favor").removeAttr("href");
+                        
+                      }
+                    }
+                    var millisecondsthoiDiemDang  = Date.parse(pros[i].thoiDiemDang);
+                    var t=(millisecondsNow-millisecondsthoiDiemDang)/60000;
+                    if(t<30)
+                    {
+                          $("#"+pros[i].idSanPham + '_new').html("new");
+                    }
+             }
+   }
+
+
+    $('#giatang').on('click', function() {
+      var d = new Date();
+      var millisecondsNow=Date.parse(d);
+      var t;
+      var prosort=pros;
+     
+     /* for(var i=0;i<currentShowNumber;i++)
+      {
+       
+        prosort.push(pros[i]);
+       
+      }*/
+      prosort.sort(function(a, b){return a.giaHienTai - b.giaHienTai});
+      var html='<div id="-1" style="display:block;"></div>';
+     
+      for(var i=0;i<currentShowNumber;i++){
+            if({{userId}})
+            {
+                isFavor=false;
+               for(var j=0;j<proFavor.length;j++)
+                {
+
+                  if(proFavor[j].idSanPham == prosort[i].idSanPham){
+                    isFavor=true;
+                    break;
+                  }
+                }
+            }
+            var millisecondsthoiDiemDang  = Date.parse(prosort[i].thoiDiemDang);
+            t=(millisecondsNow-millisecondsthoiDiemDang)/60000;
+           
+            if(t>30)
+            {
+              html+='<div class="col-sm-3" id="' + prosort[i].idSanPham + '">' 
+                            +'<div class="panel panel-default">' 
+                                    +'<div class="panel-heading">'
+                                         +'<div class="row">'
+                                               +'<div class="form-group">'
+                                                 +'<a href="/product/chitietsanpham/'+ prosort[i].idSanPham +'" class="col-sm-10"><span style="color:#333333"><strong>' + prosort[i].tenSanPham +'</strong></span></a>'
+                                                 +'<div id="' + prosort[i].idSanPham + '_new' +'" class="col-sm-2" style="font-weight:bold;font-family:arial;font-style: italic;"></div>'
+                                               +'</div>'
+                                         +'</div>'
+                    +'</div>';
+            }
+            else
+            {
+              html+='<div class="col-sm-3" id="' + prosort[i].idSanPham + '">' 
+                            +'<div class="panel panel-default">' 
+                                    +'<div class="panel-heading">'
+                                         +'<div class="row">'
+                                               +'<div class="form-group">'
+                                                 +'<a href="/product/chitietsanpham/'+ prosort[i].idSanPham +'" class="col-sm-10"><span style="color:#333333"><strong>' + prosort[i].tenSanPham +'</strong></span></a>'
+                                                 +'<div id="' + prosort[i].idSanPham + '_new' +'" class="col-sm-2" style="font-weight:bold;font-family:arial;font-style: italic;">new</div>'
+                                               +'</div>'
+                                         +'</div>'
+                  +'</div>';
+            }
+               html+='<div class="panel-body"><img src="' + urlImage_format(prosort[i].urlImage1) + '" class="img-responsive" style="width:100%;height:200px;" alt="Image">'
+                          +'<div class="row">'
+                            + '<div class="col-sm-5">'
+                              +'<div><span >Giá hiện tại: </span></div>'
+                              +'<div><span >Mua ngay: </span></div>'
+                              +'<div><span >Lượt Bid : </span></div>'
+                              +'<div> Còn lại : </div>'
+                            +'</div>'
+                            +'<div class="col-sm-7">'
+                              + '<div><span style="color:blue;"><i>'+ formatCost(prosort[i].giaHienTai)+' VND</i></div>'
+                              + '<div><span style="color:#02EE03;"><i>'+ formatCost(prosort[i].giaMuaNgay)+' VND</i></div>'
+                              + '<div><span style="color:red;"><i>'+prosort[i].luotBid+'</i></div>'
+                              + '<div><i id="'+ prosort[i].idSanPham +'extra"></i></div>'
+                            +'</div>'
+                          +'</div>'  
+                    +'</div>';
+
+            if(!isFavor)
+            {
+                html+='<div class="panel-footer text-center">'
+                            
+                             +'{{#ifCond userId "!=" -1}}'
+                             +'<a href="/product/favourite/' + prosort[i].idSanPham + '" id="' + prosort[i].idSanPham + 'favor' + '" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a>' 
+                             +'{{else}}'
+                             +' <a href="/user/login" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a>' 
+                             +'{{/ifCond}}'
+                        +'</div>'
+                      +'</div>'
+                   +'</div>' ;        
+            }
+            else
+            {
+                 html+='<div class="panel-footer text-center">'
+                            
+                             +'{{#ifCond userId "!=" -1}}'
+                             +'<a id="' + prosort[i].idSanPham + 'favor' + '" type="button" class="btn btn-danger btn-lg cart">&nbsp;Đã Yêu Thích&nbsp;</a>' 
+                             +'{{else}}'
+                             +' <a href="/user/login" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a>' 
+                             +'{{/ifCond}}'
+                        +'</div>'
+                    +'</div>'
+                 +'</div>' ;       
+            }
+                        
+      }
+      $('#removeBeforLoad').html(html);
+    
+    });
+  
+
+    $('#thoigiangiam').on('click', function() {
+      var d = new Date();
+      var millisecondsNow=Date.parse(d);
+      var t;
+      var prosort=pros;
+     
+     /* for(var i=0;i<currentShowNumber;i++)
+      {
+       
+        prosort.push(pros[i]);
+      }*/
+      prosort.sort(function(a, b){return Date.parse(b.thoiDiemKetThuc) - Date.parse(a.thoiDiemKetThuc)});
+      var html='<div id="-1" style="display:block;"></div>';
+     
+        for(var i=0;i<currentShowNumber;i++){
+            if({{userId}})
+            {
+                isFavor=false;
+               for(var j=0;j<proFavor.length;j++)
+                {
+
+                  if(proFavor[j].idSanPham == prosort[i].idSanPham){
+                    isFavor=true;
+                    break;
+                  }
+                }
+              }
+                var millisecondsthoiDiemDang  = Date.parse(prosort[i].thoiDiemDang);
+                t=(millisecondsNow-millisecondsthoiDiemDang)/60000;
+           
+            if(t>30)
+            {
+              html+='<div class="col-sm-3" id="' + prosort[i].idSanPham + '">' 
+                            +'<div class="panel panel-default">' 
+                                    +'<div class="panel-heading">'
+                                         +'<div class="row">'
+                                               +'<div class="form-group">'
+                                                 +'<a href="/product/chitietsanpham/'+ prosort[i].idSanPham +'" class="col-sm-10"><span style="color:#333333"><strong>' + prosort[i].tenSanPham +'</strong></span></a>'
+                                                 +'<div id="' + prosort[i].idSanPham + '_new' +'" class="col-sm-2" style="font-weight:bold;font-family:arial;font-style: italic;"></div>'
+                                               +'</div>'
+                                         +'</div>'
+                                    +'</div>';
+            }
+            else
+            {
+              html+='<div class="col-sm-3" id="' + prosort[i].idSanPham + '">' 
+                            +'<div class="panel panel-default">' 
+                                    +'<div class="panel-heading">'
+                                         +'<div class="row">'
+                                               +'<div class="form-group">'
+                                                 +'<a href="/product/chitietsanpham/'+ prosort[i].idSanPham +'" class="col-sm-10"><span style="color:#333333"><strong>' + prosort[i].tenSanPham +'</strong></span></a>'
+                                                 +'<div id="' + prosort[i].idSanPham + '_new' +'" class="col-sm-2" style="font-weight:bold;font-family:arial;font-style: italic;">new</div>'
+                                               +'</div>'
+                                         +'</div>'
+                                    +'</div>';
+            }
+               html+='<div class="panel-body"><img src="' + urlImage_format(prosort[i].urlImage1) + '" class="img-responsive" style="width:100%;height:200px;" alt="Image">'
+                          +'<div class="row">'
+                            + '<div class="col-sm-5">'
+                              +'<div><span >Giá hiện tại: </span></div>'
+                              +'<div><span >Mua ngay: </span></div>'
+                              +'<div><span >Lượt Bid : </span></div>'
+                              +'<div> Còn lại : </div>'
+                            +'</div>'
+                            +'<div class="col-sm-7">'
+                              + '<div><span style="color:blue;"><i>'+ formatCost(prosort[i].giaHienTai)+' VND</i></div>'
+                              + '<div><span style="color:#02EE03;"><i>'+ formatCost(prosort[i].giaMuaNgay)+' VND</i></div>'
+                              + '<div><span style="color:red;"><i>'+prosort[i].luotBid+'</i></div>'
+                              + '<div><i id="'+ prosort[i].idSanPham +'extra"></i></div>'
+                            +'</div>'
+                          +'</div>'  
+                        +'</div>';
+
+              if(!isFavor)
+              {
+                html+='<div class="panel-footer text-center">'
+                            
+                             +'{{#ifCond userId "!=" -1}}'
+                             +'<a href="/product/favourite/' + prosort[i].idSanPham + '" id="' + prosort[i].idSanPham + 'favor' + '" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a>' 
+                             +'{{else}}'
+                             +' <a href="/user/login" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a>' 
+                             +'{{/ifCond}}'
+                          +'</div>'
+                      +'</div>'
+                +'</div>' ;        
+              }
+              else
+              {
+                 html+='<div class="panel-footer text-center">'
+                            
+                             +'{{#ifCond userId "!=" -1}}'
+                             +'<a id="' + prosort[i].idSanPham + 'favor' + '" type="button" class="btn btn-danger btn-lg cart">&nbsp;Đã Yêu Thích&nbsp;</a>' 
+                             +'{{else}}'
+                             +' <a href="/user/login" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a>' 
+                             +'{{/ifCond}}'
+                        +'</div>'
+                    +'</div>'
+            +'</div>' ;       
+              }
+                        
+        }
+    $('#removeBeforLoad').html(html);
+    
+    });
+    
+    function setTimeExtra(pro){
+
+         myTimer = setInterval(function(){
+            //alert("a");
+            var now = new Date();  
+            for(var i = 0 ; i < pro.length; i++){
+               
+                var endTime = new Date(pro[i].thoiDiemKetThuc);  
+                 
+                var distance = Date.parse(endTime) - Date.parse(now); 
+                if(distance<=0)  $('#' + pro[i].idSanPham + 'extra').text("Đã kết thúc");
+                else $('#' + pro[i].idSanPham + 'extra').text(formatExtraTime(distance));
+                console.log(formatExtraTime(distance));
+            }
+          }, 1000);
+         //setTimeExtra(pro);
+    }
+    </script>
+
+</html>

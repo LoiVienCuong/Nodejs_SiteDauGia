@@ -1,71 +1,79 @@
 {{#section 'title'}}
-	Danh sách sản phẩm
+  Danh sách sản phẩm
+{{/section}}
+
+{{#section 'js'}}
+    <script src="/js/clientHelper.js"></script>
 {{/section}}
 
 {{#section 'searchbox'}}
     <!--Seach BOX -->
 
-<div class="jumbotron text-center">
-      <form class="form-inline">
-        <div class="input-group">
-         <input  type="hidden" name="catID" id="txtcatID" value="{{activeCat}}">
-          <input type="text" class="form-control" name="productName" id="txtname" size="50" placeholder="Gõ tên sản phẩm muốn tìm" required >
-          <div class="input-group-btn">
-          <a href="" class="btn btn-danger" id="btnSearch">Tìm kiếm</a>
-           
 
+<div class="text-center" style="height:15px;">
+    <form class="form-inline">
+    <input  type="hidden" name="catID" id="txtcatID" value="{{activeCat}}">
+      <div class="input-group">
+       
+          <input type="text" class="form-control" name="productName" id="txtname" size="20" placeholder="Gõ tên sản phẩm muốn tìm" >
+          <div class="input-group-btn">
+            <a href="" class="btn btn-default" id="btnSearch"><span class="glyphicon glyphicon-search"></span></a>
           </div>
         </div>
-      </form>
+     </form>
 </div>
+
 <!--End Seach BOX -->
 {{/section}}
 
 {{#if noProducts }}
-	KHÔNG CÓ SẢN PHẨM THOẢ YÊU CẦU!
+  KHÔNG CÓ SẢN PHẨM THOẢ YÊU CẦU!
 {{else}}
-  <div class="row">
+  <div class="row" style="margin-top:0px;background-color:#F8F8F8;border: 1px solid #F8F8F8;border-radius:25px;">
         <div class="form-group">
-          <label class="control-label col-sm-5"><h1><strong>KẾT QUẢ TÌM KIẾM<strong></h1></label>
+          <label class="control-label col-sm-5"><h1><strong><i>KẾT QUẢ TÌM KIẾM</i><strong></h1></label>
           <div class="col-sm-7 text-right" style="padding-top:23px;">
               <div class="btn-group">
-                <button class="btn btn-primary" data-id="1">Thời gian kết thúc giảm dần </button>
-                <button class="btn btn-primary" data-id="2">Giá tăng dần </button>
+                 <button class="btn btn-default" id="thoigiangiam">Thời gian kết thúc giảm dần </button>
+                <button class="btn btn-default" id="giatang">Giá tăng dần </button>
               </div>
           </div>
         </div>
   </div>
   <div style="border: #EEEEEE solid 2px; margin-bottom: 15px;"></div>
-	<div class="row">
-      <form class="form-inline" method="post" action="" id="frmSapXep">
-          <input  type="hidden" name="loaibtn" id="txtloaibtn">
-      </form>
-         {{#each products }}
-          
+  <div class="row">
+       <div id="pro">
+         {{#each products }}        
           <div class="col-sm-4">
-            <div class="panel panel-primary">
+            <div class="panel panel-default">
                <div class="panel-heading">
                       <div class="row">
                            <div class="form-group">
-                              <a href="../chitietsanpham/{{idSanPham}}" class="col-sm-10"><span style="color:white"><strong>{{tenSanPham}}</strong></span></a>   
+                              <a href="../chitietsanpham/{{idSanPham}}" class="col-sm-10"><span style="color:#333333"><strong>{{tenSanPham}}</strong></span></a>   
                                 <div id="{{idSanPham}}" class="col-sm-2" style="font-weight:bold;font-family:arial;font-style: italic;"></div>
                            </div>
                        </div>
                 </div>
-              <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
+              <div class="panel-body"><img src="{{urlImage_format urlImage1}}" class="img-responsive" style="width:100%;height:200px;" alt="Image">
                   <div class="row">
-                    <div class="col-sm-6">
-                      <div>Giá đấu hiện tại : {{number_format giaHienTai}} VNĐ</div>
-                      <div>Giá mua ngay : {{number_format giaMuaNgay}} VNĐ</div>
+                    <div class="col-sm-5">
+                      <div><span >Giá hiện tại: </span></div>
+                      <div><span >Mua ngay: </span></div>
+                      <div><span >Lượt Bid : </span></div>
+                      <div><span >Giữ giá: </span></div>
+                      <div> Còn lại : </div>
                     </div>
-                    <div class="col-sm-6">
-                      <div>Lượt Bid : {{luotBid}}</div>
-                      <div>Thời điểm kết thúc : {{time_format thoiDiemKetThuc}}</div>
+                    <div class="col-sm-7">
+                      <div><span style="color:blue;"><i>{{number_format giaHienTai}} VNĐ</i></span></div>
+                      <div><span style="color:#02EE03;"><i>{{number_format giaMuaNgay}} VNĐ</i></span></div>
+                      <div><span style="color:red;"><i>{{luotBid}}</i></span></div>
+                      <div><span style="color:red;"><i id="{{idSanPham}}giugia"></i></span></div>
+                      <div><i id="{{idSanPham}}extra"></i></div>
                     </div>
-                  </div>  
+                  </div>
               </div>
               <div class="panel-footer text-center">
-                 <a href="" type="button" data-toggle="modal" data-target="#ModalBiding" class="bidBtn"> <img src="/image/bid_icon.png" style="width:50px; height:50px"> </a>
+                
                  {{#if ../layoutVM.isCookie}}
 
                   <a href="/product/favourite/{{idSanPham}}" id="{{idSanPham}}favor" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a> 
@@ -78,7 +86,7 @@
          </div> 
        
          {{/each}}
-
+         </div>
        </div>
 
 
@@ -117,23 +125,29 @@
         $("#btnSearch").attr("href", "/product/timkiemtheoloai/?id="+id+"&ten="+ten);
 
       });
+      var myTimer;
      $(document).ready(function(){
          var pro = JSON.parse('{{{json products}}}');
+          if({{layoutVM.isCookie}}) {
          var proFavor = JSON.parse('{{{json layoutVM.productsFavourite}}}');
-         
+         }
          var d = new Date();
           var millisecondsNow=Date.parse(d);
          for(var i=0;i<pro.length;i++)
-         {
-
-             for(var j=0;j<proFavor.length;j++)
-              {
-                if(proFavor[j].idSanPham == pro[i].idSanPham){
-                   $("#"+pro[i].idSanPham+"favor").html("Đã yêu thích");
-                   $("#"+pro[i].idSanPham+"favor").removeAttr("href");
-                  
-                }
-              }
+         {  
+                  if(pro[i].hoTen)
+                  $("#"+ pro[i].idSanPham+"giugia").text(hoTen_format(pro[i].hoTen));
+                  else $("#"+ pro[i].idSanPham+"giugia").text("Không có");
+                  if({{layoutVM.isCookie}}) {
+                   for(var j=0;j<proFavor.length;j++)
+                    {
+                      if(proFavor[j].idSanPham == pro[i].idSanPham){
+                         $("#"+pro[i].idSanPham+"favor").html("Đã yêu thích");
+                         $("#"+pro[i].idSanPham+"favor").removeAttr("href");
+                        
+                      }
+                    }
+                  }
                 console.log(pro[i].thoiDiemDang);
                 var millisecondsthoiDiemDang  = Date.parse(pro[i].thoiDiemDang);
                 var t=(millisecondsNow-millisecondsthoiDiemDang)/60000;
@@ -143,25 +157,277 @@
                       $("#"+pro[i].idSanPham+"").html("new");
                 }
          }
-
-
-         
-         
-
-                /*console.log(pro[i].thoiDiemDang);
-                var millisecondsthoiDiemDang  = Date.parse(pro[i].thoiDiemDang);
-                var t=(millisecondsNow-millisecondsthoiDiemDang)/60000;
-                 console.log(t);
-                 if(t<30)
-                 {
-                      $("#"+pro[i].idSanPham+"").html("new");
-                }*/
-
-       
+        setTimeExtra(pro);
       });
-    $('button').on('click', function() {
-      var id = $(this).data('id');
-      $('#txtloaibtn').val(id);
-      $('#frmSapXep').submit();
+   
+    $('#giatang').on('click', function() {
+     var pro = JSON.parse('{{{json products}}}');
+      var d = new Date();
+      var millisecondsNow=Date.parse(d);
+      var t;
+      pro.sort(function(a, b){return a.giaHienTai - b.giaHienTai});
+      var html='';
+      if({{layoutVM.isCookie}})
+      {
+         var isFavor;
+         var proFavor = JSON.parse('{{{json layoutVM.productsFavourite}}}');
+      }
+        for(var i=0;i<pro.length;i++)
+         {
+            if({{layoutVM.isCookie}})
+            {
+                isFavor=false;
+               for(var j=0;j<proFavor.length;j++)
+                {
+
+                  if(proFavor[j].idSanPham == pro[i].idSanPham){
+                    isFavor=true;
+                    break;
+                  }
+                }
+              }
+                var millisecondsthoiDiemDang  = Date.parse(pro[i].thoiDiemDang);
+                t=(millisecondsNow-millisecondsthoiDiemDang)/60000;
+           
+            if(t>30)
+            {
+          html+='<div class="col-sm-4">'
+          +'<div class="panel panel-default">'
+             +'<div class="panel-heading">'
+               +'<div class="row">'
+                     +'<div class="form-group">'
+                        +'<a href="/product/chitietsanpham/'+pro[i].idSanPham+'" class="col-sm-10"><span style="color:#333333"><'
+                        +'strong>'+pro[i].tenSanPham+'</strong></span></a>'  
+                      +'<div id="'+pro[i].idSanPham+'" class="col-sm-2" style="font-weight:bold;font-family:arial;font-style: italic;"></div>'
+                     +'</div>'
+                 +'</div>'
+          +'</div>';
+            }
+            else
+            {
+             html+='<div class="col-sm-4">'
+          +'<div class="panel panel-default">'
+                 +'<div class="panel-heading">'
+                   +'<div class="row">'
+                         +'<div class="form-group">'
+                            +'<a href="/product/chitietsanpham/'+pro[i].idSanPham+'" class="col-sm-10"><span style="color:#333333"><'
+                            +'strong>'+pro[i].tenSanPham+'</strong></span></a>'  
+                      +'<div id="'+pro[i].idSanPham+'" class="col-sm-2" style="font-weight:bold;font-family:arial;font-style: italic;">new</div>'
+                         +'</div>'
+                     +'</div>'
+              +'</div>';
+              }
+         html+='<div class="panel-body"><img src="'+urlImage_format(pro[i].urlImage1)+'" class="img-responsive"'
+         +'style="width:100%;height:200px;"'
+         + 'alt="Image">'
+              +'<div class="row">'
+                +'<div class="col-sm-5">'
+                  +'<div><span >Giá hiện tại: </span></div>'
+                  +'<div><span >Mua ngay: </span></div>'
+                  +'<div><span >Lượt Bid : </span></div>'
+                  +'<div><span >Giữ giá : </span></div>'
+                  +'<div> Còn lại : </div>'
+                +'</div>'
+                +'<div class="col-sm-7">'
+                  + '<div><span style="color:blue;"><i>'+ formatCost(pro[i].giaHienTai)+' VND</i></div>'
+                  + '<div><span style="color:#02EE03;"><i>'+ formatCost(pro[i].giaMuaNgay)+' VND</i></div>'
+                  + '<div><span style="color:red;"><i>'+pro[i].luotBid+'</i></div>'
+                  + '<div><i id="'+ pro[i].idSanPham +'giugia">'+'</i></div>'
+                  + '<div><i id="'+ pro[i].idSanPham +'extra">'+'</i></div>'
+                +'</div>'
+              +'</div> ' 
+         + '</div>';
+        if({{layoutVM.isCookie}})
+        {
+         if(!isFavor)
+         {
+          html+= '<div class="panel-footer text-center">'
+                      
+                        +'<a href="/product/favourite/'+pro[i].idSanPham+'" id="'+pro[i].idSanPham+'favor" type="button" class="btn btn-danger btn-lg '
+                        +'cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a>' 
+                    +'</div>'
+                  +'</div>'
+               +'</div>'; 
+         
+        }
+        else
+        {
+             html+= '<div class="panel-footer text-center">'
+                    
+                        +'<a id="'+pro[i].idSanPham+'favor" type="button" class="btn btn-danger btn-lg '
+                        +'cart">&nbsp;Đã Yêu Thích&nbsp;</a>' 
+                    +'</div>'
+                  +'</div>'
+               +'</div>'; 
+
+        }
+      }
+      else
+      {
+           html+= '<div class="panel-footer text-center">'
+                     
+                        +'<a href="/user/login" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a>' 
+                    +'</div>'
+                  +'</div>'
+               +'</div>'; 
+      }
+      
+}
+      $('#pro').html(html);
+       for(var i=0;i<pro.length;i++)
+       {
+         if(pro[i].hoTen)
+        $("#"+ pro[i].idSanPham+"giugia").text(hoTen_format(pro[i].hoTen));
+        else $("#"+ pro[i].idSanPham+"giugia").text("Không có");
+       }
+      clearInterval(myTimer);
+       setTimeExtra(pro);
+      
+
+  });
+
+    $('#thoigiangiam').on('click', function() {
+     var pro = JSON.parse('{{{json products}}}');
+        var d = new Date();
+      var millisecondsNow=Date.parse(d);    
+      var t;
+       if({{layoutVM.isCookie}})
+      {
+         var isFavor;
+         var proFavor = JSON.parse('{{{json layoutVM.productsFavourite}}}');
+      }
+      pro.sort(function(a, b){return Date.parse(b.thoiDiemKetThuc) - Date.parse(a.thoiDiemKetThuc)});
+      var html='';
+       for(var i=0;i<pro.length;i++)
+         {
+            if({{layoutVM.isCookie}})
+            {
+                isFavor=false;
+               for(var j=0;j<proFavor.length;j++)
+                {
+
+                  if(proFavor[j].idSanPham == pro[i].idSanPham){
+                    isFavor=true;
+                    break;
+                  }
+                }
+              }
+                var millisecondsthoiDiemDang  = Date.parse(pro[i].thoiDiemDang);
+                t=(millisecondsNow-millisecondsthoiDiemDang)/60000;
+           
+            if(t>30)
+            {
+          html+='<div class="col-sm-4">'
+          +'<div class="panel panel-default">'
+             +'<div class="panel-heading">'
+               +'<div class="row">'
+                     +'<div class="form-group">'
+                        +'<a href="/product/chitietsanpham/'+pro[i].idSanPham+'" class="col-sm-10"><span style="color:#333333"><'
+                        +'strong>'+pro[i].tenSanPham+'</strong></span></a>'  
+                      +'<div id="'+pro[i].idSanPham+'" class="col-sm-2" style="font-weight:bold;font-family:arial;font-style: italic;"></div>'
+                     +'</div>'
+                 +'</div>'
+          +'</div>';
+            }
+            else
+            {
+             html+='<div class="col-sm-4">'
+          +'<div class="panel panel-default">'
+                 +'<div class="panel-heading">'
+                   +'<div class="row">'
+                         +'<div class="form-group">'
+                            +'<a href="/product/chitietsanpham/'+pro[i].idSanPham+'" class="col-sm-10"><span style="color:#333333"><'
+                            +'strong>'+pro[i].tenSanPham+'</strong></span></a>'  
+                      +'<div id="'+pro[i].idSanPham+'" class="col-sm-2" style="font-weight:bold;font-family:arial;font-style: italic;">new</div>'
+                         +'</div>'
+                     +'</div>'
+              +'</div>';
+              }
+         html+='<div class="panel-body"><img src="'+urlImage_format(pro[i].urlImage1)+'" class="img-responsive"'
+         +'style="width:100%;height:200px;"'
+         + 'alt="Image">'
+              +'<div class="row">'
+               +'<div class="col-sm-5">'
+                  +'<div><span >Giá hiện tại: </span></div>'
+                  +'<div><span >Mua ngay: </span></div>'
+                  +'<div><span >Lượt Bid : </span></div>'
+                  +'<div><span >Giữ giá : </span></div>'
+                  +'<div> Còn lại : </div>'
+                +'</div>'
+                +'<div class="col-sm-7">'
+                  + '<div><span style="color:blue;"><i>'+ formatCost(pro[i].giaHienTai)+' VND</i></div>'
+                  + '<div><span style="color:#02EE03;"><i>'+ formatCost(pro[i].giaMuaNgay)+' VND</i></div>'
+                  + '<div><span style="color:red;"><i>'+pro[i].luotBid+'</i></div>'
+                  + '<div><i id="'+ pro[i].idSanPham +'giugia">'+'</i></div>'
+                   + '<div><i id="'+ pro[i].idSanPham +'extra">'+'</i></div>'
+                +'</div>'
+              +'</div> ' 
+         + '</div>';
+        if({{layoutVM.isCookie}})
+        {
+         if(!isFavor)
+         {
+          html+= '<div class="panel-footer text-center">'
+                    
+                        +'<a href="/product/favourite/'+pro[i].idSanPham+'" id="'+pro[i].idSanPham+'favor" type="button" class="btn btn-danger btn-lg '
+                        +'cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a>' 
+                    +'</div>'
+                  +'</div>'
+               +'</div>'; 
+         
+        }
+        else
+        {
+             html+= '<div class="panel-footer text-center">'
+                      
+                        +'<a id="'+pro[i].idSanPham+'favor" type="button" class="btn btn-danger btn-lg '
+                        +'cart">&nbsp;Đã Yêu Thích&nbsp;</a>' 
+                    +'</div>'
+                  +'</div>'
+               +'</div>'; 
+
+        }
+      }
+      else
+      {
+           html+= '<div class="panel-footer text-center">'
+                      
+                        +'<a href="/user/login" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a>' 
+                    +'</div>'
+                  +'</div>'
+               +'</div>'; 
+      }
+      
+    }
+
+      $('#pro').html(html);
+      for(var i=0;i<pro.length;i++)
+       {
+         if(pro[i].hoTen)
+        $("#"+ pro[i].idSanPham+"giugia").text(hoTen_format(pro[i].hoTen));
+        else $("#"+ pro[i].idSanPham+"giugia").text("Không có");
+       }
+      clearInterval(myTimer);
+       setTimeExtra(pro);
+       
     });
+
+    function setTimeExtra(pro){
+
+         myTimer = setInterval(function(){
+            //alert("a");
+            var now = new Date();  
+            for(var i = 0 ; i < pro.length; i++){
+               
+                var endTime = new Date(pro[i].thoiDiemKetThuc);  
+                 
+                var distance = Date.parse(endTime) - Date.parse(now); 
+                if(distance<=0)  $('#' + pro[i].idSanPham + 'extra').text("Đã kết thúc");
+                else $('#' + pro[i].idSanPham + 'extra').text(formatExtraTime(distance));
+                console.log(formatExtraTime(distance));
+            }
+          }, 1000);
+         //setTimeExtra(pro);
+      }
+
   </script>

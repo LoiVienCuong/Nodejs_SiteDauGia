@@ -14,7 +14,7 @@
                 </div>
                 <div class="panel-body">
                     <div class="col-sm-2">
-                        <img src="/image/{{urlImage}}/1.jpg" class="img-responsive" alt="Image">
+                        <img src="{{urlImage_format urlImage1}}" class="img-responsive" alt="Image">
                     </div>
                     <div class="col-sm-7">
                         <div>Giá đấu hiện tại :{{number_format giaHienTai}} </div>
@@ -26,7 +26,12 @@
                         <div>Giá đấu của bạn </div>
                         <div name="hightestBidder"> <b>{{number_format giaDau}}</b> </div>
                         <div> Người đang giữ giá cao nhất: </div>
-                        <div name="hightestBidder"> <b>{{hoTen}}</b> </div>
+                        {{#ifCond ../layoutVM.userId "==" idNguoiDung}}
+                        <div name="hightestBidder"> <b style="color:red"><strong>Bạn đang giữ giá cao nhất</strong></b> </div>
+                        {{else}}
+                        <div name="hightestBidder"> <b >{{hoTen}}</b> </div>
+                        {{/ifCond}}
+
                     </div>
                    <!-- <div class="col-sm-4">
                         <button type="button" class="btn btn-success btn-md" data-toggle="modal" data-target="#ModalBiding">&nbsp;BID&nbsp;</button>

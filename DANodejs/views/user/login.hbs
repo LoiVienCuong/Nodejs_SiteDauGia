@@ -34,12 +34,10 @@
 </head>
 
 <body>
-    <div class="jumbotron">
-        <div class="container text-center">
-            <h1>Đấu giá trực tuyến</h1>
-            <p>Mission, Vission & Values</p>
-        </div>
-    </div>
+    <div class="container text-center">
+    <p style="font-size: 70px;">Đấu Giá Trực Tuyến</p>      
+    
+  </div>
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -50,18 +48,7 @@
                 </button>
                 <a class="navbar-brand" href="/">Trang Chủ</a>
             </div>
-            <div class="collapse navbar-collapse" id="myNavbar">
-                <ul class="nav navbar-nav">
-                    
-                    <li><a href="#">Cá nhân</a></li>
-                    <li><a href="#">Top Uy Tín</a></li>
-                    <li><a href="#">Hướng dẫn</a></li>
-                    <li><a href="#">Liên hệ</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                   
-                </ul>
-            </div>
+            
         </div>
     </nav>
     <div class="row">
@@ -75,7 +62,7 @@
             <div>
                 <form id="loginForm" class="form-inline text-center" method="post">
                     <div>
-                        <div class="form-group">
+                        <div class="form-group" style="padding-left:18px;">
                             <label class="spacing ">User ID : </label>
                             <input class="spacing form-control" name="userId" placeholder="1412262">
                         </div>
@@ -87,24 +74,23 @@
                         </div>
                     </div>
                     <div>
-                        <div class="col-md-6 text-right">
-                         <button type="submit" class="btn btn-success ">Login</button>
+                        <div class="col-md-6 text-right" style="padding-left:170px;">
+                         <button type="submit" class="btn btn-success " >Login</button>
                         </div>
-                        <div class="col-md-6 text-left">
+                        <div class="col-md-6 text-left" style="padding-left:50px;">
                          <a type="button" class="btn btn-success" href="/user/register">Register</a>
                         </div>
                     </div>
                 </form>
+                     {{#if state}} <!--login wrong info-->
+                    <div style="padding-left:120px;"><span style="color: red;">UserID or Password không đúng</span></div>
+                    {{else}}
+                    {{/if}}
             </div>
-            {{#if state}} <!--login wrong info-->
-            <div><span style="color: red;">UserID or Password was wrong</span></div>
-            {{else}}
-            {{/if}}
+           
         </div>
     </div>
-    <footer class="container-fluid text-center ">
-        <p>Online Store Copyright</p>
-    </footer>
+   
 </body>
 <script type="text/javascript">
     $('#loginForm').submit(function(){

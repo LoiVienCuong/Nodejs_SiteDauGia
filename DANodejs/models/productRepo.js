@@ -2,12 +2,17 @@ var mustache = require('mustache'),
     q = require('q'),
     db = require('../fn/db');
     helper = require('../fn/helper');
+
+exports.loadAllProductAuction = function(){
+    var sql = 'select * from sanpham where tinhTrang = 0';
+    return db.load(sql);
+}
 exports.loadAllByCat = function(catId) {
     var obj = {
         loai: catId
     };
     var sql = mustache.render(
-        'select * from sanpham where loai = {{loai}}',
+        'select idSanPham,hoTen, tenSanPham, giaHienTai, giaMuaNgay, idNguoiBan, idNguoiGiaCaoNhat,thoiDiemDang, thoiDiemKetThuc, buocGia, urlImage1,tinhTrang, luotBid,loai,tuDongGiaHan from sanpham s, nguoidung n where s.idNguoiGiaCaoNhat = n.idNguoiDung and tinhTrang = 0 and loai = {{loai}}',
         obj
     );
     return db.load(sql);
@@ -15,10 +20,11 @@ exports.loadAllByCat = function(catId) {
 
 exports.loadTop5Bid = function() {
   // var d = q.defer();
-    var sql ='select * from sanpham order by luotBid desc limit 5';
+    var sql ='select idSanPham,hoTen, tenSanPham, giaHienTai, giaMuaNgay, idNguoiBan, idNguoiGiaCaoNhat,thoiDiemDang, thoiDiemKetThuc, buocGia, urlImage1,tinhTrang, luotBid,loai,tuDongGiaHan from sanpham s, nguoidung n where s.idNguoiGiaCaoNhat = n.idNguoiDung and tinhTrang = 0 order by luotBid desc limit 5 ';
        /*db.load(sql).then(function(rows) {
         d.resolve(rows);
     });*/
+
 
      
      return db.load(sql);
@@ -26,7 +32,7 @@ exports.loadTop5Bid = function() {
 exports.loadTop5Cost = function() {
    
     //var d = q.defer();
-    var sql ='select * from sanpham order by giaHienTai desc limit 5';
+    var sql ='select idSanPham,hoTen, tenSanPham, giaHienTai, giaMuaNgay, idNguoiBan, idNguoiGiaCaoNhat,thoiDiemDang, thoiDiemKetThuc, buocGia, urlImage1,tinhTrang, luotBid,loai,tuDongGiaHan from sanpham s, nguoidung n where s.idNguoiGiaCaoNhat = n.idNguoiDung and tinhTrang = 0 order by giaHienTai desc limit 5 ';
     // db.load(sql).then(function(rows) {
    //     d.resolve(rows);
    // });
@@ -36,7 +42,7 @@ exports.loadTop5Cost = function() {
 
 exports.loadTop5EndTime = function() {
     //var d = q.defer();
-    var sql ='select * from sanpham order by thoiDiemKetThuc desc limit 5';
+    var sql ='select idSanPham,hoTen, tenSanPham, giaHienTai, giaMuaNgay, idNguoiBan, idNguoiGiaCaoNhat,thoiDiemDang, thoiDiemKetThuc, buocGia, urlImage1,tinhTrang, luotBid,loai,tuDongGiaHan from sanpham s, nguoidung n where s.idNguoiGiaCaoNhat = n.idNguoiDung and tinhTrang = 0 order by thoiDiemKetThuc desc limit 5';
     //db.load(sql).then(function(rows) {
      //   d.resolve(rows);
     //});
@@ -57,7 +63,7 @@ exports.search = function(ten) {
         productName: ten
     };
     var sql = mustache.render(
-        'select * from sanpham where tenSanPham like "%{{productName}}%"',
+        'select idSanPham,hoTen, tenSanPham, giaHienTai, giaMuaNgay, idNguoiBan, idNguoiGiaCaoNhat,thoiDiemDang, thoiDiemKetThuc, buocGia, urlImage1,tinhTrang, luotBid,loai,tuDongGiaHan from sanpham s, nguoidung n where s.idNguoiGiaCaoNhat = n.idNguoiDung  and tenSanPham like "%{{productName}}%" ',
         obj
     );
 
@@ -69,66 +75,13 @@ exports.search_loai = function(id,ten) {
         productName: ten
     };
     var sql = mustache.render(
-        'select * from sanpham where tenSanPham like "%{{productName}}%" and loai= {{catID}}',
+        'select idSanPham,hoTen, tenSanPham, giaHienTai, giaMuaNgay, idNguoiBan, idNguoiGiaCaoNhat,thoiDiemDang, thoiDiemKetThuc, buocGia, urlImage1,tinhTrang, luotBid,loai,tuDongGiaHan from sanpham s, nguoidung n where s.idNguoiGiaCaoNhat = n.idNguoiDung  and tenSanPham like "%{{productName}}%" and loai= {{catID}} ',
         obj
     );
 
     return db.load(sql);
 }
-exports.sapxep_thoigian = function(entity) {
-    var sql = mustache.render(
-        'select * from sanpham where tenSanPham like "%{{productName}}%" order by thoiDiemKetThuc desc',
-        entity
-    );
 
-    return db.load(sql);
-}
-exports.sapxep_thoigian_loai = function(entity) {
-    var sql = mustache.render(
-        'select * from sanpham where tenSanPham like "%{{productName}}%" and loai= {{catID}} order by thoiDiemKetThuc desc',
-        entity
-    );
-
-    return db.load(sql);
-}
-exports.sapxep_gia = function(entity) {
-    var sql = mustache.render(
-        'select * from sanpham where tenSanPham like "%{{productName}}%" order by giaHienTai asc',
-        entity
-    );
-
-    return db.load(sql);
-}
-exports.sapxep_gia_loai = function(entity) {
-    var sql = mustache.render(
-        'select * from sanpham where tenSanPham like "%{{productName}}%" and loai= {{catID}} order by giaHienTai asc',
-        entity
-    );
-
-    return db.load(sql);
-}
-
-
-exports.sapxep_thoigian_loai_khongten= function(catId) {
-    var obj = {
-        loai: catId
-    };
-    var sql = mustache.render(
-        'select * from sanpham where loai = {{loai}} order by thoiDiemKetThuc desc',
-        obj
-    );
-    return db.load(sql);
-}
-exports.sapxep_gia_loai_khongten= function(catId) {
-    var obj = {
-        loai: catId
-    };
-    var sql = mustache.render(
-        'select * from sanpham where loai = {{loai}} order by giaHienTai asc',
-        obj
-    );
-    return db.load(sql);
-}
 exports.loadProductById = function(proId){
     var obj = {
         idSanPham: proId
@@ -209,7 +162,7 @@ exports.insertDanhSachDauGia = function(idSanPham, idNguoiDung, giaDau){
         thoiDiemDauGia : date
     };
     var sql = mustache.render(
-        'insert into danhsachdaugia values({{idSanPham}}, {{idNguoiDung}}, {{giaDau}}, "{{thoiDiemDauGia}}")',
+        'insert into danhsachdaugia values({{idSanPham}}, {{idNguoiDung}}, {{giaDau}}, "{{thoiDiemDauGia}}", 0)',
         obj
     );
     return db.insert(sql);
@@ -227,7 +180,61 @@ exports.updateEndAuction = function(idSanPham){
 
     return db.update(sql);
 }
+//dau gia tu dong
 
+exports.loadDauGiaTudong = function(idSanPham){
+    var obj = {
+        idSanPham : idSanPham
+    };
+     var sql = mustache.render(
+        'select * from daugiatudong where idSanPham = {{idSanPham}}',
+        obj 
+    );
+
+    return db.load(sql);
+}
+
+exports.insertDauGiaTuDong = function(idSanPham, idNguoiDung, giaDau){
+    var date = helper.getDateFormated(new Date());
+    var obj = {
+        idSanPham : idSanPham,
+        idNguoiDung : idNguoiDung,
+        giaDau : giaDau,
+        thoiDiemDauGia : date
+    };
+    var sql = mustache.render(
+        'insert into daugiatudong values({{idSanPham}}, {{idNguoiDung}}, {{giaDau}}, "{{thoiDiemDauGia}}")',
+        obj
+    );
+    return db.insert(sql);
+}
+
+exports.updateDauGiaTudong = function(idSanPham, idNguoiDung, giaDau){
+    var date = helper.getDateFormated(new Date());
+    var obj = {
+        idSanPham : idSanPham,
+        idNguoiDung : idNguoiDung,
+        giaDau : giaDau,
+        thoiDiemDauGia : date
+    };
+    var sql = mustache.render(
+        'update daugiatudong set idNguoiDung={{idNguoiDung}}, giaMax={{giaDau}}, thoiDiemDauGia="{{thoiDiemDauGia}}" where idSanPham={{idSanPham}}',
+        obj
+    );
+    return db.update(sql);
+}
+
+exports.deleteDauGiaTudong = function(idSanPham){
+    var obj = {
+        idSanPham : idSanPham
+    };
+     var sql = mustache.render(
+        'delete from daugiatudong where idSanPham = {{idSanPham}}',
+        obj 
+    );
+
+    return db.delete(sql);
+}
 
 ///by Lê Anh Khôi
 exports.loadProductWithMaxId = function(){
@@ -297,5 +304,18 @@ exports.updateHighestUserAndHighestCost = function(idSanPham,idNguoiGiaCaoNhat, 
         obj
         );
 
+    return db.update(sql);
+}
+
+exports.expandEndTime = function(idSanPham, thoiDiemKetThuc){
+    var obj = {
+        idSanPham : idSanPham,
+        thoiDiemKetThuc : thoiDiemKetThuc
+
+    };
+    var sql = mustache.render(
+        'update sanpham set thoiDiemKetThuc = "{{thoiDiemKetThuc}}"  where idSanPham = {{idSanPham}}',
+        obj
+        );
     return db.update(sql);
 }

@@ -5,47 +5,36 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
   <script src="/js/jquery-3.1.1.min.js"></script>
   <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/clientHelper.js"></script>
+
+
   {{{_sections.css}}}
+    {{{_sections.js}}}
    <style>
-    /* Remove the navbar's default rounded borders and increase the bottom margin */ 
-    .navbar {
-      margin-bottom: 50px;
-      border-radius: 0;
-    }
-    
-    /* Remove the jumbotron's default bottom margin */ 
-     .jumbotron {
-      margin-bottom: 0;
-    }
-    .container-fluid{
-      margin-left: 0px;
-    }
-    .jumbotron.text-center{
-      margin-bottom: 20px;
-    }
-    li {
-      cursor: pointer; cursor: hand;
-    }
-    /* Add a gray background color and some padding to the footer */
-    footer {
-      background-color: #f2f2f2;
-      padding: 25px;
-    }
+   
   </style>
 
 </head>
 <body>
 
-<div class="jumbotron">
-  <div class="container text-center">
-    <h1>Đấu Giá Trực Tuyến</h1>      
-    <p>Mission, Vission & Values</p>
-  </div>
-</div>
 
-<nav class="navbar navbar-inverse">
+  <div class="container" style="border: 0px solid red;">
+    <div class="col-sm-3 text-left" style="margin-left: -40px;border: 0px solid red;"><img src="/image/title.jpg"></div>
+   
+    <div class="col-sm-9 text-center" style="margin-top: 35px;font:2em 'Open Sans', sans-serif;"><img src="/image/fonttitle.jpg">
+      
+    </div>
+
+  </div>
+  
+
+
+<nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -53,21 +42,23 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>                        
       </button>
-      <a class="navbar-brand" href="/">Trang Chủ</a>
+      <a class="navbar-brand btn btn-success" href="/"><span class="glyphicon glyphicon-home">&nbsp;HOME</span></a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
+     
       <ul class="nav navbar-nav">
         {{#if layoutVM.isCookie}}
-        <li><a href="/user/xindangban?id={{layoutVM.userId}}">Xin Bán</a></li>
+        <li><a style="background: white;border-radius:2px" class="hover" href="/user/xindangban?id={{layoutVM.userId}}">Xin Bán</a></li>
         {{else}}
-        <li><a href="/user/login">Xin Bán</a></li>
+        <li><a style="background: white;border-radius:2px;" class="hover" href="/user/login">Xin Bán</a></li>
         {{/if}}
         {{#if layoutVM.isCookie}}
-        <li><a href="/user/dangsanpham?id={{layoutVM.userId}}">Đăng Sản Phẩm</a></li>
+        <li><a style="background: white;border-radius:2px;" class="hover" href="/user/dangsanpham?id={{layoutVM.userId}}" id="verifyXinBan">Đăng Sản Phẩm</a></li>
         {{/if}}
-        <li><a href="#">Hướng dẫn</a></li>
-        <li><a href="#">Liên hệ</a></li>
+        <li><a style="background: white;border-radius:0px 25px 25px 0px;" class="hover" href="/timkiem">Tìm Kiếm</a></li> <!--Update 24/06/2017-->
+        <li><a href="#"></a></li>
       </ul>
+
       <ul class="nav navbar-nav navbar-right">
         {{#if layoutVM.isCookie}}
           <li><a href="/user/thongtincanhan"><span class="glyphicon glyphicon-user"></span>{{layoutVM.hoTen}}</a></li>
@@ -80,11 +71,29 @@
         
        
       </ul>
+      <ul class="nav navbar-nav navbar-right" style="padding-top:5px;">
+        {{{_sections.searchbox}}}
+      </ul>
+      <ul class="nav navbar-nav navbar-right" style="padding-top:5px;font-size:25px;padding-right:20px;">
+          <a href="#" class="fa fa-facebook"></a>
+          
+          <a href="#" class="fa fa-youtube"></a>
+          <a class="fa fa-cloud"></a>
+      </ul>
     </div>
   </div>
 </nav>
+
+
+<button onclick="topFunction()" id="myBtn" title="Go to top"><span class="glyphicon glyphicon-chevron-up" style="font-size:35px;"></span></button>
+<!--<div class="col-sm-offset-11 col-sm-1" style="font-size:25px;border-radius:25px;background-color:#F8F8F8;margin-top:-50px;text-align:right;">
+          <a href="#" class="fa fa-facebook"></a>
+          
+          <a href="#" class="fa fa-youtube"></a>
+          <a class="fa fa-cloud"></a>
+</div>-->
 <!--Seach BOX -->
-{{{_sections.searchbox}}}
+
 <!--End Seach BOX -->
 
 
@@ -103,14 +112,16 @@
         {{{body}}}
     </div>
     <!--End Main product -->
+   
   </div>
+
 </div>
 <!--End Main display products-->
 
 <script>
 jQuery(document).ready(function(){
 
-var test = false;
+ var test = false;;
  jQuery(window).on('hashchange', function(e){
  
     
@@ -124,8 +135,29 @@ var test = false;
  $("#logout").click(function(){
     window.location.pathname = "/user/logout";
  });*/
+ 
 
+ $("#verifyXinBan").click(function(){
 
+    var endSellTime = '{{layoutVM.thoiDiemKetThucRaoBan}}';
+    if(endSellTime.localeCompare('0000-00-00 00:00:00') == 0){
+      $("#verifyXinBan").removeAttr("href");
+      alert("Ban chua dang ky xin ban. Hoac da het han dang ban san pham!");
+      return;
+    }else{
+      var endTime = new Date(endSellTime);
+      var now = new Date();
+      var distance = Date.parse(endTime) - Date.parse(now); 
+      alert(endSellTime + " " + now);
+      if(distance <= 0 ){
+      $("#verifyXinBan").removeAttr("href");
+      alert("Ban chua dang ky xin ban. Hoac da het han dang ban san pham!");
+      return;
+    }  
+
+  }
+  
+ });
  $("#auction-form").submit(function(){
   
     var flag = true;
@@ -150,15 +182,38 @@ var test = false;
  });
 
 });
+
+$('.hover').hover(function(){
+  $(this).css("background", "#DDFFDD");
+}, function(){$(this).css("background", "white");});
+
+
+ window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        document.getElementById("myBtn").style.display = "block";
+    } else {
+        document.getElementById("myBtn").style.display = "none";
+    }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+function topFunction() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+
+
+</script>
+<script type="text/javascript">
+
 </script>
 
-<footer class="container-fluid text-center">
-  <p>Online Store Copyright</p>  
-  <form class="form-inline">Get deals:
-    <input type="email" class="form-control" size="50" placeholder="Email Address">
-    <button type="button" class="btn btn-danger">Sign Up</button>
-  </form>
-</footer>
 
 </body>
 </html>

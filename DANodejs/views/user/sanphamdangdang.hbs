@@ -1,0 +1,32 @@
+{{#section 'title'}}
+  Sản Phẩm Đang Đăng
+{{/section}}
+
+{{#if noProducts }}
+    KHÔNG CÓ SẢN PHẨM
+{{else}}
+{{#each products }}
+<div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <a href="/product/chitietsanpham/{{idSanPham}}"><span style="color:white"><strong>{{tenSanPham}}</strong></span></a>
+                </div>
+                <div class="panel-body">
+                    <div class="col-sm-2">
+                        <img src="{{urlImage_format urlImage1}}" class="img-responsive" alt="Image">
+                    </div>
+                    <div class="col-sm-5" style="padding-top:30px;padding-left:50px;">
+                        <div>Giá đấu hiện tại :{{number_format giaHienTai}} </div>
+                        <div>Giá mua ngay : {{number_format giaMuaNgay}}</div>
+                    </div>
+                    <div class="col-sm-5" style="padding-top:30px;">
+                        <div>Lượt Bid :{{luotBid}}</div>
+                        <div>Thời điểm kết thúc: {{time_format thoiDiemKetThuc}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+ {{/each}}
+ {{/if}}

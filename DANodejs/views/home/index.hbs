@@ -3,76 +3,63 @@ Trang chủ
 {{/section}}
 {{#section 'searchbox'}}
     <!--Seach BOX -->
-<div class="jumbotron text-center">
-      <!--<form class="form-inline" method="post" action="/product/timkiem">
-        <div class="input-group">
-          <input type="text" class="form-control" name="productName" size="50" placeholder="Gõ tên sản phẩm muốn tìm" >
-          <div class="input-group-btn">
-            <button type="submit" class="btn btn-danger">Tìm kiếm</button>
-          </div>
-        </div>
-
-      </form>-->
+<div class="text-center" style="height:15px;">
     <form class="form-inline">
       <div class="input-group">
-          <input type="text" class="form-control" name="productName" id="txtname" size="50" placeholder="Gõ tên sản phẩm muốn tìm" >
+          <input type="text" class="form-control" name="productName" id="txtname" size="20" placeholder="Gõ tên sản phẩm muốn tìm" >
           <div class="input-group-btn">
-            <a href="" class="btn btn-danger" id="btnSearch">Tìm kiếm</a>
+            <a href="" class="btn btn-default" id="btnSearch"><span class="glyphicon glyphicon-search"></span></a>
           </div>
         </div>
      </form>
 </div>
 <!--End Seach BOX -->
 {{/section}}
-<div class="row">  
+
           <!--header-->
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="panel panel-default">
-              <div class="panel-body">
-                <div class="btn-group btn-group-justified">
-                 <div class="btn-group"><button type="button" class="btn btn-primary">Đang đấu giá (6)</button></div>  
-                 <div class="btn-group"><button type="button" class="btn btn-primary">Mới kết thúc (6)</button></div>
-                 <div class="btn-group"> <button type="button" class="btn btn-primary">Top Winner</button></div>
-                 <div class="btn-group"><button type="button" class="btn btn-primary">Top Người Bán</button></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        
 
          
-        <h1><strong>TOP 5 LUOT BID<strong></h1><br>
-       <div class="row">
+       <div style="border-bottom: 2px solid #F8F8F8;">
+          <h1 style="width:300px;background-color:#F8F8F8;border: 1px solid #F8F8F8;border-radius:25px;margin-top:-6px;margin-bottom:-10px;color: #333333"><strong><i>TOP 5 LƯỢT BID</i><strong></h1>
+       </div>
+       <br>
+       <div class="row" style="border: 2px solid #F8F8F8;border-radius:25px;">
          {{#each productsBid }}
        
           <div class="col-sm-4">
-            <div class="panel panel-primary">
+            <div class="panel panel-default">
               <div class="panel-heading">
                       <div class="row">
                            <div class="form-group">
-                              <a href="product/chitietsanpham/{{idSanPham}}" class="col-sm-10"><span style="color:white"><strong>{{tenSanPham}}</strong></span></a>   
+                              <a href="product/chitietsanpham/{{idSanPham}}" class="col-sm-10"><span style="color:#333333"><strong>{{tenSanPham}}</strong></span></a>   
                                 <div id="{{idSanPham}}" class="col-sm-2" style="font-weight:bold;font-family:arial;font-style: italic;"></div>
                            </div>
                        </div>
                 </div>
-              <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
+              <div class="panel-body"><img src="{{urlImage_format urlImage1}}" class="img-responsive" style="width:100%;height:200px;" alt="Image">
                   <div class="row">
-                    <div class="col-sm-6">
-                      <div>Giá đấu hiện tại : {{number_format giaHienTai}} VNĐ</div>
-                      <div>Giá mua ngay : {{number_format giaMuaNgay}} VNĐ</div>
+                     <div class="col-sm-5">
+                      <div><span >Giá hiện tại: </span></div>
+                      <div><span >Mua ngay: </span></div>
+                      <div><span >Lượt Bid : </span></div>
+                      <div><span >Giữ giá: </span></div>
+                      <div> Còn lại : </div>
                     </div>
-                    <div class="col-sm-6">
-                      <div>Lượt Bid : {{luotBid}}</div>
-                      <div>Thời điểm kết thúc : {{time_format thoiDiemKetThuc}}</div>
+                    <div class="col-sm-7">
+                      <div><span style="color:blue;"><i>{{number_format giaHienTai}} VNĐ</i></span></div>
+                      <div><span style="color:#02EE03;"><i>{{number_format giaMuaNgay}} VNĐ</i></span></div>
+                      <div><span style="color:red;"><i>{{luotBid}}</i></span></div>
+                       <div><span style="color:red;"><i  class="{{idSanPham}}giugia"></i></span></div>
+                      <div><i class="{{idSanPham}}extra"></i></div>
                     </div>
                   </div>  
               </div>
               <div class="panel-footer text-center">
-                 <a href="" type="button" data-toggle="modal" data-target="#ModalBiding" class="bidBtn"> <img src="image/bid_icon.png" style="width:50px; height:50px"> </a>
+                
                {{#if ../layoutVM.isCookie}}
 
-                  <a href="/product/favourite/{{idSanPham}}" id="{{idSanPham}}favor" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Giỏ hàng&nbsp;</a> 
+                  <a href="/product/favourite/{{idSanPham}}" id="{{idSanPham}}favor" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu thích&nbsp;</a> 
                   {{else}}
                   <a href="/user/login" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a> 
                   {{/if}}
@@ -83,37 +70,43 @@ Trang chủ
          {{/each}}
        </div>
         
-      <h1><strong>TOP 5 GIA CAO NHAT<strong></h1><br>
+       <div><h1 style="width:400px;background-color:#F8F8F8;border: 1px solid #F8F8F8;border-radius:25px;margin-top:40px;margin-bottom:-20px;color: #333333"><strong><i>TOP 5 GIÁ CAO NHẤT</i><strong></h1></div><br><br>
        <div class="row">
          {{#each productsCost }}
         
           <div class="col-sm-4">
-            <div class="panel panel-primary">
+            <div class="panel panel-default">
               <div class="panel-heading">
                       <div class="row">
                            <div class="form-group">
-                              <a href="product/chitietsanpham/{{idSanPham}}" class="col-sm-10"><span style="color:white"><strong>{{tenSanPham}}</strong></span></a>   
+                              <a href="product/chitietsanpham/{{idSanPham}}" class="col-sm-10"><span style="color:#333333"><strong>{{tenSanPham}}</strong></span></a>   
                                 <div id="{{idSanPham}}" class="col-sm-2" style="font-weight:bold;font-family:arial;font-style: italic;"></div>
                            </div>
                        </div>
                 </div>
-              <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
+              <div class="panel-body"><img src="{{urlImage_format urlImage1}}" class="img-responsive" style="width:100%;height:200px;" alt="Image">
                   <div class="row">
-                    <div class="col-sm-6">
-                      <div>Giá đấu hiện tại : {{number_format giaHienTai}} VNĐ</div>
-                      <div>Giá mua ngay : {{number_format giaMuaNgay}} VNĐ</div>
+                    <div class="col-sm-5">
+                      <div><span >Giá hiện tại: </span></div>
+                      <div><span >Mua ngay: </span></div>
+                      <div><span >Lượt Bid : </span></div>
+                      <div><span >Giữ giá: </span></div>
+                      <div> Còn lại : </div>
                     </div>
-                    <div class="col-sm-6">
-                      <div>Lượt Bid : {{luotBid}}</div>
-                      <div>Thời điểm kết thúc : {{time_format thoiDiemKetThuc}}</div>
+                    <div class="col-sm-7">
+                      <div><span style="color:blue;"><i>{{number_format giaHienTai}} VNĐ</i></span></div>
+                      <div><span style="color:#02EE03;"><i>{{number_format giaMuaNgay}} VNĐ</i></span></div>
+                      <div><span style="color:red;"><i>{{luotBid}}</i></span></div>
+                       <div><span style="color:red;"><i class="{{idSanPham}}giugia"></i></span></div>
+                      <div><i class="{{idSanPham}}extra"></i></div>
                     </div>
                   </div>  
               </div>
               <div class="panel-footer text-center">
-                 <a href="" type="button" data-toggle="modal" data-target="#ModalBiding" class="bidBtn"> <img src="image/bid_icon.png" style="width:50px; height:50px"> </a>
+                
                 {{#if ../layoutVM.isCookie}}
 
-                  <a href="/product/favourite/{{idSanPham}}" id="{{idSanPham}}favor" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Giỏ hàng&nbsp;</a> 
+                  <a href="/product/favourite/{{idSanPham}}" id="{{idSanPham}}favor" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a> 
                   {{else}}
                   <a href="/user/login" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a> 
                   {{/if}}
@@ -127,34 +120,40 @@ Trang chủ
         
 
 
-       <h1><strong>TOP 5 THOI GIAN<strong></h1><br>
+        <div><h1 style="width:350px;background-color:#F8F8F8;border: 1px solid #F8F8F8;border-radius:25px;margin-top:40px;margin-bottom:-20px;color: #333333"><strong><i>TOP 5 THỜI GIAN</i><strong></h1></div><br><br>
        <div class="row">
          {{#each productsEndTime }}
         
           <div class="col-sm-4">
-            <div class="panel panel-primary">
+            <div class="panel panel-default">
                <div class="panel-heading">
                       <div class="row">
                            <div class="form-group">
-                              <a href="product/chitietsanpham/{{idSanPham}}" class="col-sm-10"><span style="color:white"><strong>{{tenSanPham}}</strong></span></a>   
+                              <a href="product/chitietsanpham/{{idSanPham}}" class="col-sm-10"><span style="color:#333333"><strong>{{tenSanPham}}</strong></span></a>   
                                 <div id="{{idSanPham}}" class="col-sm-2" style="font-weight:bold;font-family:arial;font-style: italic;"></div>
                            </div>
                        </div>
                 </div>
-              <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
+              <div class="panel-body"><img src="{{urlImage_format urlImage1}}" class="img-responsive" style="width:100%;height:200px;" alt="Image">
                   <div class="row">
-                    <div class="col-sm-6">
-                      <div>Giá đấu hiện tại : {{number_format giaHienTai}} VNĐ </div>
-                      <div>Giá mua ngay : {{number_format giaMuaNgay}} VNĐ </div>
+                     <div class="col-sm-5">
+                      <div><span >Giá hiện tại: </span></div>
+                      <div><span >Mua ngay: </span></div>
+                      <div><span >Lượt Bid : </span></div>
+                      <div><span >Giữ giá: </span></div>
+                      <div> Còn lại : </div>
                     </div>
-                    <div class="col-sm-6">
-                      <div>Lượt Bid : {{luotBid}}</div>
-                      <div>Thời điểm kết thúc : {{time_format thoiDiemKetThuc}}</div>
+                    <div class="col-sm-7">
+                      <div><span style="color:blue;"><i>{{number_format giaHienTai}} VNĐ</i></span></div>
+                      <div><span style="color:#02EE03;"><i>{{number_format giaMuaNgay}} VNĐ</i></span></div>
+                      <div><span style="color:red;"><i>{{luotBid}}</i></span></div>
+                       <div><span style="color:red;"><i class="{{idSanPham}}giugia"></i></span></div>
+                      <div><i class="{{idSanPham}}extra"></i></div>
                     </div>
                   </div>  
               </div>
               <div class="panel-footer text-center">
-                 <a href="" type="button" data-toggle="modal" data-target="#ModalBiding" class="bidBtn"> <img src="image/bid_icon.png" style="width:50px; height:50px"> </a>
+                 
                {{#if ../layoutVM.isCookie}}
 
                   <a href="/product/favourite/{{idSanPham}}" id="{{idSanPham}}favor" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a> 
@@ -197,9 +196,9 @@ Trang chủ
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-      
     </div>
+      
+    
 
     <script type="text/javascript">
     $("#txtname").change(function(){
@@ -208,69 +207,132 @@ Trang chủ
 
     });
    $(document).ready(function(){
-         var proBid = JSON.parse('{{{json productsBid}}}');
-         var proFavor = JSON.parse('{{{json layoutVM.productsFavourite}}}');
-         var d = new Date();
-          var millisecondsNow=Date.parse(d);
-         for(var i=0;i<proBid.length;i++)
-         {
-                  for(var j=0;j<proFavor.length;j++)
-                  {
+     var proBid = JSON.parse('{{{json productsBid}}}');
+     var proCost = JSON.parse('{{{json productsCost}}}');
+      var proEndTime = JSON.parse('{{{json productsEndTime}}}');
+      if({{layoutVM.isCookie}}) {
+        
+       
+           var proFavor = JSON.parse('{{{json layoutVM.productsFavourite}}}');
+         }
+           var d = new Date();
+            var millisecondsNow=Date.parse(d);
+           for(var i=0;i<proBid.length;i++)
+           {  
+                        if(proBid[i].hoTen)
+                        $("."+ proBid[i].idSanPham+"giugia").text(hoTen_format(proBid[i].hoTen));
+                        else $("."+ proBid[i].idSanPham+"giugia").text("Không có");
+                       if({{layoutVM.isCookie}}) {
+                          for(var j=0;j<proFavor.length;j++)
+                          {
 
-                    if(proFavor[j].idSanPham == proBid[i].idSanPham){
-                       $("#"+proBid[i].idSanPham+"favor").html("Đã yêu thích");
-                       $("#"+proBid[i].idSanPham+"favor").removeAttr("href");
-                      
+                            if(proFavor[j].idSanPham == proBid[i].idSanPham){
+                               $("#"+proBid[i].idSanPham+"favor").html("Đã yêu thích");
+                               $("#"+proBid[i].idSanPham+"favor").removeAttr("href");
+                              
+                            }
+                          }
+                        }
+                  var millisecondsthoiDiemDang  = Date.parse(proBid[i].thoiDiemDang);
+                  var t=(millisecondsNow-millisecondsthoiDiemDang)/60000;
+                   
+                   if(t<30)
+                   {
+                        $("#"+proBid[i].idSanPham+"").html("new");
+                  }
+           }
+       
+         
+           for(var i=0;i<proCost.length;i++)
+           {        
+                      if(proCost[i].hoTen)
+                        $("."+ proCost[i].idSanPham+"giugia").text(hoTen_format(proCost[i].hoTen));
+                        else $("."+ proCost[i].idSanPham+"giugia").text("Không có");
+                    if({{layoutVM.isCookie}}) {
+                    for(var j=0;j<proFavor.length;j++)
+                    {
+
+                      if(proFavor[j].idSanPham == proCost[i].idSanPham){
+                         $("#"+proCost[i].idSanPham+"favor").html("Đã yêu thích");
+                         $("#"+proCost[i].idSanPham+"favor").removeAttr("href");
+                        
+                      }
                     }
                   }
-                var millisecondsthoiDiemDang  = Date.parse(proBid[i].thoiDiemDang);
-                var t=(millisecondsNow-millisecondsthoiDiemDang)/60000;
-                 
-                 if(t<30)
-                 {
-                      $("#"+proBid[i].idSanPham+"").html("new");
-                }
-         }
-         var proCost = JSON.parse('{{{json productsCost}}}');
-         for(var i=0;i<proCost.length;i++)
-         {
+                  var millisecondsthoiDiemDang  = Date.parse(proCost[i].thoiDiemDang);
+                  var t=(millisecondsNow-millisecondsthoiDiemDang)/60000;
+                  
+                   if(t<30)
+                   {
+                        $("#"+proCost[i].idSanPham+"").html("new");
+                  }
+           }
+         
+           for(var i=0;i<proEndTime.length;i++)
+           {
+                    if(proEndTime[i].hoTen)
+                        $("."+ proEndTime[i].idSanPham+"giugia").text(hoTen_format(proEndTime[i].hoTen));
+                        else $("."+ proEndTime[i].idSanPham+"giugia").text("Không có");
+                   if({{layoutVM.isCookie}}) {
+                   for(var j=0;j<proFavor.length;j++)
+                    {
+
+                      if(proFavor[j].idSanPham == proEndTime[i].idSanPham){
+                         $("#"+proEndTime[i].idSanPham+"favor").html("Đã yêu thích");
+                         $("#"+proEndTime[i].idSanPham+"favor").removeAttr("href");
+                        
+                      }
+                    }
+                  }
+                  var millisecondsthoiDiemDang = Date.parse(proEndTime[i].thoiDiemDang);
+                  var t=(millisecondsNow-millisecondsthoiDiemDang)/60000;
+                  
+                   if(t<30)
+                   {
+                        $("#"+proEndTime[i].idSanPham+"").html("new");
+                  }
+           }
+      
+      setTimeExtra(proBid, proCost, proEndTime);
+
+    });
+    function setTimeExtra(pro1, pro2, pro3){
+
+        var myTimer = setInterval(function(){
+            //alert("a");
+            var now = new Date();  
+            for(var i = 0 ; i < pro1.length; i++){
                
-                  for(var j=0;j<proFavor.length;j++)
-                  {
+                var endTime = new Date(pro1[i].thoiDiemKetThuc);  
+                 
+                var distance = Date.parse(endTime) - Date.parse(now); 
+                if(distance<=0)  $('.' + pro1[i].idSanPham + 'extra').text("Đã kết thúc");
+                else $('.' + pro1[i].idSanPham + 'extra').text(formatExtraTime(distance));
+                //console.log(formatExtraTime(distance));
+            }
+            for(var i = 0 ; i < pro2.length; i++){
+               
+                var endTime = new Date(pro2[i].thoiDiemKetThuc);  
+                 
+                var distance = Date.parse(endTime) - Date.parse(now); 
+                if(distance<=0)  $('.' + pro2[i].idSanPham + 'extra').text("Đã kết thúc");
+                else $('.' + pro2[i].idSanPham + 'extra').text(formatExtraTime(distance));
+                //console.log(formatExtraTime(distance));
+            }
+            for(var i = 0 ; i < pro3.length; i++){
+               
+                var endTime = new Date(pro3[i].thoiDiemKetThuc);  
+                 
+                var distance = Date.parse(endTime) - Date.parse(now); 
+                if(distance<=0)  $('.' + pro3[i].idSanPham + 'extra').text("Đã kết thúc");
+                else $('.' + pro3[i].idSanPham + 'extra').text(formatExtraTime(distance));
+                //console.log(formatExtraTime(distance));
+            }
 
-                    if(proFavor[j].idSanPham == proCost[i].idSanPham){
-                       $("#"+proCost[i].idSanPham+"favor").html("Đã yêu thích");
-                       $("#"+proCost[i].idSanPham+"favor").removeAttr("href");
-                      
-                    }
-                  }
-                var millisecondsthoiDiemDang  = Date.parse(proCost[i].thoiDiemDang);
-                var t=(millisecondsNow-millisecondsthoiDiemDang)/60000;
-                
-                 if(t<30)
-                 {
-                      $("#"+proCost[i].idSanPham+"").html("new");
-                }
-         }
-         var proEndTime = JSON.parse('{{{json productsEndTime}}}');
-         for(var i=0;i<proEndTime.length;i++)
-         {
-                 for(var j=0;j<proFavor.length;j++)
-                  {
 
-                    if(proFavor[j].idSanPham == proEndTime[i].idSanPham){
-                       $("#"+proEndTime[i].idSanPham+"favor").html("Đã yêu thích");
-                       $("#"+proEndTime[i].idSanPham+"favor").removeAttr("href");
-                      
-                    }
-                  }
-                var millisecondsthoiDiemDang = Date.parse(proEndTime[i].thoiDiemDang);
-                var t=(millisecondsNow-millisecondsthoiDiemDang)/60000;
-                
-                 if(t<30)
-                 {
-                      $("#"+proEndTime[i].idSanPham+"").html("new");
-                }
-         }
-      });
+
+
+          }, 1000);
+         //setTimeExtra(pro);
+    }
   </script>

@@ -24,8 +24,11 @@ module.exports = function(req, res, next) {
 				isCookie : isCookie,
 				userId : userId,
 				hoTen : cRows2[0].hoTen,
+				email : cRows2[0].email,
 				diemCong : cRows2[0].diemDanhGiaCong,
 				diemTru : cRows2[0].diemDanhGiaTru,
+				thoiDiemKetThucRaoBan : cRows2[0].thoiDiemKetThucRaoBan,
+				viTri : cRows2[0].viTri,
 				buocGia : cRows2[0].buocGia,
 				productsFavourite : cRows3
 				// suppliers: []

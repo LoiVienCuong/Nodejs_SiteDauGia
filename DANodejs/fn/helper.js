@@ -2,8 +2,8 @@
 var fs = require('fs'),
     path = require('path'),
     mv = require('mv'),
-    Entities = require('html-entities').XmlEntities;
-
+    Entities = require('html-entities').XmlEntities,
+    q = require('q');
 
 exports.convertNumber = function(x) {
             if(x < 10){
@@ -117,10 +117,10 @@ exports.loadFilesImageFromFolder = function(number){
 
             });
             setTimeout(function() {
-                 if(listFilesName.length == 2) listFilesName.push("null");
+                 if(listFilesName.length == 2) listFilesName.push("##null");
                  if(listFilesName.length == 1) {
-                     listFilesName.push("null");
-                     listFilesName.push("null");
+                     listFilesName.push("##null");
+                     listFilesName.push("##null");
                  }
                  isEnd = true;
                  console.log(listFilesName);
@@ -161,6 +161,26 @@ exports.decodeTextToHTML = function(input){
      console.log(entities.decode(input));
      return entities.decode(input);
 }
+
+exports.formatExtraTime = function(amount) { //
+    //lay giay
+    var seconds = parseInt(amount/1000);
+
+    //lay phut
+    var minutes = parseInt(seconds/60);
+
+    //laygio
+    var hours = parseInt(minutes/60);
+
+    ///lay ngay
+    var days = parseInt(hours/24);
+
+    var rs = days + " Days " + this.convertNumber(hours%24) + " : " + this.convertNumber(minutes%60) + " : " + this.convertNumber(seconds%60); 
+    
+
+    return rs;
+}
+
 
 
 

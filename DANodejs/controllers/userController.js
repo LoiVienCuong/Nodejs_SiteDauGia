@@ -1,11 +1,33 @@
 var express = require('express'),
+    nodemailer = require("nodemailer"),
     productRepo = require('../models/productRepo'),
     categoryRepo = require('../models/categoryRepo'),
     userRepo = require('../models/userRepo'),
     danhsachdaugiaRepo = require('../models/danhsachdaugiaRepo'),
     md5 = require('md5'),
+    helper = require('../fn/helper'),
     recaptcha = require('express-recaptcha');
 
+//mail
+/*var smtpTransport = nodemailer.createTransport("SMTP",{
+    service: "Gmail",
+    auth: {
+        user: "leanhkhoi1996@gmail.com",
+        pass: "microsoft96"
+    }
+});*/
+
+var smtpTransport = nodemailer.createTransport({
+    host: 'localhost',
+    service: "Gmail",
+    port: 465,
+    secure: true, // secure:true for port 465, secure:false for port 587
+    auth: {
+        user: 'leanhkhoi1996@gmail.com',
+        pass: 'microsoft96'
+    }
+});
+var rand,mailOptions,host,link;
 
 recaptcha.init('6Ldm0yUUAAAAADCrSsJTyB7MSfbNqHPs6PZQCOQ9', '6Ldm0yUUAAAAAHHPL2z63y5f2ARwgEmclHOxGdDF');
 
@@ -17,7 +39,7 @@ var status = 0; // 0 have not login, 2 : logined, 1 : password or userId is wron
 
 var flag=false;
 r.get('/login', function(req, res) {
-	 errorRecaptcha = false;
+	errorRecaptcha = false;
   if(req.cookies.userLogin){
   	res.redirect('back');
   }else{
@@ -40,7 +62,7 @@ r.post('/login', function(req, res) {
         userRepo.loadUserByIdAndPassWord(req.body)
             .then(function(pRows) {
             	if(pRows.length === 1){
-            		var minute =  60*1000 * 30;
+            		var minute =  60*1000 * 300;
             		res.clearCookie('userLogin');
   					res.cookie('userLogin', pRows[0].idNguoiDung, { maxAge: minute });
   					status = 2;
@@ -72,13 +94,18 @@ r.get('/register', function(req, res) {
       	res.redirect('back');
       }
       else{
-      	
-        var vm = {
-            layout: false,
-            captcha: recaptcha.render(),
-            errorRecaptcha : errorRecaptcha
-        };
+      	userRepo.loadAllUser().then(function(pRows){
+           var vm = {
+                        layout: false,
+                        users : pRows,
+                        captcha: recaptcha.render(),
+                        errorRecaptcha : errorRecaptcha
+                    };
         res.render('user/register', vm);
+        }).fail(function(error){
+            console.log(error);
+        });
+       
 
      }
 
@@ -88,33 +115,92 @@ r.get('/register', function(req, res) {
 r.post('/register', function(req, res) {
 	recaptcha.verify(req, function(error){
         if(!error){
-        	errorRecaptcha = false;
-            //success code
+          	errorRecaptcha = false;
+              //success code
+            var rand=Math.floor(Math.random() + 54);
+            rand = md5(rand);
+            console.log("random generate : " + rand);
+            //save in danh sach cho
+            userRepo.deleteWaitUser(req.query.email).then(function(){
+                userRepo.addNewWaitUser(req.body.idNguoiDung, req.body.hoTen, md5(req.body.passWord), req.body.email,rand)
+                .then(function(){
+                    var vm = {
+                          layout: false,
+                      };
+                    res.render('user/registerSuccess', vm);
+                })
+                .fail(function(error){
+                 console.log(error);
+                });
+            });
             
-              userRepo.addNewUser(req.body)
-		      .then(function(data){
-			      	 var vm = {
-			            layout: false,
-			        };
-			        res.render('user/registerSuccess', vm);
-			    })
-		      .catch(function(err) {
-			        
-			        res.end('insert fail');
-		      	});
-
-        }
-
-        else{
-            //error code 
-            errorRecaptcha = true;
+            //gui mail xac nhan
+           
+            host=req.get('host');
+            link="http://"+req.get('host')+"/user/verify?verifycode="+rand + "&" + "email=" + req.body.email;
+            mailOptions={
+                    from: 'leanhkhoi1996@gmail.com',
+                    to : req.body.email,
+                    subject : "Please confirm your Email account",
+                    html : "Hello,<br> Please Click on the link to verify your email.<br><a href="+link+">Click here to verify</a>" 
+            }
+            console.log(mailOptions);
+            smtpTransport.sendMail(mailOptions, function(error, response){
+             if(error){
+                    console.log(error);
+                  res.end("error");
+             }else{
+                    console.log("Message sent: " + response.message);
+                    res.end("sent");
+             }
+            });
+            
+        
+        }else{
+           
+           errorRecaptcha = true;
        		 console.log("unsuccess");
        		 res.redirect('back');
         }
+
     });
 
-     
 });
+
+r.get('/verify',function(req,res){
+  
+    console.log(req.protocol+":/"+req.get('host'));
+    if((req.protocol+"://"+req.get('host'))==("http://"+host))
+    {
+
+        //load choxacnhanmail lay ra
+        //neu lay ra co thi them vao database nguoidung va xoa
+        //neu lay ra khong co thi thong bao, khong hop le, hoac ban da kich hoat tai khoan
+        userRepo.loadWaitUser(req.query.email, req.query.verifycode).then(function(pRows){
+                console.log(req.query.email, req.query.verifycode);
+                if(pRows.length!=0){
+                   q.all([
+                      userRepo.addNewUser(pRows[0].idNguoiDung,pRows[0].hoTen, pRows[0].passWord, pRows[0].email),
+                      userRepo.deleteWaitUser(req.query.email),
+                  ]).spread(function(cRows,cRows1) {
+                      res.redirect("/user/login");
+                      console.log("Xác thực thành công!");
+                      console.log(cRows1);
+                  }).fail(function(error){console.log(error);});
+
+                }else{
+                    console.log("Không hợp lệ, dường như bạn đã kích hoạt trước đó!");
+                }
+        }).fail(function(error){console.log(error);});
+
+    }
+    else
+    {
+        res.end("<h1>Request is from unknown source");
+    }
+
+});
+
 
 r.get('/danhsachyeuthich',function(req,res){
      var userId = req.cookies.userLogin;
@@ -156,7 +242,7 @@ r.get('/xindangban',function(req,res){
               userRepo.insertAskForPostProduct(userId)
                 .then(function(pRows) {
 
-                  res.redirect('dangban/phanhoi');
+                  res.redirect('xindangban/phanhoi');
 
                 }).fail(function(error){
                       console.log(error)
@@ -201,12 +287,13 @@ r.get('/suathongtincanhan',function(req,res){
                   }else{
                       userRepo.loadAccount(userId)
                           .then(function(pRows) {
-                          
+                            
                              var vm = {
                                   layoutVM: res.locals.layoutVM,
                                   user: pRows[0],
                                   PassWrong: flag,
                               };
+                              flag=false;
                             res.render('user/suathongtincanhan', vm);
                         });
                   }
@@ -280,7 +367,7 @@ r.post('/sanphamdathang',function(req,res){
                              
                             if(data>=0)
                             {
-                                    userRepo.isComment(userId,req.body.idSanPham)
+                                    userRepo.isCommentSeller(userId,req.body.idSanPham)
                                        .then(function(changedRows){
                                         if(changedRows>0)
                                         {
@@ -328,6 +415,102 @@ r.post('/sanphamdathang',function(req,res){
                           });
                   }
 });
+
+r.get('/sanphamdaban',function(req,res){
+                var userId = req.cookies.userLogin;
+                if(!userId){
+                     res.redirect('login');
+                  }else{
+                      userRepo.loadListSelled(userId)
+                          .then(function(pRows) {
+                            
+                             var vm = {
+                                  layoutVM: res.locals.layoutVM,
+                                  products: pRows,
+                                  noProducts: pRows.length === 0
+                              };
+                            res.render('user/sanphamdaban', vm);
+                        });
+                  }
+});
+
+r.post('/sanphamdaban',function(req,res){
+               var userId = req.cookies.userLogin;
+                if(!userId){
+                     res.redirect('login');
+                  }else{
+                      userRepo.addCommentSeller(req.body)
+                          .then(function(data) {
+                           
+                             
+                            if(data>=0)
+                            {
+                                    userRepo.isCommentBider(req.body.idSanPham)
+                                       .then(function(changedRows){
+                                        if(changedRows>0)
+                                        {
+                                              if(req.body.chamdiem==+1)
+                                              {
+
+                                                   userRepo.increaseScore(req.body.idNguoiDung)
+                                                   .then(function(changedRows){
+                                                    if(changedRows>0)
+                                                        res.redirect('sanphamdaban');
+                                                    else
+                                                         res.redirect('back');
+                                                }).catch(function(err) {
+                                                    res.end('update fail');
+                                                });
+                                              }
+                                              else
+                                              {
+                                                    userRepo.decreaseScore(req.body.idNguoiDung)
+                                                   .then(function(changedRows){
+                                                    if(changedRows>0)
+                                                        res.redirect('sanphamdaban');
+                                                    else
+                                                         res.redirect('back');
+                                                }).catch(function(err) {
+                                                    res.end('update fail');
+                                              });
+                                            }
+                                        }
+                                            
+                                        else
+                                        {
+                                             res.redirect('back');
+                                        }
+                                    }).catch(function(err) {
+                                        res.end('update fail');
+                                    });
+                                  
+                              }
+                          else{
+                            res.redirect('back');
+                          }
+                        }).catch(function(err) {
+                            res.end('insert fail');
+                          });
+                  }
+});
+r.get('/sanphamdangdang',function(req,res){
+                var userId = req.cookies.userLogin;
+                if(!userId){
+                     res.redirect('login');
+                  }else{
+                      userRepo.loadSelling(userId)
+                          .then(function(pRows) {
+                           
+                             var vm = {
+                                  layoutVM: res.locals.layoutVM,
+                                  products: pRows,
+                                  noProducts: pRows.length === 0
+                              };
+                            res.render('user/sanphamdangdang', vm);
+                        });
+                  }
+});
+
 r.get('/doimatkhau',function(req,res){
                 var userId = req.cookies.userLogin;
                 if(!userId){
@@ -341,6 +524,8 @@ r.get('/doimatkhau',function(req,res){
                                   user: pRows[0],
                                   PassWrong: flag,
                               };
+                             flag=false;
+                     
                             res.render('user/doimatkhau', vm);
                         });
                   }
@@ -392,6 +577,8 @@ r.get('/chitietdanhgia',function(req,res){
 });
 
 
+
+///by Lê Anh Khôi
 r.get('/dangsanpham',function(req,res){
    var userId = req.cookies.userLogin;
 
@@ -414,9 +601,11 @@ r.post('/ban', function(req,res){
       var idNguoiBiCam = req.body.idNguoiBiCam;
       var idNguoiGiuGiaCaoThuHai = req.body.idNguoiGiuGiaCaoThuHai;
       var giaDauNguoiGiuGiaCaoThuHai = req.body.giaDauNguoiGiuGiaCaoThuHai;
+      var emailNguoiBiCam = req.body.emailNguoiBiCam;
       console.log("Nguoi bi cam : " + idNguoiBiCam + "\n"
                 + "Nguoi giu gia cao thu 2 : " + idNguoiGiuGiaCaoThuHai + "\n"
-                + "Gia Dau Nguoi giu gia cao thu 2: " + giaDauNguoiGiuGiaCaoThuHai + "\n");
+                + "Gia Dau Nguoi giu gia cao thu 2: " + giaDauNguoiGiuGiaCaoThuHai + "\n"
+                + "Email Người bị cấm: " + emailNguoiBiCam);
       //update sanpham
       //update daugiasanpham
       if(idNguoiGiuGiaCaoThuHai == 'null'){
@@ -435,12 +624,41 @@ r.post('/ban', function(req,res){
         })
 
       }
-      res.redirect('back');
-    }else{
+
+      //send mail cho bi cam
+      link="http://"+req.get('host')+"/product/chitietsanpham/" + idSanPham;
+      mailOptions={
+              from: 'leanhkhoi1996@gmail.com',
+              to : emailNguoiBiCam,
+              subject : "Bạn đã bị cấm khỏi một cuộc đấu giá",
+              html : "Hello,<br> Please Click on the link to view detail.<br><a href="+link+">Click here to view</a>" 
+      }
+      console.log(mailOptions);
+      smtpTransport.sendMail(mailOptions, function(error, response){
+       if(error){
+              console.log(error);
+           
+       }else{
+              console.log("Message sent: " + response.message);
+              
+       }
+      });
+      //
+
+
+
+
+      setTimeout(function(){
+        res.redirect('back');
+      }, 500);
+     
+    }
+    else{
       res.redirect('/user/login');
     }
-
-
 });
+
+
+
 
 module.exports = r;

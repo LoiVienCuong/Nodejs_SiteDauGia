@@ -30,11 +30,9 @@
 </head>
 
     <body>
-        <div class="jumbotron">
-            <div class="container text-center">
-                <h1>Đấu giá trực tuyến</h1>
-                <p>Mission, Vission & Values</p>
-            </div>
+        <div class="container text-center">
+            <p style="font-size: 70px;">Đấu Giá Trực Tuyến</p>      
+            
         </div>
         <nav class="navbar navbar-inverse">
             <div class="container-fluid">
@@ -46,19 +44,7 @@
                     </button>
                     <a class="navbar-brand" href="/">Trang Chủ</a>
                 </div>
-                <div class="collapse navbar-collapse" id="myNavbar">
-                    <ul class="nav navbar-nav">
-                      
-                        <li><a href="#">Cá nhân</a></li>
-                        <li><a href="#">Top Uy Tín</a></li>
-                        <li><a href="#">Hướng dẫn</a></li>
-                        <li><a href="#">Liên hệ</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>
-                    </ul>
-                </div>
+                
             </div>
         </nav>
         <div class="row">
@@ -130,16 +116,16 @@
             </div>
         </div>
        
-        
-        <footer class="container-fluid text-center">
-            <p>Online Store Copyright</p>
-        </footer>
+      
     </body>
 
     <script type="text/javascript">
 
-
+     var users = JSON.parse('{{{json users}}}');
+     var isValidID = true;
+     var isValidEmail = true;
      $(document).ready(function(){
+
        
         var decoded = $('#captcha').html("{{captcha}}").text();
         $('#captcha').html(decoded);
@@ -160,9 +146,16 @@
                 return false;
             }
             else{
+                if(!isValidID){
+                    $('#username_error').text('ID đã có người sử dụng');
+                    return false;
+                } 
                 $('#username_error').text('');
             }
-
+            if(!isValidEmail){
+                $('#username_error').text('Email đã có người sử dụng');
+                return false;
+            } 
             //hoten
             if (hoten == ''){
                 $('#hoten_error').text('Tên không được bỏ trống');
@@ -202,10 +195,38 @@
             else{
                 $('#email_error').text('');
             }*/
-     
-            
-     
+       
         });
+
+
+       $('#idNguoiDung').change(function(){
+            var id = $('#idNguoiDung').val();
+            isValidID = true;
+            for(var i = 0; i < users.length; i++){
+                if(users[i].idNguoiDung == id){
+                    $('#username_error').text('ID đã có người sử dụng');
+                    isValidID = false;
+                    break;
+                }
+            }
+            if(isValidID) $('#username_error').text('');
+       });
+       $('#email').change(function(){
+            var email = $('#email').val();
+            
+            isValidEmail = true;
+            for(var i = 0; i < users.length; i++) {
+
+                if((users[i].email.localeCompare(email)) == 0){  
+                    $('#email_error').text('Email đã có người sử dụng');
+                    isValidEmail = false;
+                    break;
+                }
+            }
+           
+            if(isValidEmail) $('#email_error').text('');
+
+       });
     
     });
 

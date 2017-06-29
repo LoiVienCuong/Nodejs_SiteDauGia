@@ -7,14 +7,11 @@
 {{#if noProducts }}
 	KHÔNG CÓ SẢN PHẨM THOẢ YÊU CẦU!
 {{else}}
-   <div class="row">
+   <div class="row"  style="background-color:#F8F8F8;border: 1px solid #F8F8F8;border-radius:25px;">
         <div class="form-group">
-          <label class="control-label col-sm-5"><h1><strong>DANH SÁCH YÊU THÍCH<strong></h1></label>
-          <div class="col-sm-7 text-right" style="padding-top:23px;">
-              <div class="btn-group">
-                <button class="btn btn-primary" data-id="1">Thời gian kết thúc giảm dần </button>
-                <button class="btn btn-primary" data-id="2">Giá tăng dần </button>
-              </div>
+          <label class="control-label col-sm-6"><h1><strong>DANH SÁCH YÊU THÍCH<strong></h1></label>
+          <div class="col-sm-6 text-right" style="padding-top:23px;">
+              
           </div>
         </div>
   </div>
@@ -28,31 +25,34 @@
       </form>
          {{#each products }}
           <div class="col-sm-4">
-            <div class="panel panel-primary">
+            <div class="panel panel-default">
                
                   <div class="panel-heading">
                       <div class="row">
                            <div class="form-group">
-                              <a href="/product/chitietsanpham/{{idSanPham}}" class="col-sm-10"><span style="color:white"><strong>{{tenSanPham}}</strong></span></a>   
+                              <a href="/product/chitietsanpham/{{idSanPham}}" class="col-sm-10"><span style="color:#333333"><strong>{{tenSanPham}}</strong></span></a>   
                                 <div id="{{idSanPham}}" class="col-sm-2" style="font-weight:bold;font-family:arial;font-style: italic;"></div>
                            </div>
                        </div>
                 </div>
-              <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
+              <div class="panel-body"><img src="{{urlImage_format urlImage1}}" class="img-responsive" style="width:100%;height:200px;" alt="Image">
                   <div class="row">
-                    <div class="col-sm-6">
-                      <div>Giá đấu hiện tại : {{number_format giaHienTai}} </div>
-                      <div>Giá mua ngay : {{number_format giaMuaNgay}} </div>
+                   <div class="col-sm-5">
+                      <div><span >Giá hiện tại: </span></div>
+                      <div><span >Mua ngay: </span></div>
+                      <div><span >Lượt Bid : </span></div>
+                      <div> Còn lại : </div>
                     </div>
-                    <div class="col-sm-6">
-                      <div>Lượt Bid : {{luotBid}}</div>
-                      <div id="{{idSanPham}}"> Thời điểm kết thúc : {{time_format thoiDiemKetThuc}}</div>
-                    </div>
+                    <div class="col-sm-7">
+                      <div><span style="color:blue;"><i>{{number_format giaHienTai}} VNĐ</i></span></div>
+                      <div><span style="color:#02EE03;"><i>{{number_format giaMuaNgay}} VNĐ</i></span></div>
+                      <div><span style="color:red;"><i>{{luotBid}}</i></span></div>
+                      <div><i id="{{idSanPham}}extra"></i></div>
                   </div>  
+                  </div> 
               </div>
               <div class="panel-footer text-center">
-                 <a href="" type="button" data-toggle="modal" data-target="#ModalBiding" class="bidBtn"> <img src="/image/bid_icon.png" style="width:50px; height:50px"> </a>
-               
+                
 
                   <a href="/product/delete/{{idSanPham}}" id="{{idSanPham}}favor" type="button" class="btn btn-danger btn-lg cart">&nbsp;Hủy Yêu Thích&nbsp;</a> 
                   
@@ -112,6 +112,7 @@
                       $("#"+pro[i].idSanPham+"").html("new");
                 }
          }
+        setTimeExtra(pro)
       });
 
     $('button').on('click', function() {
@@ -119,4 +120,21 @@
       $('#txtloaibtn').val(id);
       $('#frmSapXep').submit();
     });
+     function setTimeExtra(pro){
+
+         myTimer = setInterval(function(){
+            //alert("a");
+            var now = new Date();  
+            for(var i = 0 ; i < pro.length; i++){
+               
+                var endTime = new Date(pro[i].thoiDiemKetThuc);  
+                 
+                var distance = Date.parse(endTime) - Date.parse(now); 
+                if(distance<=0)  $('#' + pro[i].idSanPham + 'extra').text("Đã kết thúc");
+                else $('#' + pro[i].idSanPham + 'extra').text(formatExtraTime(distance));
+                console.log(formatExtraTime(distance));
+            }
+          }, 1000);
+         //setTimeExtra(pro);
+    }
   </script>
