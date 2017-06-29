@@ -113,9 +113,9 @@
                                                  <div><strong style="color:red">Bạn đã đăng bán sản phẩm này</strong></div>
                                                 {{else}}
                                                  <div>
-                                                 Người đăng sản phẩm: <a href="">{{../seller.0.hoTen}}</a>&nbsp;
-                                                 GP : <a  href="">{{../seller.0.diemDanhGiaCong}}</a>&nbsp;
-                                                 BP : <a  href="">{{../seller.0.diemDanhGiaTru}}</a>
+                                                 Người đăng sản phẩm: <a href="/user/chitietdanhgia/{{../seller.0.idNguoiDung}}">{{../seller.0.hoTen}}</a>&nbsp;
+                                                 GP : <a  >{{../seller.0.diemDanhGiaCong}}</a>&nbsp;
+                                                 BP : <a  >{{../seller.0.diemDanhGiaTru}}</a>
                                                 </div>
                                                 {{/ifCond}}
                                                
@@ -123,16 +123,11 @@
                                                 <div> Người đấu giá cao nhất : Sản phẩm chưa có người đấu giá
                                                 </div>
                                                 {{else}}
-                                                <div> Người đấu giá cao nhất : <a href="">{{hoTen_format ../bestbuyer.0.hoTen}}</a>&nbsp;
-                                                 GP : <a  href="">{{../bestbuyer.0.diemDanhGiaCong}}</a>&nbsp;
-                                                 BP : <a  href="">{{../bestbuyer.0.diemDanhGiaTru}}</a>
+                                                <div> Người đấu giá cao nhất : <a href="/user/chitietdanhgia/{{../bestbuyer.0.idNguoiDung}}">{{hoTen_format ../bestbuyer.0.hoTen}}</a>&nbsp;
+                                                 GP : <a  >{{../bestbuyer.0.diemDanhGiaCong}}</a>&nbsp;
+                                                 BP : <a  >{{../bestbuyer.0.diemDanhGiaTru}}</a>
                                                 </div>
                                                 {{/if}}
-                                                {{#ifCond ../layoutVM.userId "==" idNguoiBan}}
-                                                <div><a href="/user/chitietdanhgia">Chi tiết đánh giá của người mua</a></div>
-                                                {{else}}
-                                                <div><a href="/user/chitietdanhgia">Chi tiết đánh giá của người bán</a></div>
-                                                {{/ifCond}}
                                                 
                                             </div>
                                         </div>
@@ -150,7 +145,7 @@
                                                   {{/if}}
 
                                                   {{else}}
-                                                  <a href="/user/login" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a> 
+                                                  <a href="/user/login" type="button" class="btn btn-danger btn-lg cart"><span class="glyphicon glyphicon-heart" aria-hidden="true"></a> 
                                                    <a href="/user/login" type="button" > <img src="/image/bid_icon.png" style="width:50px; height:50px"> </a>
                                                   {{/if}}
 
@@ -429,17 +424,27 @@
     $("#closeAuction").click(function(){
         multi = 1;
     });
-
-    $(".proImg").hover(
-        function(event) {
-            // The mouse has entered the element, can reference the element via 'this'
-            var imgsrc = $(this).attr('src');
-            $(".imgbig").attr('src', imgsrc);
-        },
-        function(event) {
-            // The mouse has left the element, can reference the element via 'this'
-        }
-    );
+     $(".proImg").hover(
+            function(event) {
+                // The mouse has entered the element, can reference the element via 'this'
+                $(".imgbig").addClass(' magictime slideRight');
+               var imgsrc = $(this).attr('src');
+                setTimeout(function(){
+                   
+                      $(".imgbig").addClass(' magictime slideRightReturn');
+                       
+                     $(".imgbig").attr('src', imgsrc);
+                }, 400);
+                   
+               
+               
+            },
+            function(event) {
+              $(".imgbig").removeClass(' magictime slideRight');  
+              $(".imgbig").removeClass(' magictime slideRightReturn');
+                // The mouse has left the element, can reference the element via 'this'
+            }
+        );
     function format(num){
         var n = num.toString(), p = n.indexOf('.');
         return n.replace(/\d(?=(?:\d{3})+(?:\.|$))/g, function($0, i){
@@ -501,7 +506,7 @@
         if(confirm("Bạn có chắc chắn muốn đấu giá sản phẩm này")){
             var result = giaHienTai + buocGia*multi;
             if(result==giaMuaNgay){
-
+                alert("Bạn đã chiến thắng cuộc đấu giá này!\n.Chúng tôi đã gửi tới mail của bạn để xác nhận.\nCheck mail to view detail");
             }
             return true;
         }
