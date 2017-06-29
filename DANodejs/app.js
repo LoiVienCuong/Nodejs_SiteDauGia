@@ -12,8 +12,13 @@ var express = require('express'),
     wnumb = require('wnumb'),
     handle404 = require('./middle-wares/handle-404'),
     homeController = require('./controllers/homeController'),
+
     timkiemController = require('./controllers/timkiemController'),
     manageController = require('./controllers/manageController'),
+
+    timkiemController = require('./controllers/timkiemController'),
+    manageController = require('./controllers/manageController'),
+
    handleLayout = require('./middle-wares/handleLayout'),
    productController = require('./controllers/productController'),
    userController = require('./controllers/userController'),
@@ -98,8 +103,7 @@ app.engine('hbs', handlebars({
                     newStr = newStr + str[i];
                 }   
             }
-
-          
+        
             return newStr;
         }
        
@@ -249,4 +253,8 @@ var myTimer = setInterval(function(){
     //if ==0
 
 
+
 }, 1000);
+
+
+
