@@ -40,20 +40,20 @@
                 </div>
                 <div class="panel-body"><img src="{{urlImage_format urlImage1}}" class="img-responsive" style="width:100%;height:200px;" alt="Image">
                     <div class="row">
-                       <div class="col-sm-5">
-                      <div><span >Giá hiện tại: </span></div>
-                      <div><span >Mua ngay: </span></div>
-                      <div><span >Lượt Bid : </span></div>
-                      <div><span >Người giữ giá: </span></div>
-                      <div> Còn lại : </div>
-                    </div>
-                    <div class="col-sm-7">
-                      <div><span style="color:blue;"><i>{{number_format giaHienTai}} VNĐ</i></span></div>
-                      <div><span style="color:#02EE03;"><i>{{number_format giaMuaNgay}} VNĐ</i></span></div>
-                      <div><span style="color:red;"><i>{{luotBid}}</i></span></div>
-                      <div><span style="color:red;"><i id="{{idSanPham}}giugia"></i></span></div>
-                      <div><i id="{{idSanPham}}extra"></i></div>
-                    </div>
+                      <div class="col-sm-5">
+                        <div><span >Giá hiện tại: </span></div>
+                        <div><span >Mua ngay: </span></div>
+                        <div><span >Lượt Bid : </span></div>
+                        <div><span >Giữ giá: </span></div>
+                        <div> Còn lại : </div>
+                      </div>
+                      <div class="col-sm-7">
+                        <div><span style="color:blue;"><i>{{number_format giaHienTai}} VNĐ</i></span></div>
+                        <div><span style="color:#02EE03;"><i>{{number_format giaMuaNgay}} VNĐ</i></span></div>
+                        <div><span style="color:red;"><i>{{luotBid}}</i></span></div>
+                        <div><span style="color:red;"><i id="{{idSanPham}}giugia"></i></span></div>
+                        <div><i id="{{idSanPham}}extra"></i></div>
+                      </div>
                     </div>  
                 </div>
 
@@ -62,9 +62,9 @@
                   
                     {{#if ../layoutVM.isCookie}}
 
-                    <a href="/product/favourite/{{idSanPham}}" id="{{idSanPham}}favor" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a> 
+                    <a href="/product/favourite/{{idSanPham}}" id="{{idSanPham}}favor" type="button" class="btn btn-danger btn-lg cart"><span class="glyphicon glyphicon-heart" aria-hidden="true"></a> 
                     {{else}}
-                    <a href="/user/login" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a> 
+                    <a href="/user/login" type="button" class="btn btn-danger btn-lg cart"><span class="glyphicon glyphicon-heart" aria-hidden="true"></a> 
                     {{/if}}
                 </div>
              
@@ -211,13 +211,15 @@
                             +'<div><span >Giá hiện tại: </span></div>'
                             +'<div><span >Mua ngay: </span></div>'
                             +'<div><span >Lượt Bid : </span></div>'
+                            +'<div><span >Giữ giá: </span></div>'
                             +'<div> Còn lại : </div>'
                           +'</div>'
                           +'<div class="col-sm-7">'
                             + '<div><span style="color:blue;"><i>'+ formatCost(pro[i].giaHienTai)+' VND</i></div>'
                             + '<div><span style="color:#02EE03;"><i>'+ formatCost(pro[i].giaMuaNgay)+' VND</i></div>'
                             + '<div><span style="color:red;"><i>'+pro[i].luotBid+'</i></div>'
-                            + '<div><i id="'+ pro[i].idSanPham +'extra">'+time_format(pro[i].thoiDiemKetThuc)+'</i></div>'
+                            + '<div><i style="color:red;" id="'+ pro[i].idSanPham +'giugia">'+'</i></div>'
+                            + '<div><i id="'+ pro[i].idSanPham +'extra">'+'</i></div>'
                           +'</div>'
                         +'</div> ' 
                    + '</div>';
@@ -228,7 +230,7 @@
                         html+= '<div class="panel-footer text-center">'
                                    
                                       +'<a href="/product/favourite/'+pro[i].idSanPham+'" id="'+pro[i].idSanPham+'favor" type="button" class="btn btn-danger btn-lg '
-                                      +'cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a>' 
+                                      +'cart"><span class="glyphicon glyphicon-heart" aria-hidden="true"></a>' 
                                   +'</div>'
                                 +'</div>'
                              +'</div>'; 
@@ -250,7 +252,7 @@
               {
                    html+= '<div class="panel-footer text-center">'
                               
-                                +'<a href="/user/login" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a>' 
+                                +'<a href="/user/login" type="button" class="btn btn-danger btn-lg cart"><span class="glyphicon glyphicon-heart" aria-hidden="true"></a>' 
                             +'</div>'
                           +'</div>'
                        +'</div>'; 
@@ -330,17 +332,19 @@
          +'style="width:100%;height:200px;"'
          + 'alt="Image">'
               +'<div class="row">'
-                + '<div class="col-sm-5">'
+                +'<div class="col-sm-5">'
                   +'<div><span >Giá hiện tại: </span></div>'
                   +'<div><span >Mua ngay: </span></div>'
                   +'<div><span >Lượt Bid : </span></div>'
+                  +'<div><span >Giữ giá: </span></div>'
                   +'<div> Còn lại : </div>'
                 +'</div>'
                 +'<div class="col-sm-7">'
                   + '<div><span style="color:blue;"><i>'+ formatCost(pro[i].giaHienTai)+' VND</i></div>'
                   + '<div><span style="color:#02EE03;"><i>'+ formatCost(pro[i].giaMuaNgay)+' VND</i></div>'
                   + '<div><span style="color:red;"><i>'+pro[i].luotBid+'</i></div>'
-                  + '<div><i id="'+ pro[i].idSanPham +'extra"></i></div>'
+                  + '<div><i style="color:red;" id="'+ pro[i].idSanPham +'giugia">'+'</i></div>'
+                  + '<div><i id="'+ pro[i].idSanPham +'extra">'+'</i></div>'
                 +'</div>'
               +'</div> ' 
          + '</div>';
@@ -351,7 +355,7 @@
           html+= '<div class="panel-footer text-center">'
                      
                         +'<a href="/product/favourite/'+pro[i].idSanPham+'" id="'+pro[i].idSanPham+'favor" type="button" class="btn btn-danger btn-lg '
-                        +'cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a>' 
+                        +'cart"><span class="glyphicon glyphicon-heart" aria-hidden="true"></a>' 
                     +'</div>'
                   +'</div>'
                +'</div>'; 
@@ -373,7 +377,7 @@
       {
            html+= '<div class="panel-footer text-center">'
                      
-                        +'<a href="/user/login" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a>' 
+                        +'<a href="/user/login" type="button" class="btn btn-danger btn-lg cart"><span class="glyphicon glyphicon-heart" aria-hidden="true"></a>' 
                     +'</div>'
                   +'</div>'
                +'</div>'; 
@@ -401,11 +405,24 @@
                 var endTime = new Date(pro[i].thoiDiemKetThuc);  
                  
                 var distance = Date.parse(endTime) - Date.parse(now); 
-                if(distance<=0)  $('#' + pro[i].idSanPham + 'extra').text("Đã kết thúc");
+                if(distance<=0 || pro[i].tinhTrang == 1)  $('#' + pro[i].idSanPham + 'extra').text("Đã kết thúc");
                 else $('#' + pro[i].idSanPham + 'extra').text(formatExtraTime(distance));
                 console.log(formatExtraTime(distance));
             }
           }, 1000);
          //setTimeExtra(pro);
     }
+      $(".panel").hover(
+        function(event) {
+            // The mouse has entered the element, can reference the element via 'this'
+           
+                  $(this).addClass(' magictime puffIn');
+        },
+        function(event) {
+          
+         
+            // The mouse has left the element, can reference the element via 'this'
+        }
+    );
+    </script>
   </script>
