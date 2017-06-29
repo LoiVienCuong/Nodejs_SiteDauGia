@@ -282,3 +282,56 @@ exports.isCommentBider = function(idSanPham){
     return db.update(sql);
 
 }
+
+exports.sellpermit = function(userId)
+{
+    var obj ={
+        userId: userId
+    };
+    var sql = mustache.render(
+        'update nguoidung set viTri = 1 where idNguoiDung = {{userId}}',
+        obj
+        );
+    return db.update(sql);
+}
+exports.updateThoiDiemKetThucRaoBan = function(userId,time)
+{
+    var obj ={
+        userId: userId,
+        endTime: time
+    };
+    var sql = mustache.render('update nguoidung set thoiDiemKetThucRaoBan = "{{endTime}}" where idNguoiDung = {{userId}}', 
+        obj);
+    return db.update(sql);
+
+}
+
+exports.deleteUserById = function(id)
+{
+    var obj =
+    {
+        userId: id
+    };
+
+    var sql = mustache.render(
+        'delete from nguoidung where idNguoiDung = {{userId}}',
+        obj
+    );
+
+    return db.delete(sql);
+}
+
+
+exports.resetPass2 = function(id)
+{
+    var p = md5("12345678");
+    var obj =
+    {
+        userId: id,
+        pass: p
+    };
+
+     var sql = mustache.render('update nguoidung set passWord = "{{pass}}" where idNguoiDung = {{userId}}', 
+        obj);
+    return db.update(sql);
+}
