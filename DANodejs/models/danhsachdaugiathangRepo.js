@@ -12,11 +12,7 @@ exports.insertNewWinAuction = function(idSanPham, idNguoiDung, giaThang){
     };
 
 	var sql = mustache.render(
-<<<<<<< HEAD
         'insert into danhsachdaugiathang values ({{idSanPham}},{{idNguoiDung}},{{giaThang}},"0","0")',
-=======
-        'insert into danhsachdaugiathang values ({{idSanPham}},{{idNguoiDung}},{{giaThang}},0)',
->>>>>>> origin/master
         obj
     );
     return db.insert(sql);
