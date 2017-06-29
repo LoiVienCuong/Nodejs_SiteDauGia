@@ -208,7 +208,11 @@ exports.loadListBiding = function(userId){
         userId: userId
     };
     var sql = mustache.render(
+<<<<<<< HEAD
         'select s.idSanPham, s.tenSanPham,s.giaHienTai,s.giaMuaNgay,s.urlImage1,s.luotBid,s.thoiDiemKetThuc,n.hoTen,n.idNguoiDung,d.giaDau from sanpham s,nguoidung n,danhsachdaugia d where d.idNguoiDung={{userId}} and d.giaDau=(SELECT MAX(d1.giaDau) from danhsachdaugia d1 WHERE d1.idSanPham=d.idSanPham and d1.idNguoiDung=d.idNguoiDung) and s.tinhTrang=0 and s.idSanPham =d.idSanPham and s.idNguoiGiaCaoNhat=n.idNguoiDung',
+=======
+        'select s.idSanPham, s.tenSanPham,s.giaHienTai,s.giaMuaNgay,s.urlImage,s.luotBid,s.thoiDiemKetThuc,n.hoTen,d.giaDau from sanpham s,nguoidung n,danhsachdaugia d where d.idNguoiDung={{userId}} and d.giaDau=(SELECT MAX(d1.giaDau) from danhsachdaugia d1 WHERE d1.idSanPham=d.idSanPham and d1.idNguoiDung=d.idNguoiDung) and s.tinhTrang=0 and s.idSanPham =d.idSanPham and s.idNguoiGiaCaoNhat=n.idNguoiDung',
+>>>>>>> origin/master
         obj
     );
     return db.load(sql);
@@ -218,7 +222,11 @@ exports.loadListWin = function(userId){
         userId: userId
     };
     var sql = mustache.render(
+<<<<<<< HEAD
         'select s.idSanPham,s.tenSanPham,s.idNguoiBan,s.giaMuaNgay,s.urlImage1,d.giaThang,d.idNguoiDung,d.nhanXetNguoiBan from sanpham s,danhsachdaugiathang d where d.idNguoiDung={{userId}} and s.idSanPham =d.idSanPham',
+=======
+        'select s.idSanPham,s.tenSanPham,s.idNguoiBan,s.giaMuaNgay,s.urlImage,d.giaThang,d.idNguoiDung,d.nhanXetNguoiBan from sanpham s,danhsachdaugiathang d where d.idNguoiDung={{userId}} and s.idSanPham =d.idSanPham',
+>>>>>>> origin/master
         obj
     );
     return db.load(sql);
@@ -293,7 +301,11 @@ exports.loadSelling = function(userId){
         userId: userId
     };
     var sql = mustache.render(
+<<<<<<< HEAD
         'select  s.idSanPham, s.tenSanPham,s.giaHienTai,s.giaMuaNgay,s.urlImage1,s.luotBid,s.thoiDiemKetThuc from sanpham s where s.idNguoiBan={{userId}} and s.tinhTrang=0 and s.thoiDiemKetThuc>CURRENT_TIMESTAMP()',
+=======
+        'select  s.idSanPham, s.tenSanPham,s.giaHienTai,s.giaMuaNgay,s.urlImage,s.luotBid,s.thoiDiemKetThuc from sanpham s where s.idNguoiBan={{userId}} and s.tinhTrang=0 and s.thoiDiemKetThuc>CURRENT_TIMESTAMP()',
+>>>>>>> origin/master
         obj
     );
     return db.load(sql);
@@ -305,7 +317,11 @@ exports.loadListSelled = function(userId){
         userId: userId
     };
     var sql = mustache.render(
+<<<<<<< HEAD
         'select s.idSanPham,s.tenSanPham,s.idNguoiBan,s.giaMuaNgay,s.urlImage1,d.giaThang,d.idNguoiDung,d.nhanXetNguoiMua from sanpham s,danhsachdaugiathang d where s.idSanPham =d.idSanPham and s.idNguoiBan={{userId}}',
+=======
+        'select s.idSanPham,s.tenSanPham,s.idNguoiBan,s.giaMuaNgay,s.urlImage,d.giaThang,d.idNguoiDung,d.nhanXetNguoiMua from sanpham s,danhsachdaugiathang d where s.idSanPham =d.idSanPham and s.idNguoiBan={{userId}}',
+>>>>>>> origin/master
         obj
     );
     return db.load(sql);
@@ -385,4 +401,8 @@ exports.resetPass2 = function(id)
      var sql = mustache.render('update nguoidung set passWord = "{{pass}}" where idNguoiDung = {{userId}}', 
         obj);
     return db.update(sql);
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/master

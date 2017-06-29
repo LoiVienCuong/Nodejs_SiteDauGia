@@ -660,5 +660,9 @@ r.post('/ban', function(req,res){
 
 
 
+<<<<<<< HEAD
 
+=======
+});
+>>>>>>> origin/master
 module.exports = r;

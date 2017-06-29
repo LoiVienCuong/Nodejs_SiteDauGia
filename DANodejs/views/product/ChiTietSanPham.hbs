@@ -117,6 +117,7 @@
                                                  GP : <a  href="">{{../seller.0.diemDanhGiaCong}}</a>&nbsp;
                                                  BP : <a  href="">{{../seller.0.diemDanhGiaTru}}</a>
                                                 </div>
+<<<<<<< HEAD
                                                 {{/ifCond}}
                                                
                                                 {{#if ../noBuyer}}
@@ -124,16 +125,26 @@
                                                 </div>
                                                 {{else}}
                                                 <div> Người đấu giá cao nhất : <a href="">{{hoTen_format ../bestbuyer.0.hoTen}}</a>&nbsp;
+=======
+                                                {{#if ../noBuyer}}
+                                                <div> Người đang đấu giá cao nhất : Sản phẩm chưa có người đấu giá
+                                                </div>
+                                                {{else}}
+                                                <div> Người đang đấu giá cao nhất : <a href="">{{../bestbuyer.0.hoTen}}</a>&nbsp;
+>>>>>>> origin/master
                                                  GP : <a  href="">{{../bestbuyer.0.diemDanhGiaCong}}</a>&nbsp;
                                                  BP : <a  href="">{{../bestbuyer.0.diemDanhGiaTru}}</a>
                                                 </div>
                                                 {{/if}}
+<<<<<<< HEAD
                                                 {{#ifCond ../layoutVM.userId "==" idNguoiBan}}
                                                 <div><a href="/user/chitietdanhgia">Chi tiết đánh giá của người mua</a></div>
                                                 {{else}}
                                                 <div><a href="/user/chitietdanhgia">Chi tiết đánh giá của người bán</a></div>
                                                 {{/ifCond}}
                                                 
+=======
+>>>>>>> origin/master
                                             </div>
                                         </div>
                                         <div class="panel panel-info ">
@@ -144,7 +155,11 @@
                                                   <a href="/product/favourite/{{idSanPham}}" id="{{idSanPham}}favor" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yeu Thich&nbsp;</a> 
                                                   <a href="" id="showbid" type="button" data-toggle="modal" data-target="#ModalBiding" class="bidBtn"> <img src="/image/bid_icon.png" style="width:50px; height:50px"> </a>
                                                   {{#if ../noHistory}}
+<<<<<<< HEAD
                                                   <a type="button">Chưa ai đấu giá</a>
+=======
+                                                  <a type="button">Không có lịch sử</a>
+>>>>>>> origin/master
                                                   {{else}}
                                                   <a href="" type="button"  data-toggle="modal" data-target="#ModalHistory" > <img  src="/image/history_icon.png" style="width:50px; height:50px"> </a>
                                                   {{/if}}
@@ -228,6 +243,7 @@
                                                                 <input type="hidden" class="form-control" name="idSanPham" value="{{idSanPham}}" />
                                                                 <input type="hidden" class="form-control" name="luotBid" value="{{luotBid}}" />
                                                                 <input type="hidden" class="form-control" name="giaMuaNgay" value="{{giaMuaNgay}}" />
+<<<<<<< HEAD
                                                                 <input type="hidden" class="form-control" name="giaHienTai" value="{{giaHienTai}}" />
                                                                 <input type="hidden" class="form-control" name="buocGia" value="{{buocGia}}" />
                                                                 <input type="hidden" class="form-control" name="tuDongGiaHan" value="{{tuDongGiaHan}}" />
@@ -240,6 +256,10 @@
                                                                 {{/if}}
 
                                                                 <input type="hidden" class="form-control" name="emailNguoiDauGia" value="{{../layoutVM.email}}" />
+=======
+                                                                 <input type="hidden" class="form-control" name="giaHienTai" value="{{giaHienTai}}" />
+                                                              <input type="hidden" class="form-control" name="buocGia" value="{{buocGia}}" />
+>>>>>>> origin/master
                                                                 <div class="input-group-addon">.000</div>
                                                             </div>
                                                         </div>
@@ -284,7 +304,11 @@
                                                         {{#each ../historyData}}
                                                         <tr>
                                                             <td class="filterable-cell">{{time_format thoiDiemDauGia}}</td>
+<<<<<<< HEAD
                                                             <td class="filterable-cell">{{hoTen_format hoTen}}</td>
+=======
+                                                            <td class="filterable-cell">{{hoTen}}</td>
+>>>>>>> origin/master
                                                             <td class="filterable-cell">{{giaDau}}</td>
                                                             {{#ifCond ../../layoutVM.userId '==' ../idNguoiBan}}
                                                             <td class="filterable-cell {{idNguoiDung}}_banned" ><button id="{{idNguoiDung}}_history" class="btn btn-default btn_ban">Cấm</button></td>
@@ -298,7 +322,10 @@
                                                     <div style="display:block">
                                                         <form action="/user/ban" method="POST" id="banForm">
                                                             <input type="hidden" id="idNguoiBiCam" name="idNguoiBiCam"> 
+<<<<<<< HEAD
                                                             <input type="hidden" id="emailNguoiBiCam" name="emailNguoiBiCam"> 
+=======
+>>>>>>> origin/master
                                                             <input type="hidden" id="idNguoiGiuGiaCaoThuHai" name="idNguoiGiuGiaCaoThuHai" value="null">
                                                             <input type="hidden" id="giaDauNguoiGiuGiaCaoThuHai" name="giaDauNguoiGiuGiaCaoThuHai" value="null">
                                                             <input type="hidden" name="idSanPham" value="{{idSanPham}}">
@@ -339,9 +366,16 @@
             </div>
             {{/each}} 
        
+<<<<<<< HEAD
    
     <script src='https://cloud.tinymce.com/stable/tinymce.min.js'></script>       
     <script type="text/javascript">
+=======
+    
+    <script src='https://cloud.tinymce.com/stable/tinymce.min.js'></script>       
+    <script>
+    // jQuery
+>>>>>>> origin/master
     var giaHienTai = parseInt($('#giaHienTai').val());
     var giaMuaNgay = parseInt($('#giaMuaNgay').val());
     var buocGia = parseInt($('#buocGia').val());
@@ -368,7 +402,11 @@
         
         //sortHistoryByCost();
         bidable();
+<<<<<<< HEAD
        
+=======
+        
+>>>>>>> origin/master
         //var text =  $('#moTa').html($('#moTa').text()).text();
         var parser = new DOMParser;
         var dom = parser.parseFromString(
@@ -478,6 +516,7 @@
             }   
 
             //danh sach trong lịch sử
+<<<<<<< HEAD
             
             for(var i = 0; i < listHistory.length;i++){
                 if(('{{layoutVM.userId}}' == listHistory[i].idNguoiDung)&&
@@ -487,14 +526,23 @@
                     $("#showbid").removeAttr("data-target");
                     $("#showbid").html('<img id="isBanned" src="/image/not_bid_icon.png" style="width:50px; height:50px;">');
                      $("#showbid").removeAttr("id");
+=======
+            var listHistory = JSON.parse('{{{json historyData}}}');
+            for(var i = 0; i < listHistory.length;i++){
+                if('{{layoutVM.userId}}' == listHistory[i].idNguoiDung){
+                    $("#showbid").html('<img id="isBanned" src="/image/not_bid_icon.png" style="width:50px; height:50px;">');
+>>>>>>> origin/master
                     break;
                 }
             }
 
     }
+<<<<<<< HEAD
     function sortHistoryByCost (){
         listHistory.sort(function(a, b){return b.giaDau - a.giaDau});
     }
+=======
+>>>>>>> origin/master
             // The mouse has entered the element, can reference the element via 't ,
   
     $("#acutionForm").submit(function(){
@@ -543,6 +591,11 @@
 
 
         //danh sach trong lịch sử
+<<<<<<< HEAD
+=======
+        var listHistory = JSON.parse('{{{json historyData}}}');
+
+>>>>>>> origin/master
         //do dai
         var length = listHistory.length;    
 
@@ -561,8 +614,11 @@
                 break;
             }
         }
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> origin/master
         //alert(id2stBuyer + " " + cost2stBuyer);
         //alert(id2stBuyer + " " + cost2stBuyer);
         
@@ -572,6 +628,7 @@
         //id nguoi bi cam
         var idNguoiBiCam = parseInt($(this).attr("id").split("_")[0]);
        
+<<<<<<< HEAD
         //lay email nguoi bi cam 
          for(var i = 0; i < length ; i++){
               if(listHistory[i].idNguoiDung ==idNguoiBiCam ){
@@ -581,6 +638,8 @@
             
          }
 
+=======
+>>>>>>> origin/master
         //neu nguoi bi cam là nguoi giu gia cao nhat
         if(idBestBuyer==idNguoiBiCam) {
             //neu nguoi bi cam là bestbuyer thi
@@ -606,6 +665,11 @@
 
     function updateUserBanned(){
         //danh sach trong lịch sử
+<<<<<<< HEAD
+=======
+        var listHistory = JSON.parse('{{{json historyData}}}');
+
+>>>>>>> origin/master
         for(var i = 0; i < listHistory.length; i++){
             if(listHistory[i].biCam){
                 $('.' + listHistory[i].idNguoiDung + '_banned' ).html("<span style='color:orange;'><i><strong>Banned<strong><i></span>");
@@ -617,6 +681,7 @@
         alert("Bạn Không phải người bán nên không thể kích người khác!");
     });
 
+<<<<<<< HEAD
     function setTime(){
         var endTime = new Date('{{products.0.thoiDiemKetThuc}}');  
         var now = new Date();   
@@ -662,6 +727,9 @@
 
 
     }
+=======
+
+>>>>>>> origin/master
 
     </script>
     

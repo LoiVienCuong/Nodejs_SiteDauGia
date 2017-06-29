@@ -84,4 +84,8 @@ exports.delete = function(idLoaiSanPham) {
     );
 
     return db.delete(sql);
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/master

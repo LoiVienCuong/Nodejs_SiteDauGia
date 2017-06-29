@@ -12,8 +12,12 @@ var express = require('express'),
     wnumb = require('wnumb'),
     handle404 = require('./middle-wares/handle-404'),
     homeController = require('./controllers/homeController'),
+<<<<<<< HEAD
     timkiemController = require('./controllers/timkiemController'),
     manageController = require('./controllers/manageController'),
+=======
+     manageController = require('./controllers/manageController'),
+>>>>>>> origin/master
    handleLayout = require('./middle-wares/handleLayout'),
    productController = require('./controllers/productController'),
    userController = require('./controllers/userController'),
@@ -86,6 +90,7 @@ app.engine('hbs', handlebars({
 
         urlImage_format: function(str) {
             return str.split("#").join("/");
+<<<<<<< HEAD
         },
         hoTen_format : function(str){
             var half = parseInt(str.length/2);
@@ -101,6 +106,8 @@ app.engine('hbs', handlebars({
 
           
             return newStr;
+=======
+>>>>>>> origin/master
         }
        
 
@@ -123,6 +130,7 @@ app.use(handleLayout);
 app.use('/', homeController);
 app.use('/product', productController);
 app.use('/user', userController);
+<<<<<<< HEAD
 app.use('/timkiem', timkiemController); //update 24/06/2017
 app.use('/manage',manageController);
 app.use(handle404);
@@ -250,3 +258,10 @@ var myTimer = setInterval(function(){
 
 
 }, 1000);
+=======
+app.use('/manage',manageController);
+
+app.use(handle404);
+
+app.listen(3000);
+>>>>>>> origin/master
