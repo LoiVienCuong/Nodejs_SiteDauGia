@@ -16,7 +16,8 @@ var express = require('express'),
     timkiemController = require('./controllers/timkiemController'),
     manageController = require('./controllers/manageController'),
 
-     manageController = require('./controllers/manageController'),
+    timkiemController = require('./controllers/timkiemController'),
+    manageController = require('./controllers/manageController'),
 
    handleLayout = require('./middle-wares/handleLayout'),
    productController = require('./controllers/productController'),
@@ -104,7 +105,6 @@ app.engine('hbs', handlebars({
             }
         
             return newStr;
-
         }
        
 
@@ -127,7 +127,6 @@ app.use(handleLayout);
 app.use('/', homeController);
 app.use('/product', productController);
 app.use('/user', userController);
-<<<<<<< HEAD
 app.use('/timkiem', timkiemController); //update 24/06/2017
 app.use('/manage',manageController);
 app.use(handle404);
@@ -254,11 +253,8 @@ var myTimer = setInterval(function(){
     //if ==0
 
 
+
 }, 1000);
 
-app.use('/manage',manageController);
 
-app.use(handle404);
-
-app.listen(3000);
 
