@@ -13,8 +13,7 @@ var express = require('express'),
     handle404 = require('./middle-wares/handle-404'),
     homeController = require('./controllers/homeController'),
 
-    timkiemController = require('./controllers/timkiemController'),
-    manageController = require('./controllers/manageController'),
+    
 
     timkiemController = require('./controllers/timkiemController'),
     manageController = require('./controllers/manageController'),
