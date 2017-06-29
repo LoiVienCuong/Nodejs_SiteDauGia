@@ -267,7 +267,7 @@ r.get('/xindangban/phanhoi',function(req,res){
 r.get('/thongtincanhan',function(req,res){
                 var userId = req.cookies.userLogin;
                 if(!userId){
-                     res.redirect('login');
+                     res.redirect('/user/login');
                   }else{
                       userRepo.loadAccount(userId)
                           .then(function(pRows) {
@@ -283,7 +283,7 @@ r.get('/thongtincanhan',function(req,res){
 r.get('/suathongtincanhan',function(req,res){
                 var userId = req.cookies.userLogin;
                 if(!userId){
-                     res.redirect('login');
+                     res.redirect('/user/login');
                   }else{
                       userRepo.loadAccount(userId)
                           .then(function(pRows) {
@@ -302,7 +302,7 @@ r.get('/suathongtincanhan',function(req,res){
 r.post('/suathongtincanhan',function(req,res){
                 var userId = req.cookies.userLogin;
                 if(!userId){
-                     res.redirect('login');
+                     res.redirect('/user/login');
                   }else{
                       userRepo.editUser(req.body)
                           .then(function(changedRows) {
@@ -324,7 +324,7 @@ r.post('/suathongtincanhan',function(req,res){
 r.get('/sanphamdangdaugia',function(req,res){
                 var userId = req.cookies.userLogin;
                 if(!userId){
-                     res.redirect('login');
+                     res.redirect('/user/login');
                   }else{
                       userRepo.loadListBiding(userId)
                           .then(function(pRows) {
@@ -342,7 +342,7 @@ r.get('/sanphamdangdaugia',function(req,res){
 r.get('/sanphamdathang',function(req,res){
                 var userId = req.cookies.userLogin;
                 if(!userId){
-                     res.redirect('login');
+                     res.redirect('/user/login');
                   }else{
                       userRepo.loadListWin(userId)
                           .then(function(pRows) {
@@ -359,7 +359,7 @@ r.get('/sanphamdathang',function(req,res){
 r.post('/sanphamdathang',function(req,res){
                var userId = req.cookies.userLogin;
                 if(!userId){
-                     res.redirect('login');
+                     res.redirect('/user/login');
                   }else{
                       userRepo.addComment(req.body)
                           .then(function(data) {
@@ -419,7 +419,7 @@ r.post('/sanphamdathang',function(req,res){
 r.get('/sanphamdaban',function(req,res){
                 var userId = req.cookies.userLogin;
                 if(!userId){
-                     res.redirect('login');
+                     res.redirect('/user/login');
                   }else{
                       userRepo.loadListSelled(userId)
                           .then(function(pRows) {
@@ -437,7 +437,7 @@ r.get('/sanphamdaban',function(req,res){
 r.post('/sanphamdaban',function(req,res){
                var userId = req.cookies.userLogin;
                 if(!userId){
-                     res.redirect('login');
+                     res.redirect('/user/login');
                   }else{
                       userRepo.addCommentSeller(req.body)
                           .then(function(data) {
@@ -496,7 +496,7 @@ r.post('/sanphamdaban',function(req,res){
 r.get('/sanphamdangdang',function(req,res){
                 var userId = req.cookies.userLogin;
                 if(!userId){
-                     res.redirect('login');
+                     res.redirect('/user/login');
                   }else{
                       userRepo.loadSelling(userId)
                           .then(function(pRows) {
@@ -514,7 +514,7 @@ r.get('/sanphamdangdang',function(req,res){
 r.get('/doimatkhau',function(req,res){
                 var userId = req.cookies.userLogin;
                 if(!userId){
-                     res.redirect('login');
+                     res.redirect('/user/login');
                   }else{
                       userRepo.loadAccount(userId)
                           .then(function(pRows) {
@@ -534,7 +534,7 @@ r.get('/doimatkhau',function(req,res){
 r.post('/doimatkhau',function(req,res){
                 var userId = req.cookies.userLogin;
                 if(!userId){
-                     res.redirect('login');
+                     res.redirect('/user/login');
                   }else{
                       userRepo.resetPass(req.body)
                           .then(function(changedRows) {
@@ -557,7 +557,7 @@ r.post('/doimatkhau',function(req,res){
 r.get('/chitietdanhgia',function(req,res){
                 var userId = req.cookies.userLogin;
                 if(!userId){
-                     res.redirect('login');
+                     res.redirect('/user/login');
                   }else{
                        userRepo.loadScore(userId)
                           .then(function(user) {
@@ -576,6 +576,34 @@ r.get('/chitietdanhgia',function(req,res){
                   }
 });
 
+r.get('/chitietdanhgia/:id', function(req, res) {
+
+        var id = req.params.id;
+        if (!id) {
+            res.redirect('/');
+        }
+       
+
+       var userId = req.cookies.userLogin;
+                if(!userId){
+                     res.redirect('/user/login');
+                  }else{
+                       userRepo.loadScore(id)
+                          .then(function(user) {
+                                  userRepo.loadComment(id)
+                                      .then(function(pRows) {
+                                        
+                                         var vm = {
+                                              layoutVM: res.locals.layoutVM,
+                                              user:user[0],
+                                              comments: pRows,
+                                              noComments: pRows.length === 0
+                                          };
+                                        res.render('user/chitietdanhgia', vm);
+                                    });
+                             });
+                  }
+});
 
 
 ///by Lê Anh Khôi
