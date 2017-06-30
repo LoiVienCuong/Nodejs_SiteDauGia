@@ -43,8 +43,9 @@
      </tr>
   {{#each users}}
   <tr>
-  	 
+  	    {{#ifCond idNguoiDung "!=" -99 }}
   			<td class = "text-center ">{{idNguoiDung}}</td>
+
    			<td class = "text-center ">{{hoTen}}</td>
         <td class = "text-center ">{{email}}</td>
         <td class = "text-center ">{{diemDanhGiaCong}}</td>
@@ -60,6 +61,7 @@
    				</a>
    			
   			 </td>
+         {{/ifCond}}
   </tr>
  {{/each}}  
    </table>

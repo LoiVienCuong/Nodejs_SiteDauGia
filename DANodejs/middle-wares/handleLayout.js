@@ -6,6 +6,9 @@ module.exports = function(req, res, next) {
 	var isCookie = false;
 	var userId = req.cookies.userLogin;
 	if(userId){
+			var minute =  60*1000 * 300;
+			res.clearCookie('userLogin');
+  			res.cookie('userLogin', userId, { maxAge: minute });
 			isCookie = true;
 	}
 	else{

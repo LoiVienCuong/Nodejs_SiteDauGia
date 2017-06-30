@@ -3,7 +3,7 @@ var mysql = require('mysql'),
 
 var _HOST = '127.0.0.1',
     _USER = 'root',
-    _PWD = 'microsoft96',
+    _PWD = '',
     _DB = 'qldg';
 
 exports.load = function(sql) {

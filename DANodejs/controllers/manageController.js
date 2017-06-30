@@ -77,13 +77,16 @@ r.get('/edit/:id',function(req,res)
 
 r.post('/edit',function(req,res){
 	console.log("edit");
-	categoryRepo.update(req.body.idLoaiSanPham,req.body.tenLoaiSanPham).then(function(row)
+	categoryRepo.update(req.body).then(function(row)
 		{
 			var vm = {
 		 		    layoutVM: res.locals.layoutVM,
 			};
 			res.redirect('/manage');
 
+		}).fail(function(error)
+		{
+			console.log(error);
 		});
 });
 
@@ -173,7 +176,7 @@ r.get('/selllist/remove/:id',function(req,res)
 				   layoutVM: res.locals.layoutVM,
 
 				};
-				res.redirect('manage/selllist');
+				res.redirect('/manage/selllist');
 			});
 });
 

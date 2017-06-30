@@ -49,16 +49,12 @@ exports.insert = function(tenLoaiSanPham) {
     return db.insert(sql);
 }
 
-exports.update = function(idLoaiSanPham,tenLoaiSanPham) {
-    var obj =
-    {
-        catId: idLoaiSanPham,
-        catName: tenLoaiSanPham
-
-    };
+exports.update = function(entity) {
+   
+    console.log(entity.idLoaiSanPham + ' ' + entity.tenLoaiSanPham);
     var sql = mustache.render(
-        'update loai set tenLoaiSanPham = "{{catName}}" where idLoaiSanPham = {{catId}}',
-        obj
+        'update loai set tenLoaiSanPham = "{{tenLoaiSanPham}}" where idLoaiSanPham = {{idLoaiSanPham}}',
+        entity
     );
 
     return db.update(sql);

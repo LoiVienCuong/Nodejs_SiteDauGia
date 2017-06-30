@@ -136,7 +136,7 @@
                                             <div class="panel-body">
                                                 <div>
                                                   {{#if ../layoutVM.isCookie}}
-                                                  <a href="/product/favourite/{{idSanPham}}" id="{{idSanPham}}favor" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yeu Thich&nbsp;</a> 
+                                                  <a href="/product/favourite/{{idSanPham}}" id="{{idSanPham}}favor" type="button" class="btn btn-danger btn-lg cart"><span class="glyphicon glyphicon-heart" aria-hidden="true"></a> 
                                                   <a href="" id="showbid" type="button" data-toggle="modal" data-target="#ModalBiding" class="bidBtn"> <img src="/image/bid_icon.png" style="width:50px; height:50px"> </a>
                                                   {{#if ../noHistory}}
                                                   <a type="button">Chưa ai đấu giá</a>
@@ -243,13 +243,15 @@
                                                          </div>
                                                         <button type="button" class="btn btn-default" id="plus"><span class="glyphicon glyphicon-plus-sign"></span></button>
                                                         <button type="button" class="btn btn-default" id="minus"><span class="glyphicon glyphicon-minus-sign"></span></button>
-                                                        <button type="button" class="btn btn-default" id="closeAuction" data-dismiss="modal">Đóng</button>
-                                                        <button type="submit" class="btn btn-success">Đấu giá</button>
-                                                    </form>
+                                                       
+                                                   
                                                 </div>
                                                 <div class="modal-footer">
-                                                    
+                                                     <button type="button" class="btn btn-default" id="closeAuction" data-dismiss="modal">Đóng</button>
+                                                        <button type="submit" class="btn btn-success">Đấu giá</button>
+
                                                 </div>
+                                                 </form>
                                             </div>
                                         </div>
                                     </div>

@@ -12,7 +12,7 @@ exports.loadAllByCat = function(catId) {
         loai: catId
     };
     var sql = mustache.render(
-        'select idSanPham,hoTen, tenSanPham, giaHienTai, giaMuaNgay, idNguoiBan, idNguoiGiaCaoNhat,thoiDiemDang, thoiDiemKetThuc, buocGia, urlImage1,tinhTrang, luotBid,loai,tuDongGiaHan from sanpham s, nguoidung n where s.idNguoiGiaCaoNhat = n.idNguoiDung and tinhTrang = 0 and loai = {{loai}}',
+        'select idSanPham,hoTen, tenSanPham, giaHienTai, giaMuaNgay, idNguoiBan, idNguoiGiaCaoNhat,thoiDiemDang, thoiDiemKetThuc, buocGia, urlImage1,tinhTrang, luotBid,loai,tuDongGiaHan from sanpham s, nguoidung n where (s.idNguoiGiaCaoNhat = n.idNguoiDung or (s.idNguoiGiaCaoNhat is null and n.idNguoiDung = -99)) and tinhTrang = 0 and loai = {{loai}}',
         obj
     );
     return db.load(sql);
@@ -20,7 +20,7 @@ exports.loadAllByCat = function(catId) {
 
 exports.loadTop5Bid = function() {
   // var d = q.defer();
-    var sql ='select idSanPham,hoTen, tenSanPham, giaHienTai, giaMuaNgay, idNguoiBan, idNguoiGiaCaoNhat,thoiDiemDang, thoiDiemKetThuc, buocGia, urlImage1,tinhTrang, luotBid,loai,tuDongGiaHan from sanpham s, nguoidung n where s.idNguoiGiaCaoNhat = n.idNguoiDung and tinhTrang = 0 order by luotBid desc limit 5 ';
+    var sql ='select idSanPham,hoTen, tenSanPham, giaHienTai, giaMuaNgay, idNguoiBan, idNguoiGiaCaoNhat,thoiDiemDang, thoiDiemKetThuc, buocGia, urlImage1,tinhTrang, luotBid,loai,tuDongGiaHan from sanpham s, nguoidung n where (s.idNguoiGiaCaoNhat = n.idNguoiDung or (s.idNguoiGiaCaoNhat is null and n.idNguoiDung = -99)) and tinhTrang = 0 order by luotBid desc limit 5 ';
        /*db.load(sql).then(function(rows) {
         d.resolve(rows);
     });*/
@@ -32,7 +32,7 @@ exports.loadTop5Bid = function() {
 exports.loadTop5Cost = function() {
    
     //var d = q.defer();
-    var sql ='select idSanPham,hoTen, tenSanPham, giaHienTai, giaMuaNgay, idNguoiBan, idNguoiGiaCaoNhat,thoiDiemDang, thoiDiemKetThuc, buocGia, urlImage1,tinhTrang, luotBid,loai,tuDongGiaHan from sanpham s, nguoidung n where s.idNguoiGiaCaoNhat = n.idNguoiDung and tinhTrang = 0 order by giaHienTai desc limit 5 ';
+    var sql ='select idSanPham,hoTen, tenSanPham, giaHienTai, giaMuaNgay, idNguoiBan, idNguoiGiaCaoNhat,thoiDiemDang, thoiDiemKetThuc, buocGia, urlImage1,tinhTrang, luotBid,loai,tuDongGiaHan from sanpham s, nguoidung n where (s.idNguoiGiaCaoNhat = n.idNguoiDung or (s.idNguoiGiaCaoNhat is null and n.idNguoiDung = -99)) and tinhTrang = 0 order by giaHienTai desc limit 5 ';
     // db.load(sql).then(function(rows) {
    //     d.resolve(rows);
    // });
@@ -42,7 +42,7 @@ exports.loadTop5Cost = function() {
 
 exports.loadTop5EndTime = function() {
     //var d = q.defer();
-    var sql ='select idSanPham,hoTen, tenSanPham, giaHienTai, giaMuaNgay, idNguoiBan, idNguoiGiaCaoNhat,thoiDiemDang, thoiDiemKetThuc, buocGia, urlImage1,tinhTrang, luotBid,loai,tuDongGiaHan from sanpham s, nguoidung n where s.idNguoiGiaCaoNhat = n.idNguoiDung and tinhTrang = 0 order by thoiDiemKetThuc desc limit 5';
+    var sql ='select idSanPham,hoTen, tenSanPham, giaHienTai, giaMuaNgay, idNguoiBan, idNguoiGiaCaoNhat,thoiDiemDang, thoiDiemKetThuc, buocGia, urlImage1,tinhTrang, luotBid,loai,tuDongGiaHan from sanpham s, nguoidung n where (s.idNguoiGiaCaoNhat = n.idNguoiDung or (s.idNguoiGiaCaoNhat is null and n.idNguoiDung = -99)) and tinhTrang = 0 order by thoiDiemKetThuc desc limit 5';
     //db.load(sql).then(function(rows) {
      //   d.resolve(rows);
     //});
@@ -63,7 +63,7 @@ exports.search = function(ten) {
         productName: ten
     };
     var sql = mustache.render(
-        'select idSanPham,hoTen, tenSanPham, giaHienTai, giaMuaNgay, idNguoiBan, idNguoiGiaCaoNhat,thoiDiemDang, thoiDiemKetThuc, buocGia, urlImage1,tinhTrang, luotBid,loai,tuDongGiaHan from sanpham s, nguoidung n where s.idNguoiGiaCaoNhat = n.idNguoiDung  and tenSanPham like "%{{productName}}%" ',
+        'select idSanPham,hoTen, tenSanPham, giaHienTai, giaMuaNgay, idNguoiBan, idNguoiGiaCaoNhat,thoiDiemDang, thoiDiemKetThuc, buocGia, urlImage1,tinhTrang, luotBid,loai,tuDongGiaHan from sanpham s, nguoidung n where (s.idNguoiGiaCaoNhat = n.idNguoiDung or (s.idNguoiGiaCaoNhat is null and n.idNguoiDung = -99)) and tenSanPham like "%{{productName}}%" ',
         obj
     );
 
@@ -75,7 +75,7 @@ exports.search_loai = function(id,ten) {
         productName: ten
     };
     var sql = mustache.render(
-        'select idSanPham,hoTen, tenSanPham, giaHienTai, giaMuaNgay, idNguoiBan, idNguoiGiaCaoNhat,thoiDiemDang, thoiDiemKetThuc, buocGia, urlImage1,tinhTrang, luotBid,loai,tuDongGiaHan from sanpham s, nguoidung n where s.idNguoiGiaCaoNhat = n.idNguoiDung  and tenSanPham like "%{{productName}}%" and loai= {{catID}} ',
+        'select idSanPham,hoTen, tenSanPham, giaHienTai, giaMuaNgay, idNguoiBan, idNguoiGiaCaoNhat,thoiDiemDang, thoiDiemKetThuc, buocGia, urlImage1,tinhTrang, luotBid,loai,tuDongGiaHan from sanpham s, nguoidung n where (s.idNguoiGiaCaoNhat = n.idNguoiDung or (s.idNguoiGiaCaoNhat is null and n.idNguoiDung = -99)) and tenSanPham like "%{{productName}}%" and loai= {{catID}} ',
         obj
     );
 
@@ -169,12 +169,15 @@ exports.insertDanhSachDauGia = function(idSanPham, idNguoiDung, giaDau){
 }
 
 
-exports.updateEndAuction = function(idSanPham){
+exports.updateEndAuction = function(idSanPham,luotBid,idUser,giaDau){
     var obj = {
-        idSanPham : idSanPham
+        idSanPham : idSanPham,
+        luotBid : luotBid,
+        idNguoiGiaCaoNhat : idUser,
+        giaHienTai : giaDau
     };
      var sql = mustache.render(
-        'update sanpham set tinhTrang = 1 where idSanPham = {{idSanPham}}',
+        'update sanpham set tinhTrang = 1, luotBid = {{luotBid}}, idNguoiGiaCaoNhat = {{idNguoiGiaCaoNhat}}, giaHienTai = {{giaHienTai}} where idSanPham = {{idSanPham}}',
         obj 
     );
 

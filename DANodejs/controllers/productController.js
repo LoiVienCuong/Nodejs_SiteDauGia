@@ -308,12 +308,13 @@ r.post('/daugia', function(req, res) {
                 console.log(cRows);
                 console.log("auto");
                 if(giaMuaNgay==giaDau) {
-                    productRepo.insertDanhSachDauGia(idSanPham, idUser,giaDau);
-                    productRepo.updateEndAuction(idSanPham).fail(function(error){console.log(error)});
-                    danhsachdaugiathangRepo.insertNewWinAuction(idSanPham, idUser, giaDau );
+                    productRepo.insertDanhSachDauGia(idSanPham, idUser,giaDau).fail(function(error){console.log(error)});
+                    productRepo.updateEndAuction(idSanPham,luotBid+1,idUser,giaDau).fail(function(error){console.log(error)});
+                    danhsachdaugiathangRepo.insertNewWinAuction(idSanPham, idUser, giaDau).fail(function(error){console.log(error)});
+                    res.redirect('back');
                 }
                  else
-                 {       
+                {       
                          if(cRows.length>0)
                          {
                                 var giaMax= parseInt(cRows[0].giaMax);
@@ -356,28 +357,29 @@ r.post('/daugia', function(req, res) {
                                                 res.redirect('back');
                                          });; //update sanpham tabel
 
-                        }
+                         }
                      
-               }
+                }
             }).fail(function(error){
                console.log(error);
             });
     }
     else
     {
-
             q.all([
                 productRepo.loadDauGiaTudong(idSanPham).fail(function(error){console.log(error)}),
             ]).spread(function(cRows) {
                 console.log(cRows);
-                console.log("notauto");
+                
                 if(giaMuaNgay==giaDau) {
-                    productRepo.insertDanhSachDauGia(idSanPham, idUser,giaDau);
-                    productRepo.updateEndAuction(idSanPham).fail(function(error){console.log(error)});
-                    danhsachdaugiathangRepo.insertNewWinAuction(idSanPham, idUser, giaDau );
+                    productRepo.insertDanhSachDauGia(idSanPham, idUser,giaDau).fail(function(error){console.log(error)});
+                    productRepo.updateEndAuction(idSanPham,luotBid+1,idUser,giaDau).fail(function(error){console.log(error)});
+                    danhsachdaugiathangRepo.insertNewWinAuction(idSanPham, idUser, giaDau).fail(function(error){console.log(error)});
+                    console.log("notauto");
+                    res.redirect('back');
                 }
-                 else
-                 {       
+                else
+                {       
                          if(cRows.length>0)
                          {
                                 var giaMax= parseInt(cRows[0].giaMax);
@@ -419,7 +421,7 @@ r.post('/daugia', function(req, res) {
                                                 res.redirect('back');
                                          });; //update sanpham tabel
 
-                        }
+                }
                      
                }
             }).fail(function(error){
@@ -435,6 +437,7 @@ r.post('/dangsanpham',function(req,res){
           var isWait = true;
           var userId = req.cookies.userLogin;
           var newDir ;
+          var proId;
           var resultFiles = [];
            
             //console.log(req.body.tenSanPham);
@@ -465,6 +468,7 @@ r.post('/dangsanpham',function(req,res){
                         console.log(req.body);
                          //req.body ==> database
                         var idSanPham = pRows[0].idSanPham + 1;
+                        proId = idSanPham;
                         var tenSanPham = req.body.tenSanPham;
                         var idLoaiSanPham = parseInt(req.body.idLoaiSanPham);
                         var giaHienTai = parseInt(req.body.giaKhoiDiem);
@@ -497,7 +501,8 @@ r.post('/dangsanpham',function(req,res){
                         productRepo.insertNewProduct(idSanPham, tenSanPham, idLoaiSanPham, giaHienTai, giaMuaNgay, userId, buocGia, thoiDiemDang,
                                                      thoiDiemKetThuc, moTa, tuDongGiaHan, urlImage1, urlImage2, urlImage3) //false is auto-extend
 
-                        .then(function(rs){console.log("insert Succcess")})
+                        .then(function(rs){console.log("insert Succcess");
+                    res.redirect('/product/chitietsanpham/' + idSanPham);})
                         .fail(function(err){console.log(err)});
 
                         /*console.log(tenSanPham + " " + idLoaiSanPham + " " + giaHienTai + " " + giaMuaNgay + " " + buocGia + " " + 
@@ -514,7 +519,7 @@ r.post('/dangsanpham',function(req,res){
             }).fail(function(error){console.log(error)});
          
             setTimeout(function() {
-                    res.redirect('back');
+                    
             }, 1000);
           }
           else{

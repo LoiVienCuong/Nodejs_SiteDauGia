@@ -6,9 +6,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/fonts/stylesheet.css">>
     <script src="/js/jquery-3.1.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/clientHelper.js"></script>
+
     <style>
     /* Remove the navbar's default rounded borders and increase the bottom margin */
     
@@ -36,7 +38,8 @@
          <div class="container" style="border: 0px solid red;">
           <div class="col-sm-3 text-left" style="margin-left: -40px;border: 0px solid red;"><img src="/image/title.jpg"></div>
          
-          <div class="col-sm-9 text-center" style="margin-top: 35px;font:2em 'Open Sans', sans-serif;"><img src="/image/fonttitle.jpg"></div>
+          <div class="text-center col-sm-9" style="font-size: 100px; font-family: 'League Gothic'; font-style: italic; background-color: white; color: gray; height: 180px; line-height:180px">
+     		Online Auction</div>
         </div>
 
         <nav class="navbar navbar-default">
@@ -185,7 +188,12 @@
             }
             $('#loadMore').hide();
        }
-       
+       for(var i=0;i<pros.length;i++)
+       {
+         if(pros[i].hoTen)
+        $("#"+ pros[i].idSanPham+"giugia").text(hoTen_format(pros[i].hoTen));
+        else $("#"+ pros[i].idSanPham+"giugia").text("Không có");
+       }
     }
 
     function insertAfter(idSanPham, pro){
@@ -201,16 +209,18 @@
                                     +'</div>'
                                     +'<div class="panel-body"><img src="' + urlImage_format(pro.urlImage1) + '" class="img-responsive" style="width:100%;height:200px;" alt="Image">'
                                       +'<div class="row">'
-                                        + '<div class="col-sm-5">'
+                                        +'<div class="col-sm-5">'
                                           +'<div><span >Giá hiện tại: </span></div>'
                                           +'<div><span >Mua ngay: </span></div>'
                                           +'<div><span >Lượt Bid : </span></div>'
+                                          +'<div><span >Giữ giá: </span></div>'
                                           +'<div> Còn lại : </div>'
                                         +'</div>'
                                         +'<div class="col-sm-7">'
                                           + '<div><span style="color:blue;"><i>'+ formatCost(pro.giaHienTai)+' VND</i></div>'
                                           + '<div><span style="color:#02EE03;"><i>'+ formatCost(pro.giaMuaNgay)+' VND</i></div>'
                                           + '<div><span style="color:red;"><i>'+pro.luotBid+'</i></div>'
+                                          + '<div><i style="color:red;" id="'+ pro.idSanPham +'giugia">'+'</i></div>'
                                           + '<div><i id="'+ pro.idSanPham +'extra"></i></div>'
                                         +'</div>'
                                       +'</div>'  
@@ -219,9 +229,9 @@
                                        
                                          +'{{#ifCond userId "!=" -1}}'
 
-                                         +'<a href="/product/favourite/' + pro.idSanPham + '" id="' + pro.idSanPham + 'favor' + '" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a>' 
+                                         +'<a href="/product/favourite/' + pro.idSanPham + '" id="' + pro.idSanPham + 'favor' + '" type="button" class="btn btn-danger btn-lg cart"><span class="glyphicon glyphicon-heart" aria-hidden="true"></a>' 
                                          +'{{else}}'
-                                         +' <a href="/user/login" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a>' 
+                                         +' <a href="/user/login" type="button" class="btn btn-danger btn-lg cart"><span class="glyphicon glyphicon-heart" aria-hidden="true"></a>' 
                                          +'{{/ifCond}}'
                                     +'</div>'
                             +'</div>'
@@ -325,16 +335,18 @@
             }
                html+='<div class="panel-body"><img src="' + urlImage_format(prosort[i].urlImage1) + '" class="img-responsive" style="width:100%;height:200px;" alt="Image">'
                           +'<div class="row">'
-                            + '<div class="col-sm-5">'
+                            +'<div class="col-sm-5">'
                               +'<div><span >Giá hiện tại: </span></div>'
                               +'<div><span >Mua ngay: </span></div>'
                               +'<div><span >Lượt Bid : </span></div>'
+                              +'<div><span >Giữ giá: </span></div>'
                               +'<div> Còn lại : </div>'
                             +'</div>'
                             +'<div class="col-sm-7">'
                               + '<div><span style="color:blue;"><i>'+ formatCost(prosort[i].giaHienTai)+' VND</i></div>'
                               + '<div><span style="color:#02EE03;"><i>'+ formatCost(prosort[i].giaMuaNgay)+' VND</i></div>'
                               + '<div><span style="color:red;"><i>'+prosort[i].luotBid+'</i></div>'
+                              + '<div><i style="color:red;" id="'+ prosort[i].idSanPham +'giugia">'+'</i></div>'
                               + '<div><i id="'+ prosort[i].idSanPham +'extra"></i></div>'
                             +'</div>'
                           +'</div>'  
@@ -345,9 +357,9 @@
                 html+='<div class="panel-footer text-center">'
                             
                              +'{{#ifCond userId "!=" -1}}'
-                             +'<a href="/product/favourite/' + prosort[i].idSanPham + '" id="' + prosort[i].idSanPham + 'favor' + '" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a>' 
+                             +'<a href="/product/favourite/' + prosort[i].idSanPham + '" id="' + prosort[i].idSanPham + 'favor' + '" type="button" class="btn btn-danger btn-lg cart"><span class="glyphicon glyphicon-heart" aria-hidden="true"></a>' 
                              +'{{else}}'
-                             +' <a href="/user/login" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a>' 
+                             +' <a href="/user/login" type="button" class="btn btn-danger btn-lg cart"><span class="glyphicon glyphicon-heart" aria-hidden="true"></a>' 
                              +'{{/ifCond}}'
                         +'</div>'
                       +'</div>'
@@ -360,7 +372,7 @@
                              +'{{#ifCond userId "!=" -1}}'
                              +'<a id="' + prosort[i].idSanPham + 'favor' + '" type="button" class="btn btn-danger btn-lg cart">&nbsp;Đã Yêu Thích&nbsp;</a>' 
                              +'{{else}}'
-                             +' <a href="/user/login" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a>' 
+                             +' <a href="/user/login" type="button" class="btn btn-danger btn-lg cart"><span class="glyphicon glyphicon-heart" aria-hidden="true"></a>' 
                              +'{{/ifCond}}'
                         +'</div>'
                     +'</div>'
@@ -369,7 +381,13 @@
                         
       }
       $('#removeBeforLoad').html(html);
-    
+      for(var i=0;i<prosort.length;i++)
+       {
+         if(prosort[i].hoTen)
+        $("#"+ prosort[i].idSanPham+"giugia").text(hoTen_format(prosort[i].hoTen));
+        else $("#"+ prosort[i].idSanPham+"giugia").text("Không có");
+       }
+
     });
   
 
@@ -431,17 +449,19 @@
             }
                html+='<div class="panel-body"><img src="' + urlImage_format(prosort[i].urlImage1) + '" class="img-responsive" style="width:100%;height:200px;" alt="Image">'
                           +'<div class="row">'
-                            + '<div class="col-sm-5">'
+                            +'<div class="col-sm-5">'
                               +'<div><span >Giá hiện tại: </span></div>'
                               +'<div><span >Mua ngay: </span></div>'
                               +'<div><span >Lượt Bid : </span></div>'
+                              +'<div><span >Giữ giá: </span></div>'
                               +'<div> Còn lại : </div>'
                             +'</div>'
                             +'<div class="col-sm-7">'
                               + '<div><span style="color:blue;"><i>'+ formatCost(prosort[i].giaHienTai)+' VND</i></div>'
                               + '<div><span style="color:#02EE03;"><i>'+ formatCost(prosort[i].giaMuaNgay)+' VND</i></div>'
                               + '<div><span style="color:red;"><i>'+prosort[i].luotBid+'</i></div>'
-                              + '<div><i id="'+ prosort[i].idSanPham +'extra"></i></div>'
+                              + '<div><i style="color:red;" id="'+ prosort[i].idSanPham +'giugia">'+'</i></div>'
+                              + '<div><i style="color:red;" id="'+ prosort[i].idSanPham +'extra"></i></div>'
                             +'</div>'
                           +'</div>'  
                         +'</div>';
@@ -451,9 +471,9 @@
                 html+='<div class="panel-footer text-center">'
                             
                              +'{{#ifCond userId "!=" -1}}'
-                             +'<a href="/product/favourite/' + prosort[i].idSanPham + '" id="' + prosort[i].idSanPham + 'favor' + '" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a>' 
+                             +'<a href="/product/favourite/' + prosort[i].idSanPham + '" id="' + prosort[i].idSanPham + 'favor' + '" type="button" class="btn btn-danger btn-lg cart"><span class="glyphicon glyphicon-heart" aria-hidden="true"></a>' 
                              +'{{else}}'
-                             +' <a href="/user/login" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a>' 
+                             +' <a href="/user/login" type="button" class="btn btn-danger btn-lg cart"><span class="glyphicon glyphicon-heart" aria-hidden="true"></a>' 
                              +'{{/ifCond}}'
                           +'</div>'
                       +'</div>'
@@ -466,7 +486,7 @@
                              +'{{#ifCond userId "!=" -1}}'
                              +'<a id="' + prosort[i].idSanPham + 'favor' + '" type="button" class="btn btn-danger btn-lg cart">&nbsp;Đã Yêu Thích&nbsp;</a>' 
                              +'{{else}}'
-                             +' <a href="/user/login" type="button" class="btn btn-danger btn-lg cart">&nbsp;Thêm vào Yêu Thích&nbsp;</a>' 
+                             +' <a href="/user/login" type="button" class="btn btn-danger btn-lg cart"><span class="glyphicon glyphicon-heart" aria-hidden="true"></a>' 
                              +'{{/ifCond}}'
                         +'</div>'
                     +'</div>'
@@ -475,7 +495,13 @@
                         
         }
     $('#removeBeforLoad').html(html);
-    
+      for(var i=0;i<prosort.length;i++)
+       {
+         if(prosort[i].hoTen)
+         $("#"+ prosort[i].idSanPham+"giugia").text(hoTen_format(prosort[i].hoTen));
+         else $("#"+ prosort[i].idSanPham+"giugia").text("Không có");
+       }
+      
     });
     
     function setTimeExtra(pro){
@@ -488,13 +514,24 @@
                 var endTime = new Date(pro[i].thoiDiemKetThuc);  
                  
                 var distance = Date.parse(endTime) - Date.parse(now); 
-                if(distance<=0)  $('#' + pro[i].idSanPham + 'extra').text("Đã kết thúc");
+                if(distance<=0 || pro[i].tinhTrang ==1)  $('#' + pro[i].idSanPham + 'extra').text("Đã kết thúc");
                 else $('#' + pro[i].idSanPham + 'extra').text(formatExtraTime(distance));
                 console.log(formatExtraTime(distance));
             }
           }, 1000);
          //setTimeExtra(pro);
     }
+     $(".panel").hover(
+        function(event) {
+            // The mouse has entered the element, can reference the element via 'this'
+           
+                  $(this).addClass(' magictime puffIn');
+        },
+        function(event) {
+          
+         
+            // The mouse has left the element, can reference the element via 'this'
+        }
+    );
     </script>
-
 </html>
