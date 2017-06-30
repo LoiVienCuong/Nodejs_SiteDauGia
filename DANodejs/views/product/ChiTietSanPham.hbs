@@ -282,7 +282,7 @@
                                                         <tr>
                                                             <td class="filterable-cell">{{time_format thoiDiemDauGia}}</td>
                                                             <td class="filterable-cell">{{hoTen_format hoTen}}</td>
-                                                            <td class="filterable-cell">{{giaDau}}</td>
+                                                            <td class="filterable-cell">{{number_format giaDau}}</td>
                                                             {{#ifCond ../../layoutVM.userId '==' ../idNguoiBan}}
                                                             <td class="filterable-cell {{idNguoiDung}}_banned" ><button id="{{idNguoiDung}}_history" class="btn btn-default btn_ban">Cấm</button></td>
                                                             {{else}}
